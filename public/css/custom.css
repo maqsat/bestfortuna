@@ -1,0 +1,276 @@
+.login-register {
+    /* The image used */
+    background-image: url("/bestfortune/bg.png");
+
+    /* Full height */
+    height: 100%;
+
+    /* Center and scale the image nicely */
+    background-position: center;
+    background-repeat: no-repeat;
+    background-size: cover;
+}
+
+.actions a{
+    color: #fff !important;
+}
+
+.actions form{
+    display: inline;
+}
+
+.login_logo{
+    margin-top: 20px;
+}
+
+.navbar-brand .dark-logo{
+    width: 200px;
+}
+
+.card-outline-success .card-header, .card-outline-info .card-header{
+    color: #fff;
+    font-weight: 700;
+}
+
+.marketing img{
+    width: 100%;
+}
+
+.card-text{
+    margin-bottom: 0;
+}
+.images img{
+    width: 100px;
+}
+
+.text .card{
+    text-align: center;
+    padding: 10px;
+}
+
+.text .card-text{
+    text-align: justify;
+}
+.img-fluid{
+    height: 200px;
+    object-fit: contain;
+}
+
+.text .btn{
+    float: right;
+}
+
+.wizard-content .wizard>.actions>ul>li>a[href="#previous"] {
+    color: #54667a !important;
+}
+
+.progress_inner{
+    font-weight: 700;
+    padding-top: 5px;
+}
+
+.progress_status{
+    position: absolute;
+    text-align: center;
+    color: #fff;
+    margin-left: 20px;
+}
+
+.progress_before{
+    position: absolute;
+    right: 30px;
+}
+
+.contact-list td {
+    vertical-align: middle;
+    padding: 5px 5px;
+}
+
+/*.login-register {
+    position: initial;
+}*/
+
+.register-padding{
+    padding: 5% 0;
+}
+
+.login-register  .checkbox{
+    padding-left: 8px;
+}
+input.error {
+    border: 1px solid red !important;
+}
+
+.pay_button{
+    flex: 1;
+}
+
+.input-group-btn .progress {
+    padding: 12px 12px;
+    font-size: 14px;
+    cursor: pointer;
+}
+
+.light-logo {
+    width: 160px;
+}
+
+.img-for-pay img{
+    height: 120px;
+    object-fit: contain;
+}
+
+.img-for-pay p{
+    font-size: 12px;
+}
+
+.checkbox input[type="checkbox"] {
+    left: 5px;
+    top: 5px;
+}
+
+.topbar .profile-pic {
+    height: 30px;
+}
+
+
+.profile-img{
+    width: 150px;
+    height: 150px;
+}
+
+.home-img{
+    width: 50px;
+    height: 50px;
+}
+
+.tree-img{
+    width: 69px;
+    height: 69px;
+}
+
+.data-tree .card {
+    min-height: 115px;
+}
+
+.data-tree a {
+    color: #000000;
+}
+
+.data-tree h3 {
+    line-height: 20px;
+    font-size: 16px;
+}
+
+.login-register {
+    position: initial;
+}
+.only-login-page{
+    position: fixed;
+}
+
+.user_create .form-group {
+    margin-bottom: 5px;
+}
+
+.user_create input[type=date]{
+    flex-direction: unset;
+}
+.settings .form-group{
+    margin-bottom: 5px;
+}
+
+.data-tree address{
+    font-size: 11px;
+}
+
+.data-tree .card {
+    margin-bottom: 15px;
+    padding: 10px 5px;
+}
+
+.timer li {
+    display: inline-block;
+    font-size: 12px;
+    list-style-type: none;
+    padding: 1em;
+}
+
+.timer li span {
+    display: block;
+    font-size: 25px;
+}
+
+.ribbon-info {
+    top: 55px;
+}
+
+.printableArea p{
+    margin-bottom: 0;
+}
+
+.sidebar-nav ul li a {
+    font-weight: 450;
+}
+
+
+.bg-success-custom {
+    background-color: #5cb85c !important;
+}
+
+.text-info-custom {
+    color: #5cb85c !important;
+}
+
+.not-margin h6, .not-margin{
+    margin-bottom: 0;
+}
+
+.card .card-subtitle {
+    font-weight: 300;
+    margin-bottom: 0px;
+    color: #90a4ae;
+}
+@media (max-width: 767px)
+{
+    .dark-logo {
+        display: none;
+    }
+
+    .light-logo {
+        display: block !important;
+    }
+
+    /*.mini-sidebar .top-navbar .navbar-header {
+        display: none;
+    }*/
+
+    .tree .col-sm-6{
+        width: 50%;
+    }
+
+    .navbar-brand .dark-logo {
+        width: 125px;
+    }
+
+    .light-logo {
+        width: 100px;
+    }
+
+    .topbar {
+        background: #ffffff;
+    }
+
+    .col-xlg-1, .col-xlg-10, .col-xlg-11, .col-xlg-12, .col-xlg-2, .col-xlg-3, .col-xlg-4, .col-xlg-5, .col-xlg-6, .col-xlg-7, .col-xlg-8, .col-xlg-9 {
+        position: relative;
+        min-height: 1px;
+        padding-right: 0;
+        padding-left: 0;
+    }
+
+    .col-12{
+        padding-right: 0;
+        padding-left: 0;
+    }
+
+}
