@@ -13,7 +13,7 @@ class WebController extends Controller
 
     public function welcome()
     {
-        return redirect('index.html');
+        return redirect('_index.html');
     }
 
     public function reviews()
