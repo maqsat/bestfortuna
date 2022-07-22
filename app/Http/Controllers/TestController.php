@@ -8,6 +8,7 @@ use App\Models\Counter;
 use App\Models\Order;
 use App\Models\UserProgram;
 use DB;
+use File;
 use App\User;
 use Carbon\Carbon;
 use Carbon\CarbonPeriod;
@@ -90,7 +91,20 @@ class TestController extends Controller
 
     public function tester()
     {
-        Hierarchy::controlBonus(134,100);
+        $json = File::get("users.json");
+        $todos = json_decode($json);
+
+        foreach ($todos as $key => $value) {
+            DB::table('users_tempp')->insert([
+                  "id_number"      => $value->id,
+                  "sponsor" => $value->sponsor,
+                  "created_at" => $value->created_at,
+                  "name" => $value->name,
+                  "office" => $value->office,
+                  "status"=> $value->status,
+                  "pv" => $value->pv
+            ]);
+        }
     }
 
     public function tester2()
