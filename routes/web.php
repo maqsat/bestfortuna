@@ -22,6 +22,7 @@ use App\Models\UserProgram;
 use App\User;
 use Carbon\Carbon;
 use Illuminate\Support\Facades\Storage;
+
 //dd(date('Ymd'));
 //dd(bcrypt(123456789));
 Auth::routes();
@@ -157,7 +158,8 @@ Route::get('check_mentor', 'AutoActivationController@checkMentor');
 ************************ Test Elements ***********************
  */
 Route::get('tester', 'TestController@tester');
-Route::get('setbots', 'TestController@setBots');
+Route::get('setbots', 'TestController@setBotsExcel');
+//Route::get('setbots', 'TestController@setBots');
 Route::get('auto-activation', 'TestController@testerActivation');
 
 

@@ -25,6 +25,30 @@ use Illuminate\Support\Facades\Auth;
 class TestController extends Controller
 {
 
+    public function tester()
+    {
+        //Смена статуса
+        $next_status = Status::find(3);
+
+        if(!is_null($next_status)){
+
+            $pv = Hierarchy::pvCounterAll(1);
+            $next_status_pv = $next_status->pv;
+            $item_user_program = UserProgram::where('user_id',1)->first();
+            dd($item_user_program->package_id > 1);
+            if($next_status_pv <= $pv and $item_user_program->package_id > 1){
+                Hierarchy::moveNextStatus($item,$next_status->id,$item_user_program->program_id);
+                $item_user_program = UserProgram::where('user_id',$item)->first();
+
+                Notification::create([
+                    'user_id'   => $item,
+                    'type'      => 'move_status',
+                    'status_id' => $item_user_program->status_id
+                ]);
+            }
+        }
+    }
+
     public function setBots()
     {
         for ($i = 0; $i < 10000; $i++){
@@ -79,8 +103,6 @@ class TestController extends Controller
                     $item->is_office_lider = 1;
                     $item->save();
 
-
-
                 }
 
             }
@@ -89,37 +111,51 @@ class TestController extends Controller
 
     }
 
-    public function tester()
+
+
+
+
+    public function testerExport()
     {
         $json = File::get("users.json");
         $todos = json_decode($json);
 
         foreach ($todos as $key => $value) {
+
+            //if(is_null($value->status)) dd($value);
+
             DB::table('users_tempp')->insert([
-                  "id_number"      => $value->id,
-                  "sponsor" => $value->sponsor,
-                  "created_at" => $value->created_at,
-                  "name" => $value->name,
-                  "office" => $value->office,
-                  "status"=> $value->status,
-                  "pv" => $value->pv
+                "login"         =>   $value->login,
+                "sponsor"       =>  $value->sponsor,
+                "created_at"    =>  $value->created_at,
+                "name"          =>  $value->name,
+                "office"        =>  $value->office,
+                "status"        =>  $value->status,
+                "pv"            =>  $value->pv,
+                "pasport_number"=>  $value->pasport_number,
+                "iin"           =>  $value->iin,
+                "pasport_give"  =>  $value->pasport_give,
+                "pensioner"     =>  $value->pensioner,
+                "disabled"      =>  $value->disabled,
+                "pp720"         =>  $value->pp720,
+                "pp73"          =>  $value->pp73
             ]);
         }
     }
 
     public function tester2()
     {
-        $users = User::join('user_programs','users.id','=','user_programs.user_id')
-            ->where('users.status',1)
-            ->get();
+        $users_tempp = DB::table('users_tempp')->get();
+        $users_string = '';
 
-        foreach ($users as $item){
-            $package_title = 'Без пакета';
+        foreach ($users_tempp as $item){
 
-            if($item->package_id != 0)  $package_title = Package::find($item->package_id)->title;
-
-            echo $item->name.','.$item->number.','.$package_title.','.$item->created_at."<br>";
+               $checker =  DB::table('users_tempp')->where('login',$item->sponsor)->first();
+               if(is_null($checker))  $users_string .= $item->name."($item->login|$item->sponsor), ";
         }
+
+
+        dd($users_string);
     }
 
 
@@ -182,4 +218,90 @@ class TestController extends Controller
         Hierarchy::setQSforManager(4);
     }
 
+
+
+    public function setBotsExcel()
+    {
+
+        while (DB::table('users_tempp')->where('activated',0)->count() > 0) {
+
+            $user = DB::table('users_tempp')->where('activated',0)->orderBy('created_at','asc')->orderBy('id','desc')->first();
+
+            $sponsor = User::where('id_number',$user->sponsor)->first();
+
+            if(is_null($sponsor)){
+                $this->sponsorNotFound($user);
+            }
+            else{
+                $this->createAndActivate($user,$sponsor);
+                DB::table('users_tempp')
+                    ->where('id', $user->id)
+                    ->update(['activated' => 1]);
+
+                $sponsor_users = DB::table('users_tempp')->where('activated',0)->where('sponsor',$user->login)->orderBy('created_at','asc')->get();
+                foreach ($sponsor_users as $item){
+
+                    $this->createAndActivate($item,$sponsor);
+                    DB::table('users_tempp')
+                        ->where('id', $item->id)
+                        ->update(['activated' => 1]);
+                }
+            }
+
+        }
+
+
+
+
+
+    }
+
+
+    public function createAndActivate($user,$sponsor)
+    {
+        $created = User::create([
+            'name'          => $user->name,
+            'number'        => "870170889".$user->id,
+            'email'         => "1mail@com.kz".$user->id,
+            'gender'        => 1,
+            'birthday'      => "04.04.20",
+            'address'       => "address",
+            'password'      => '$2y$10$VEeAZGJdX3ge9FEP3gDXn.6bxBlluFu49n2dTVfDSvKn35uBEoCxe',
+            'created_at'    => "2020-02-01 07:39:39",
+            'country_id'    => 1,
+            'city_id'       => 1,
+            'inviter_id'    => $sponsor->id,
+            'sponsor_id'    => 0,
+            'position'      => 1,
+            'package_id'    => 1,
+            'program_id'    => 1,
+            'id_number'     => $user->login,
+        ]);
+
+        event(new Activation($user = $created));
+    }
+
+    public function sponsorNotFound($user)
+    {
+        $not_found_sponsor_user = DB::table('users_tempp')->where('login',$user->sponsor)->first();
+        $sponsor_from_not_found_sponsor = User::where('id_number',$not_found_sponsor_user->sponsor)->first();
+
+        if(is_null($sponsor_from_not_found_sponsor)){
+            $this->sponsorNotFound($not_found_sponsor_user);
+        }
+
+        $this->createAndActivate($not_found_sponsor_user,$sponsor_from_not_found_sponsor);
+        DB::table('users_tempp')
+            ->where('id', $not_found_sponsor_user->id)
+            ->update(['activated' => 1]);
+
+        $sponsor_users = DB::table('users_tempp')->where('activated',0)->where('sponsor',$not_found_sponsor_user->login)->orderBy('created_at','asc')->get();
+        foreach ($sponsor_users as $item){
+
+            $this->createAndActivate($item,$sponsor_from_not_found_sponsor);
+            DB::table('users_tempp')
+                ->where('id', $item->id)
+                ->update(['activated' => 1]);
+        }
+    }
 }

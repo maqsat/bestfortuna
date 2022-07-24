@@ -261,10 +261,10 @@ class Hierarchy {
      */
     public function getNewTree($id){
 
-        $items = User::where('sponsor_id',$id)->where('status',1)->orderBy('position')->get();
+        $items = User::where('inviter_id',$id)->where('status',1)->orderBy('position')->get();
         $render= [];
         foreach ($items as $key => $item) {
-            $child = User::where('sponsor_id',$item->id)->where('status',1)->count();
+            $child = User::where('inviter_id',$item->id)->where('status',1)->count();
             if($item->position == 1) $pos = 'L:';
             else $pos = 'R:';
 
