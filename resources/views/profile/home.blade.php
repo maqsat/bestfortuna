@@ -32,49 +32,56 @@
                     @endif
                 @endforeach
 
-            <!-- Row -->
-            <div class="row">
-                <!-- Column -->
-                <div class="col-lg-4 col-xlg-3 col-md-5">
-                    <div class="card">
-                        <div class="card  not-margin">
-                            <center class="m-t-30"> <img src="{{Auth::user()->photo}}" class="img-circle" width="150"/>
-                                <h4 class="card-title m-t-10">{{ $user->name }}</h4>
-                                <div class="row text-center justify-content-md-center">
-                                    <div class="col-4"><a href="javascript:void(0)" class="link"><i class="mdi mdi-wallet"></i> <font class="font-medium">{{ number_format($balance, 0, '', ' ') }}$</font></a></div>
-                                    <div class="col-4"><a href="javascript:void(0)" class="link"><i class="mdi mdi-file-powerpoint-box"></i> <font class="font-medium">{{ number_format($pv_counter_all, 0, '', ' ') }} PV</font></a></div>
+                <div class="row">
+                    <!-- Column -->
+                    <div class="col-lg-12 col-md-12">
+                        <div class="card">
+                            <div class="card-block">
+                                <div class="table-responsive">
+                                    <table class="table">
+                                        <thead>
+                                        <tr>
+                                            <th colspan="2">Информация</th>
+                                            <th>Cпонсор</th>
+                                            <th>Пакет</th>
+                                            <th>Статус</th>
+                                            <th>Товарооборот</th>
+                                            <th>Баланс</th>
+                                        </tr>
+                                        </thead>
+                                        <tbody>
+                                        <tr>
+                                            <td><span class="round"><img src="{{Auth::user()->photo}}" alt="user" width="50" class="home-img" /></span></td>
+                                            <td>
+                                                <h6>{{ $user->name }}(Ваш ID:  {{Auth::user()->id_number}})</h6>
+                                                <small class="text-muted">{{ $user->number }}</small>
+<!--                                                <small class="text-muted">Номер телефона</small>
+                                                <h6>{{ $user->email }}</h6>
+                                                <small class="text-muted">Дата регистрации </small>
+                                                <h6>{{ $user->created_at }}</h6>-->
+                                            </td>
+                                            <td>
+                                                @if(!is_null(\App\User::find($user->inviter_id)))
+                                                    {{ \App\User::find($user->inviter_id)->name }}({{ \App\User::find($user->inviter_id)->id_number }})
+                                                @else
+                                                    Без спонсора
+                                                @endif</td>
+                                            <td>@if(!is_null($package)){{ $package->title }}(${{ $package->cost }})@else Без пакета @endif</td>
+                                            <td>{{ $status->title }}</td>
+                                            <td>{{ $pv_counter_all }}  PV</td>
+                                            <td>${{ $balance }}</td>
+                                        </tr>
+                                        </tbody>
+                                    </table>
                                 </div>
-                            </center>
-                        </div>
-                        <div>
-                            <hr>
-                        </div>
-                        <div class="card-block not-margin">
-                            <small class="text-muted">Ваш ID </small>
-                            <h6>{{Auth::user()->id_number}}</h6>
-                            <small class="text-muted">Товарооборот </small>
-                            <h6>{{ number_format($pv_counter_all, 0, '', ' ') }} PV</h6>
-                            <small class="text-muted">Баланс </small>
-                            <h6>${{ number_format($balance, 0, '', ' ') }}</h6>
-                            <small class="text-muted">Пакет</small>
-                            <h6>@if(!is_null($package)){{ $package->title }}(${{ $package->cost }})@else Без пакета @endif</h6>
-                            <small class="text-muted">Статус</small>
-                            <h6>{{ $status->title }}</h6>
-                            <small class="text-muted">Наставник </small>
-                            <h6>@if(!is_null(\App\User::find($user->sponsor_id))){{ \App\User::find($user->sponsor_id)->name }}({{ \App\User::find($user->sponsor_id)->id_number }})@endif</h6>
-                            <small class="text-muted">Cпонсор</small>
-                            <h6>@if(!is_null(\App\User::find($user->inviter_id))){{ \App\User::find($user->inviter_id)->name }}({{ \App\User::find($user->inviter_id)->id_number }})@endif</h6>
-                            <small class="text-muted">Email</small>
-                            <h6>{{ $user->email }}</h6>
-                            <small class="text-muted">Номер телефона</small>
-                            <h6>{{ $user->number }}</h6>
-                            <small class="text-muted">Дата регистрации </small>
-                            <h6>{{ $user->created_at }}</h6>
+                            </div>
                         </div>
                     </div>
                 </div>
-                <!-- Column -->
-                <div class="col-lg-8 col-xlg-9 col-md-7">
+
+            <!-- Row -->
+            <div class="row">
+                <div class="col-lg-12 col-xlg-12 col-md-12">
                     <div class="card">
                         <div class="card-block">
                             <h3 class="card-title">Ваши достижения</h3>
