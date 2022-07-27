@@ -55,7 +55,7 @@
                                             <td>
                                                 <h6>{{ $user->name }}(Ваш ID:  {{Auth::user()->id_number}})</h6>
                                                 <small class="text-muted">{{ $user->number }}</small>
-<!--                                                <small class="text-muted">Номер телефона</small>
+                                                <!-- <small class="text-muted">Номер телефона</small>
                                                 <h6>{{ $user->email }}</h6>
                                                 <small class="text-muted">Дата регистрации </small>
                                                 <h6>{{ $user->created_at }}</h6>-->
@@ -66,9 +66,11 @@
                                                 @else
                                                     Без спонсора
                                                 @endif</td>
-                                            <td>@if(!is_null($package)){{ $package->title }}(${{ $package->cost }})@else Без пакета @endif</td>
+                                            <td>
+                                                <span class="label label-info">@if(!is_null($package)){{ $package->title }}(${{ $package->cost }})@else Без пакета @endif</span>
+                                            </td>
                                             <td>{{ $status->title }}</td>
-                                            <td>{{ $pv_counter_all }}  PV</td>
+                                            <td>{{ $pv_counter_all }} BM</td>
                                             <td>${{ $balance }}</td>
                                         </tr>
                                         </tbody>
@@ -117,25 +119,7 @@
 
                             <div class="row">
                                 <!-- Column -->
-                                <div class="col-md-6 col-lg-6 col-xlg-6">
-                                    <div class="card card-inverse card-info">
-                                        <div class="box bg-info text-center">
-                                            <h1 class="font-light text-white">{{ number_format($pv_counter_left, 0, '', ' ') }}</h1>
-                                            <h6 class="text-white">Большая ветка PV</h6>
-                                        </div>
-                                    </div>
-                                </div>
-                                <!-- Column -->
-                                <div class="col-md-6 col-lg-6 col-xlg-6">
-                                    <div class="card card-primary card-inverse">
-                                        <div class="box text-center">
-                                            <h1 class="font-light text-white">{{ number_format($pv_counter_right, 0, '', ' ') }}</h1>
-                                            <h6 class="text-white">Обьем всех веток PV</h6>
-                                        </div>
-                                    </div>
-                                </div>
-                                <!-- Column -->
-                                <div class="col-md-6 col-lg-6 col-xlg-6">
+                                <div class="col-lg-3 col-xlg-3 col-md-3">
                                     <div class="card card-inverse card-danger">
                                         <div class="box text-center">
                                             <h1 class="font-light text-white">{{ count($invite_list) }}</h1>
@@ -144,7 +128,7 @@
                                     </div>
                                 </div>
                                 <!-- Column -->
-                                <div class="col-md-6 col-lg-6 col-xlg-6">
+                                <div class="col-lg-3 col-xlg-3 col-md-3">
                                     <div class="card card-inverse card-warning">
                                         <div class="box text-center">
                                             <h1 class="font-light text-white">{{ $list }}</h1>
@@ -152,6 +136,26 @@
                                         </div>
                                     </div>
                                 </div>
+
+                                <!-- Column -->
+                                <div class="col-lg-3 col-xlg-3 col-md-3">
+                                    <div class="card card-inverse card-info">
+                                        <div class="box bg-info text-center">
+                                            <h1 class="font-light text-white">{{ $small_branch }}</h1>
+                                            <h6 class="text-white">Обьем (BM) в малой ветке</h6>
+                                        </div>
+                                    </div>
+                                </div>
+                                <!-- Column -->
+                                <div class="col-lg-3 col-xlg-3 col-md-3">
+                                    <div class="card card-primary card-inverse">
+                                        <div class="box text-center">
+                                            <h1 class="font-light text-white">0</h1>
+                                            <h6 class="text-white">Обьем личного закупа(BM)</h6>
+                                        </div>
+                                    </div>
+                                </div>
+
                             </div>
 
                         </div>
@@ -160,35 +164,7 @@
             </div>
 
             @if(!is_null($package))
-            <div class="row" style="display: none">
-                <div class="col-md-6 col-xs-12">
-                    <div class="card">
-                        <div class="card-block timer">
-                            <h5>Бонус быстрого старта, до следующего зачисление  осталось: </h5>
-                            <p>{{ $quickstart_date }}, {{ trans('app.'.$display_day) }}</p>
-                            <ul>
-                                <li><span id="days"></span>День</li>
-                                <li><span id="hours"></span>Час</li>
-                                <li><span id="minutes"></span>Минут</li>
-                                <li><span id="seconds"></span>Секунд</li>
-                            </ul>
-                        </div>
-                    </div>
-                </div>
-                <div class="col-md-6 col-xs-12">
-                    <div class="card">
-                        <div class="card-block timer">
-                            <h5>Повторная покупка, до следующего списание осталось:</h5>
-                            <ul>
-                                <li><span id="days2"></span>День</li>
-                                <li><span id="hours2"></span>Час</li>
-                                <li><span id="minutes2"></span>Минут</li>
-                                <li><span id="seconds2"></span>Секунд</li>
-                            </ul>
-                        </div>
-                    </div>
-                </div>
-            </div>
+
 
 
             <div class="row">
@@ -323,55 +299,6 @@
             new Clipboard('#copy-button');
         })();
 
-        const second = 1000,
-            minute = second * 60,
-            hour = minute * 60,
-            day = hour * 24;
-
-        let countDown = new Date('{{$quickstart_date}}').getTime(),
-            x = setInterval(function() {
-
-                let now = new Date().getTime(),
-                    distance = countDown - now;
-
-                document.getElementById('days').innerText = Math.floor(distance / (day)),
-                document.getElementById('hours').innerText = Math.floor((distance % (day)) / (hour)),
-                document.getElementById('minutes').innerText = Math.floor((distance % (hour)) / (minute)),
-                document.getElementById('seconds').innerText = Math.floor((distance % (minute)) / second);
-
-                //do something later when date is reached
-                //if (distance < 0) {
-                //  clearInterval(x);
-                //  'IT'S MY BIRTHDAY!;
-                //}
-
-            }, second);
-
-
-
-        const second2 = 1000,
-            minute2 = second2 * 60,
-            hour2 = minute2 * 60,
-            day2 = hour2 * 24;
-
-        let countDown2 = new Date('{{$revitalization_date}}').getTime(),
-            x2 = setInterval(function() {
-
-                let now = new Date().getTime(),
-                    distance = countDown2 - now;
-
-                document.getElementById('days2').innerText = Math.floor(distance / (day2)),
-                    document.getElementById('hours2').innerText = Math.floor((distance % (day2)) / (hour2)),
-                    document.getElementById('minutes2').innerText = Math.floor((distance % (hour2)) / (minute2)),
-                    document.getElementById('seconds2').innerText = Math.floor((distance % (minute2)) / second2);
-
-                //do something later when date is reached
-                //if (distance < 0) {
-                //  clearInterval(x);
-                //  'IT'S MY BIRTHDAY!;
-                //}
-
-            }, second2)
     </script>
 
     <script>

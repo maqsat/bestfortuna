@@ -501,7 +501,7 @@ class Hierarchy {
                 foreach ($users as $user){
                     $small_branch_temp = $this->pvCounterAll($user->id);
 
-                    if($small_branch < $small_branch_temp) $small_branch = $small_branch_temp;
+                    if($small_branch > $small_branch_temp) $small_branch = $small_branch_temp;
                 }
 
                 if($item_user_program->status_id >= $list_status[$key]){
@@ -812,5 +812,27 @@ class Hierarchy {
         $checker_sum = env('ACTIVATION_COST')*count($months);
 
         return $sum >= $checker_sum;
+    }
+
+    public function getMonthName()
+    {
+        $arr = [
+            'январь',
+            'февраль',
+            'март',
+            'апрель',
+            'май',
+            'июнь',
+            'июль',
+            'август',
+            'сентябрь',
+            'октябрь',
+            'ноябрь',
+            'декабрь'
+        ];
+
+
+        $month = date('n')-1;
+        return $arr[$month];
     }
 }

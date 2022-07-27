@@ -30,9 +30,11 @@
                     <div class="card">
                         <div class="card-block">
                             <div id="accordion2" role="tablist" class="minimal-faq" aria-multiselectable="true">
+
                                 @foreach($weeks as $key =>$item)
 
                                     @if(isset($weeks[$key+1]))
+
                                         <div class="card m-b-0">
                                             <div class="card-header" role="tab" id="headingOne{{$key}}">
                                                 <h5 class="mb-0">
@@ -53,38 +55,39 @@
                                                         </tr>
                                                         </thead>
                                                         <tbody>
+                                                        <tr>
+                                                            <td>1</td>
+                                                            <td>Реферальный бонус</td>
+                                                            <td>{{ \App\Facades\Balance::getWeekBalanceByStatus(Auth::user()->id,$weeks[$key+1],$item,'invite_bonus') }}$</td>
+                                                            <td><a href="">Подробнее</a></td>
+                                                        </tr>
+                                                        <tr>
+                                                            <td>2</td>
+                                                            <td> Структурный бонус</td>
+                                                            <td>{{ \App\Facades\Balance::getWeekBalanceByStatus(Auth::user()->id,$weeks[$key+1],$item,'turnover_bonus') }}$</td>
+                                                            <td><a href="">Подробнее</a></td>
+                                                        </tr>
                                                             <tr>
-                                                                <td>1</td>
+                                                                <td>0</td>
                                                                 <td>Кэшбек</td>
                                                                 <td>{{ \App\Facades\Balance::getWeekBalanceByStatus(Auth::user()->id,$weeks[$key+1],$item,'cashback') }}$</td>
                                                                 <td><a href="">Подробнее</a></td>
                                                             </tr>
                                                             <tr>
-                                                                <td>2</td>
+                                                                <td>0</td>
                                                                 <td>Матчинг бонус</td>
                                                                 <td>{{ \App\Facades\Balance::getWeekBalanceByStatus(Auth::user()->id,$weeks[$key+1],$item,'matching_bonus') }}$</td>
                                                                 <td><a href="">Подробнее</a></td>
                                                             </tr>
                                                             <tr>
-                                                                <td>3</td>
-                                                                <td>Бонус за бинар</td>
-                                                                <td>{{ \App\Facades\Balance::getWeekBalanceByStatus(Auth::user()->id,$weeks[$key+1],$item,'turnover_bonus') }}$</td>
-                                                                <td><a href="">Подробнее</a></td>
-                                                            </tr>
-                                                            <tr>
-                                                                <td>4</td>
+                                                                <td>0</td>
                                                                 <td>Бонус признания</td>
                                                                 <td>{{ \App\Facades\Balance::getWeekBalanceByStatus(Auth::user()->id,$weeks[$key+1],$item,'status_bonus') }}$</td>
                                                                 <td><a href="">Подробнее</a></td>
                                                             </tr>
+
                                                             <tr>
-                                                                <td>5</td>
-                                                                <td>Реферальный бонус</td>
-                                                                <td>{{ \App\Facades\Balance::getWeekBalanceByStatus(Auth::user()->id,$weeks[$key+1],$item,'invite_bonus') }}$</td>
-                                                                <td><a href="">Подробнее</a></td>
-                                                            </tr>
-                                                            <tr>
-                                                                <td>6</td>
+                                                                <td>0</td>
                                                                 <td>Быстрый старт</td>
                                                                 <td>{{ \App\Facades\Balance::getWeekBalanceByStatus(Auth::user()->id,$weeks[$key+1],$item,'quickstart_bonus') }}$</td>
                                                                 <td><a href="">Подробнее</a></td>

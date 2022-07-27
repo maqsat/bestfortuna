@@ -86,7 +86,7 @@ class Balance {
         $date_from = Carbon::create($date_from[0], $date_from[1], $date_from[2],0,0,0, date_default_timezone_get())->toDateTimeString();
 
         $date_to = explode('-',$date_to);
-        $date_to = Carbon::create($date_to[0], $date_to[1], $date_to[2],23,59,59, date_default_timezone_get())->subday(1)->toDateTimeString();
+        $date_to = Carbon::create($date_to[0], $date_to[1], $date_to[2],23,59,59, date_default_timezone_get())->toDateTimeString();
 
         $sum = Processing::whereUserId($user_id)->where('status', $status)->whereBetween('created_at', [$date_from, $date_to])->sum('sum');
         return round($sum, 2);
@@ -116,6 +116,18 @@ class Balance {
         $sum2 = Processing::whereUserId($user_id)->whereIn('status', ['revitalization-shop'])->sum('sum');
 
         return round($sum1-$sum2, 2);
+    }
+
+    public function getMonthBalanceByStatus($user_id,$date_from,$date_to,$status)
+    {
+        $date_from = explode('-',$date_from);
+        $date_from = Carbon::create($date_from[0], $date_from[1], $date_from[2],0,0,0, date_default_timezone_get())->toDateTimeString();
+
+        $date_to = explode('-',$date_to);
+        $date_to = Carbon::create($date_to[0], $date_to[1], $date_to[2],23,59,59, date_default_timezone_get())->subday(1)->toDateTimeString();
+
+        $sum = Processing::whereUserId($user_id)->where('status', $status)->whereBetween('created_at', [$date_from, $date_to])->sum('sum');
+        return round($sum, 2);
     }
 
     /*************************** OLD METHODS ****************************/
@@ -149,7 +161,7 @@ class Balance {
         }
 
         if (1 != $dateFrom->format('N')) {
-            $dateFrom->modify('next monday');
+            $dateFrom->modify('this week monday ');
         }
 
         while ($dateFrom <= $dateTo) {

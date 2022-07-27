@@ -50,7 +50,6 @@
                                         @if(Gate::allows('admin_column_pv'))
                                         <th>PV</th>
                                         @endif
-                                        <th>Позиция</th>
                                         <th>Акт/ия</th>
                                         <th>Статус</th>
                                         <th>Регистрация</th>
@@ -67,7 +66,6 @@
                                             @continue
                                         @endif--}}
                                         @php
-                                            $sponsor = \App\User::find($item->sponsor_id);
                                             $inviter = \App\User::find($item->inviter_id);
                                             $package = \App\Models\Package::find($item->package_id);
                                             $user_program = \App\Models\UserProgram::where('user_id',$item->id)->first();
@@ -81,18 +79,16 @@
                                                 <b>ID</b>: {{ $item->id_number  }}
                                             </td>
                                             <td>
-                                                <b>Наставник</b>: {{ is_null($sponsor) ? '' : $sponsor->name }}<br>
                                                 <b>Спонсор</b>: {{ is_null($inviter) ? '' : $inviter->name }}
                                             </td>
                                             @if(Gate::allows('admin_column_pv'))
                                             <td>
                                                 @if($item->status == 1)
-                                                <b>СЛ</b>: pv {{ Hierarchy::pvCounter($item->id,1) }} | <i class="mdi mdi-account"></i>{{ Hierarchy::userCount($item->id,1) }}<br>
-                                                <b>СП</b>: pv {{ Hierarchy::pvCounter($item->id,2) }} | <i class="mdi mdi-account"></i>{{ Hierarchy::userCount($item->id,2) }}
+                                                    {{ Hierarchy::pvCounterAll($item->id) }}
                                                 @endif
                                             </td>
                                             @endif
-                                            <td>@if($item->status == 1) @if($item->position == 1) Слева @else Справа @endif  @endif от наставника</td>
+
                                             @if($item->status == 1)
                                                 <td class="actions"><a class="btn btn-xs btn-info"><i class="mdi mdi-account-check"></i></a></td>
                                             @else

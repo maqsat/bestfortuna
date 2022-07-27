@@ -49,52 +49,22 @@ class HomeController extends Controller
         if (Auth::user()->admin == 1 && Auth::user()->role_id != 0) {
             return redirect('/user');
         }
-        //check KazPost order status
-        $orders = Order::where('user_id',Auth::user()->id)->where('status',0)->where('uuid','!=',null)->where('uuid','!=',0)->get();
-
-        foreach ($orders as $item){
-            $order_id = $item->id;
-            $payment_webhook = env('APP_URL', false) . "/pay-processing/$order_id/";
-            return redirect($payment_webhook);
-        }
-        //end check KazPost order status
 
         if(Auth::user()->status == 1){
 
             $user = Auth::user();
-
-            if(isset($request->default_position)){
-                if($request->default_position == 0) $default_position = 0;
-                if($request->default_position == 1) $default_position = 1;
-                if($request->default_position == 2) $default_position = 2;
-
-                User::whereId($user->id)->update([
-                    'default_position' => $default_position
-                ]);
-
-                return redirect('/home')->with('status', 'Тип размещение успешно изменено');
-            }
-
             $user_program = UserProgram::where('user_id',$user->id)->first();
+            $package = Package::find($user_program->package_id);
             $invite_list = User::whereInviterId($user->id)->whereStatus(1)->get();
             $pv_counter_all = Hierarchy::pvCounterAll($user->id);
-            $pv_counter_left = Hierarchy::pvCounter($user->id,1);
-            $pv_counter_right = Hierarchy::pvCounter($user->id,2);
-            $list = UserProgram::where('list','like','%,'.$user->id.',%')->count();
-            $package = Package::find($user_program->package_id);
-            $non_activate_count = User::whereSponsorId($user->id)->whereStatus(0)->count();
-            $balance = Balance::getBalance($user->id);
-            $out_balance = Balance::getBalanceOut($user->id);
-            $status = UserProgram::join('statuses','user_programs.status_id','=','statuses.id')
-                ->where('user_programs.user_id',$user->id)
-                ->select(['statuses.*'])
-                ->first();
-
+            $status = Status::find($user_program->status_id);
             $next_status = Status::find($status->order+1);
             if(!is_null($next_status)){
                 $percentage = $pv_counter_all*100/$next_status->pv;
             }
             else  $percentage = 100;
+            $list = UserProgram::where('inviter_list','like','%,'.$user->id.',%')->count();
+            $balance = Balance::getBalance($user->id);
 
             $not_cash_bonuses = DB::table('not_cash_bonuses')->where('user_id', $user->id)->where('status',0)->get();
 
@@ -103,63 +73,30 @@ class HomeController extends Controller
                 ->orderBy('created_at', 'desc')
                 ->first();
 
+            $users = User::where('inviter_id',$user->id)->get();
+            $small_branch = 0;
+            foreach ($users as $item){
+                $small_branch_temp = Hierarchy::pvCounterAll($item->id);
 
-            /*$date = new \DateTime();
-            $date->setDate(2020, 5, 31);
-            $dt = Carbon::create($date->format('Y'), $date->format('m'), $date->format('d'), 1, 0, 0, 'Asia/Almaty');
-
-            $registered_week_day = $user_program->created_at->weekday();
-            $today_week_day =  $dt->weekday();
-
-            if($today_week_day <= $registered_week_day){
-                $quickstart_date = $dt->weekday($registered_week_day)->format('M d, Y')." 00:00:00";
-            }
-            else{
-                $quickstart_date = $dt->addDays(7)->weekday($registered_week_day)->format('M d, Y')." 00:00:00";
-            }*/
-
-            $registered_week_day = $user_program->created_at->weekday();
-            $today_week_day =  Carbon::now()->weekday();
-
-            if($today_week_day < $registered_week_day){
-                $quickstart_date = Carbon::now()->weekday($registered_week_day)->format('M d, Y')." 00:00:00";
-            }
-            else{
-                $quickstart_date = Carbon::now()->addDays(7)->weekday($registered_week_day)->format('M d, Y')." 00:00:00";
+                if($small_branch > $small_branch_temp) $small_branch = $small_branch_temp;
             }
 
-            $display_day    = new \DateTime($quickstart_date);
-            $display_day = $display_day->format('l');
-
-            $registered_day = $user_program->created_at->format('d');
-            $today_day =  Carbon::now()->format('d');
-
-
-            if($today_day < $registered_day){
-                $revitalization_date = Carbon::now()->day($registered_week_day)->format('M d, Y')." 00:00:00";
-            }
-            else{
-                $revitalization_date = Carbon::now()->addMonth(1)->day($registered_day)->format('M d, Y')." 00:00:00";
-            }
 
             return view('profile.home', compact(
+                'package',
+                'invite_list',
+                'list',
+                'status',
+                'pv_counter_all',
                 'user',
                 'invite_list',
-                'pv_counter_all',
                 'balance',
-                'out_balance',
-                'status',
-                'list',
-                'package',
-                'pv_counter_left',
-                'pv_counter_right',
-                'not_cash_bonuses',
-                'quickstart_date',
-                'revitalization_date',
-                'display_day',
                 'percentage',
                 'next_status',
-                'move_status'
+                'move_status',
+                'not_cash_bonuses',
+                'small_branch'
+
             ));
         }
         else{
@@ -451,29 +388,29 @@ class HomeController extends Controller
         $all = Balance::getIncomeBalance(Auth::user()->id);;
         $out = Balance::getBalanceOut(Auth::user()->id);
         $week = Balance::getWeekBalance(Auth::user()->id);
+        $shop = 0;
         //$activation = Hierarchy::activationCheck();
 
 
         if(isset($request->weeks)){
-            $dateFromString = date('Y-m-d',strtotime(Auth::user()->created_at));
+            $first_transaction = Processing::whereUserId(Auth::user()->id)->orderby('id')->first();
+            if(!is_null($first_transaction))
+                $dateFromString = date('Y-m-d',strtotime($first_transaction->created_at));
+            else $dateFromString = date('Y-m-d');
             $dateToString = date('Y-m-d');
 
             $weeks = Balance::getMondaysInRange($dateFromString, $dateToString);
             array_push($weeks, $dateToString);
             $weeks = array_reverse($weeks);
 
-            return view('profile.processing.weeks', compact('weeks','balance', 'all', 'out','week'));
+            return view('profile.processing.weeks', compact('weeks','balance', 'all', 'out','week','shop'));
         }
 
 
-        $list = Processing::whereUserId(Auth::user()->id)->where(function ($query) {
-            $query
-                ->where('sum','!=','0')
-                ->orWhere('pv', '!=', '0');
-        })->orderBy('id','desc')->paginate(100);
+        $list = Processing::whereUserId(Auth::user()->id)->where('sum','!=','0')->where('pv', '!=', '0')->orderBy('id','desc')->paginate(100);
 
 
-        return view('profile.processing.processing', compact('list', 'balance', 'all', 'out','week'));
+        return view('profile.processing.processing', compact('list', 'balance', 'all', 'out','week','shop'));
     }
 
     public function profile()
@@ -603,19 +540,19 @@ class HomeController extends Controller
                         ->first();
 
         $left_user = User::join('user_programs','users.id','=','user_programs.user_id')
-            ->where('users.sponsor_id',$current_user->user_id)
+            ->where('users.inviter_id',$current_user->user_id)
             ->where('users.position',1)
             ->where('users.status',1)
             ->first();
 
         if(!is_null($left_user)){
             $left_user_l = User::join('user_programs','users.id','=','user_programs.user_id')
-                ->where('users.sponsor_id',$left_user->user_id)
+                ->where('users.inviter_id',$left_user->user_id)
                 ->where('users.position',1)
                 ->where('users.status',1)
                 ->first();
             $left_user_r =  User::join('user_programs','users.id','=','user_programs.user_id')
-                ->where('users.sponsor_id',$left_user->user_id)
+                ->where('users.inviter_id',$left_user->user_id)
                 ->where('users.position',2)
                 ->where('users.status',1)
                 ->first();
@@ -626,19 +563,19 @@ class HomeController extends Controller
         }
 
         $right_user = User::join('user_programs','users.id','=','user_programs.user_id')
-            ->where('users.sponsor_id',$current_user->user_id)
+            ->where('users.inviter_id',$current_user->user_id)
             ->where('users.position',2)
             ->where('users.status',1)
             ->first();
 
         if(!is_null($right_user)){
             $right_user_l = User::join('user_programs','users.id','=','user_programs.user_id')
-                ->where('users.sponsor_id',$right_user->user_id)
+                ->where('users.inviter_id',$right_user->user_id)
                 ->where('users.position',1)
                 ->where('users.status',1)
                 ->first();
             $right_user_r =  User::join('user_programs','users.id','=','user_programs.user_id')
-                ->where('users.sponsor_id',$right_user->user_id)
+                ->where('users.inviter_id',$right_user->user_id)
                 ->where('users.position',2)
                 ->where('users.status',1)
                 ->first();
@@ -719,7 +656,7 @@ class HomeController extends Controller
             $list = $list->select(['user_programs.*','notifications.created_at as created_at'])->paginate(30);
         }
         else{
-            $list = UserProgram::where('list','like','%,'.Auth::user()->id.',%');
+            $list = UserProgram::where('inviter_list','like','%,'.Auth::user()->id.',%');
 
             if (isset($request->status_id)){
                 $list = $list->where('status_id',$request->status_id);

@@ -26,12 +26,12 @@
                         </a>
                         <ul aria-expanded="false" class="collapse">
                             <li><a href="/invitations">Лично приглашенные</a></li>
-                            <li><a href="/tree/{{ Auth::user()->id }}">Мое дерево</a></li>
+                            <!--<li><a href="/tree/{{ Auth::user()->id }}">Мое дерево</a></li>-->
                             <li><a href="/hierarchy" target="_blank">Иерархия</a></li>
-<!--                            <li><a href="/team">Моя команда</a></li>-->
-                            <li><a href="/team?upgrade=1">Апгрейд команды</a></li>
+                            <li><a href="/team">Моя команда</a></li>
+                            <!--<li><a href="/team?upgrade=1">Апгрейд команды</a></li>
                             <li><a href="/team?move=1">Прогресс команды</a></li>
-                            <li><a href="/team?own=1">Моя команда(без перелива)</a></li>
+                            <li><a href="/team?own=1">Моя команда(без перелива)</a></li>-->
                             @if(Gate::allows('admin_user_create'))
                                 <li><a href="{{ route('partner_create') }}">{{ __('app.add_partner') }}</a></li>
                             @endif
@@ -98,7 +98,7 @@
                             <li><a href="{{ route('review_add') }}">{{ __('app.add_video_review') }}</a></li>
                         </ul>
                     </li>--}}
-                    @if(Gate::allows('admin_access'))
+                    @if(Auth::user()->admin == 1)
                         <li>
                             <a href="/user" aria-expanded="false">
                                 <i class="mdi mdi-bank"></i>
