@@ -1,9 +1,12 @@
 @if($item->status == 'invite_bonus')
     Реферальный бонус
-@elseif($item->status == 'cashback')
-    Кэшбек
 @elseif($item->status == 'turnover_bonus')
     Структурный бонус
+
+
+
+@elseif($item->status == 'cashback')
+    Кэшбек
 @elseif($item->status == 'status_bonus')
     Бонус признания
 @elseif($item->status == 'quickstart_bonus')

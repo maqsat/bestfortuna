@@ -35,6 +35,7 @@
                                         <th>ID #</th>
                                         <th>ФИО</th>
                                         <th>Статус</th>
+                                        <th>BM</th>
                                         <th>Пакет</th>
                                         <th>Номер</th>
                                         <th>Почта</th>
@@ -45,9 +46,10 @@
                                     @foreach($list as $item)
                                         <tr>
 
-                                            <td class="text-center">{{ $item->id }}</td>
+                                            <td class="text-center">{{ $item->id_number }}</td>
                                             <td><span class="text-success">{{ $item->name }}</span></td>
                                             <td class="txt-oflo">{{ \App\Models\Status::find(\App\Models\UserProgram::whereUserId($item->id)->first()->status_id)->title }}</td>
+                                            <td><span class="text-success">{{ \App\Facades\Hierarchy::pvCounterAll($item->id) }}</span></td>
                                             <td class="txt-oflo">@if($item->package_id != 0)  {{ \App\Models\Package::find($item->package_id)->title }} @else Без пакета @endif</td>
                                             <td><span class="text-success">{{ $item->number }}</span></td>
                                             <td><span class="text-success">{{ $item->email }}</span></td>

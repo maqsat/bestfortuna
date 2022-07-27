@@ -49,8 +49,7 @@
                                 </thead>
                                 <tbody>
                                 @foreach($list as $item)
-                                        <tr @if($item->status == 'register'
-                                                or $item->status == 'cancel'  or $item->status == 'out' )
+                                        <tr @if($item->status == 'register'or $item->status == 'cancel'  or $item->status == 'out' )
                                                 style="color: #f62d51"
                                             @else
                                                 style="color: #5cb85c"
@@ -64,7 +63,13 @@
                                             <?php
                                                 $in_user = \App\User::find($item->in_user)
                                             ?>
-                                            <td class="txt-oflo">@if(!is_null($in_user)) {{ $in_user->name }} @else {{ $item->in_user }} @endif @if($item->status == 'matching_bonus') <i>{{ $item->matching_line }} линия</i> @endif  </td>
+                                            <td class="txt-oflo">
+                                                @if(!is_null($in_user)) {{ $in_user->id_number }} | {{ \Illuminate\Support\Str::limit($in_user->name,50) }}
+                                                @else {{ $item->in_user }}
+                                                @endif
+
+                                                @if($item->status == 'matching_bonus' or $item->status == 'turnover_bonus') <i>{{ $item->matching_line }} линия</i> @endif
+                                            </td>
                                             <td class="txt-oflo">@if($item->package_id != 0) {{ \App\Models\Package::find($item->package_id)->title }} @endif</td>
                                             <td>{{ $item->card_number }}</td>
                                             <td class="txt-oflo">{{ $item->created_at }}</td>

@@ -7,7 +7,8 @@
                     <h3 class="text-white box m-b-0"><i class="ti-wallet"></i></h3></div>
                 <div class="align-self-center m-l-20">
                     <h3 class="m-b-0 text-info-custom">{{ number_format($balance, 0, '', ' ') }}$</h3>
-                    <h5 class="text-muted m-b-0">Доступная сумма</h5></div>
+                    <h6 class="text-muted m-b-0">Доступная для вывода сумма</h6>
+                </div>
             </div>
         </div>
     </div>
@@ -18,7 +19,8 @@
                     <h3 class="text-white box m-b-0"><i class="ti-wallet"></i></h3></div>
                 <div class="align-self-center m-l-20">
                     <h3 class="m-b-0 text-primary">{{ number_format($week, 0, '', ' ') }}$</h3>
-                    <h5 class="text-muted m-b-0">Еженедельная  выплата</h5></div>
+                    <h6 class="text-muted m-b-0">Еженедельная  выплата</h6>
+                </div>
             </div>
         </div>
     </div>
@@ -29,7 +31,8 @@
                     <h3 class="text-white box m-b-0"><i class="ti-wallet"></i></h3></div>
                 <div class="align-self-center m-l-20">
                     <h3 class="m-b-0 text-success">{{ number_format($out, 0, '', ' ') }}$</h3>
-                    <h5 class="text-muted m-b-0">Выведено</h5></div>
+                    <h6 class="text-muted m-b-0">Выведено  за все время</h6>
+                </div>
             </div>
         </div>
     </div>
@@ -39,8 +42,9 @@
                 <div class="p-10 bg-inverse">
                     <h3 class="text-white box m-b-0"><i class="ti-wallet"></i></h3></div>
                 <div class="align-self-center m-l-20">
-                    <h3 class="m-b-0">{{ number_format($all, 0, '', ' ') }}$</h3>
-                    <h5 class="text-muted m-b-0">Оборот</h5></div>
+                    <h3 class="m-b-0">{{ number_format($shop, 0, '', ' ') }}$</h3>
+                    <h6 class="text-muted m-b-0">Личный закуп({{ \App\Facades\Hierarchy::getMonthName() }})</h6>
+                </div>
             </div>
         </div>
     </div>

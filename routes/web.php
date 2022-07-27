@@ -150,7 +150,7 @@ Route::resource('news','NewsController')->middleware("admin");
 /*
 ************************ Anything else ***********************
  */
-Route::get('bot_activation', 'AutoActivationController@bot_activation');
+//Route::get('bot_activation', 'AutoActivationController@bot_activation');
 Route::get('check_mentor', 'AutoActivationController@checkMentor');
 
 

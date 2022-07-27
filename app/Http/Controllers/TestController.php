@@ -21,31 +21,27 @@ use App\Events\Activation;
 use App\Events\ShopTurnover;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use phpDocumentor\Reflection\DocBlock\Description;
 
 class TestController extends Controller
 {
 
     public function tester()
     {
-        //Смена статуса
-        $next_status = Status::find(3);
+        $users = User::where('id','!=',1)->get();
 
-        if(!is_null($next_status)){
+        foreach ($users as $key => $item){
+            $temp = DB::table('users_tempp')->where('login',$item->id_number)->first();
+            $inviter_program = UserProgram::where('user_id',$item->id)->first();
+            $inviter_status = Status::find($inviter_program->status_id);
 
-            $pv = Hierarchy::pvCounterAll(1);
-            $next_status_pv = $next_status->pv;
-            $item_user_program = UserProgram::where('user_id',1)->first();
-            dd($item_user_program->package_id > 1);
-            if($next_status_pv <= $pv and $item_user_program->package_id > 1){
-                Hierarchy::moveNextStatus($item,$next_status->id,$item_user_program->program_id);
-                $item_user_program = UserProgram::where('user_id',$item)->first();
 
-                Notification::create([
-                    'user_id'   => $item,
-                    'type'      => 'move_status',
-                    'status_id' => $item_user_program->status_id
-                ]);
+            if(Hierarchy::pvCounterAll($item->id) != $temp->pv){
+                echo "PV:".Hierarchy::pvCounterAll($item->id)." | ".$item->name." | ID:".$item->id_number." | ".$inviter_status->title." | ".$item->created_at." Kazakhstan data<br>";
+                echo "PV:".$temp->pv."                          | ".$temp->name." | ID:".$temp->login."     | ".$temp->status."          | ".$temp->created_at." Chine data<br>";
+                echo "======================$key<br>";
             }
+
         }
     }
 
@@ -112,7 +108,16 @@ class TestController extends Controller
     }
 
 
+    public function testerExportPackage()
+    {
+        $users_tempp = DB::table('users_tempp')->get();
 
+        foreach ($users_tempp as $key => $value) {
+            DB::table('users')
+                ->where('id_number', $value->login)
+                ->update(['package_id' => $value->package]);
+        }
+    }
 
 
     public function testerExport()
