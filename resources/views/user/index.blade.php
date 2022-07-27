@@ -79,7 +79,7 @@
                                                 <b>ID</b>: {{ $item->id_number  }}
                                             </td>
                                             <td>
-                                                <b>Спонсор</b>: {{ is_null($inviter) ? '' : $inviter->name }}
+                                                <b>Спонсор</b>: {{ is_null($inviter) ? '' : $inviter->name."(".$inviter->id_number.")" }}
                                             </td>
                                             @if(Gate::allows('admin_column_pv'))
                                             <td>

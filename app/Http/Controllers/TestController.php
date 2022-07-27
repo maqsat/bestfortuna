@@ -29,20 +29,21 @@ class TestController extends Controller
     public function tester()
     {
         $users = User::where('id','!=',1)->get();
-
+        $count = 0;
         foreach ($users as $key => $item){
             $temp = DB::table('users_tempp')->where('login',$item->id_number)->first();
             $inviter_program = UserProgram::where('user_id',$item->id)->first();
             $inviter_status = Status::find($inviter_program->status_id);
 
 
-            if(Hierarchy::pvCounterAll($item->id) != $temp->pv){
+            if(Hierarchy::pvCounterAll($item->id) > $temp->pv){
+                $count++;
                 echo "PV:".Hierarchy::pvCounterAll($item->id)." | ".$item->name." | ID:".$item->id_number." | ".$inviter_status->title." | ".$item->created_at." Kazakhstan data<br>";
                 echo "PV:".$temp->pv."                          | ".$temp->name." | ID:".$temp->login."     | ".$temp->status."          | ".$temp->created_at." Chine data<br>";
-                echo "======================$key<br>";
+                echo "======================<br>";
             }
-
         }
+        echo "   $count++;";
     }
 
     public function setBots()
