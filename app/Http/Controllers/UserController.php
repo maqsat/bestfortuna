@@ -644,7 +644,7 @@ class UserController extends Controller
             ->where('status' ,4)
             ->first();
 
-        Balance::changeBalance($basket->user_id,$order->amount*0.05,'cashback',$basket->user_id,1,$user_program->package_id,$user_program->status_id,$sum_pv);
+        Balance::changeBalance($basket->user_id,$order->amount*0.2,'cashback',$basket->user_id,1,$user_program->package_id,$user_program->status_id,$sum_pv);
 
         if($sum_pv > 0) {
             $data = [];

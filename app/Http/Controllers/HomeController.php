@@ -57,13 +57,15 @@ class HomeController extends Controller
             $package = Package::find($user_program->package_id);
             $invite_list = User::whereInviterId($user->id)->whereStatus(1)->get();
             $pv_counter_all = Hierarchy::pvCounterAll($user->id);
+            $pv_accumulative=  Balance::getIncomeBalance($user->id);
             $status = Status::find($user_program->status_id);
             $next_status = Status::find($status->order+1);
             if(!is_null($next_status)){
-                $percentage = $pv_counter_all*100/$next_status->pv;
+                $percentage = $pv_accumulative*100/$next_status->pv;
             }
             else  $percentage = 100;
             $list = UserProgram::where('inviter_list','like','%,'.$user->id.',%')->count();
+
             $balance = Balance::getBalance($user->id);
 
             $not_cash_bonuses = DB::table('not_cash_bonuses')->where('user_id', $user->id)->where('status',0)->get();
@@ -81,6 +83,20 @@ class HomeController extends Controller
                 if($small_branch > $small_branch_temp) $small_branch = $small_branch_temp;
             }
 
+            $date1 = new \DateTime($user->created_at);
+            $date2 = new \DateTime();;
+            $diff = $date1->diff($date2);
+
+            $yearsInMonths = $diff->format('%r%y') * 12;
+            $months = $diff->format('%r%m');
+            $totalMonths = $yearsInMonths + $months;
+            $activation_start_date = date('Y-m-d', strtotime("+6 months", strtotime($user->created_at)));
+
+            $activation = Order::whereUserId($user->id)
+                ->whereYear('created_at', '=', date('Y'))
+                ->whereMonth('created_at', '=', date('m'))
+                ->sum('amount');
+
 
             return view('profile.home', compact(
                 'package',
@@ -95,8 +111,11 @@ class HomeController extends Controller
                 'next_status',
                 'move_status',
                 'not_cash_bonuses',
-                'small_branch'
-
+                'small_branch',
+                'pv_accumulative',
+                'totalMonths',
+                'activation_start_date',
+                'activation'
             ));
         }
         else{
