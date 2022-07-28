@@ -102,24 +102,6 @@ class UserActivated
             $item_status = Status::find($item_user_program->status_id);
             Balance::setQV($item,$package->pv,$id,$package->id,0,$item_status->id);
 
-            //Смена статуса
-            $next_status = Status::find($item_status->order+1);
-            if(!is_null($next_status)){
-                $pv = Hierarchy::pvCounterAll($item);
-                $next_status_pv = $next_status->pv;
-
-                if($next_status_pv <= $pv and $item_user_program->package_id > 1){
-                    Hierarchy::moveNextStatus($item,$next_status->id,$item_user_program->program_id);
-                    $item_user_program = UserProgram::where('user_id',$item)->first();
-
-                    Notification::create([
-                        'user_id'   => $item,
-                        'type'      => 'move_status',
-                        'status_id' => $item_user_program->status_id
-                    ]);
-                }
-            }
-
             //Реферальный и Структурный бонус
             $inviter_program = UserProgram::where('user_id',$inviter->id)->first();
             $inviter_status = Status::find($inviter_program->status_id);
@@ -159,6 +141,25 @@ class UserActivated
                 //Hierarchy::controlBonus($item, $sum);
 
             }
+
+            //Смена статуса
+            $next_status = Status::find($item_status->order+1);
+            if(!is_null($next_status)){
+                $pv = Balance::getIncomeBalance($item);
+                $next_status_pv = $next_status->pv;
+
+                if($next_status_pv <= $pv){
+                    Hierarchy::moveNextStatus($item,$next_status->id,$item_user_program->program_id);
+                    $item_user_program = UserProgram::where('user_id',$item)->first();
+
+                    Notification::create([
+                        'user_id'   => $item,
+                        'type'      => 'move_status',
+                        'status_id' => $item_user_program->status_id
+                    ]);
+                }
+            }
+
 
         }
 

@@ -66,7 +66,7 @@
                     <div class="card">
                         <div class="card-block">
                             <div class="row button-group text-center">
-                               <h2> Баланс повторной покупки - ${{ $balance }}</h2>
+                               <h2 class="m-l-20">  Оставшиеся сумма активизации - ${{ $balance }}</h2>
                             </div>
                         </div>
                     </div>

@@ -58,7 +58,7 @@
                             {{--<li><a href="/userorders">Мои заказы</a></li>--}}
                             <li><a href="/basket">Корзина</a></li>
                             <li><a href="/story-store">Покупки</a></li>
-                            <li><a href="/activation-store">История Активации</a></li>
+                            <li><a href="/activation-store">Календарь активизации</a></li>
                         </ul>
                     </li>
                     <li>

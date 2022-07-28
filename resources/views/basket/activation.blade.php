@@ -11,7 +11,7 @@
             <!-- ============================================================== -->
             <div class="row page-titles">
                 <div class="col-md-6 col-8 align-self-center">
-                    <h3 class="text-themecolor m-b-0 m-t-0">История активации</h3>
+                    <h3 class="text-themecolor m-b-0 m-t-0">Календарь активизации</h3>
                 </div>
             </div>
             <!-- ============================================================== -->
@@ -21,51 +21,24 @@
             <!-- Start Page Content -->
             <!-- ============================================================== -->
             <div class="row">
-                <div class="col-lg-12">
-                    <div class="card">
-                        <div class="card-block">
-                            <div class="table-responsive">
-                                <table class="table color-table success-table">
-                                    <thead>
-                                    <tr>
-                                        <th>#</th>
-                                        <th>Месяц</th>
-                                        <th>Сумма покупки</th>
-                                        <th>Сумма активации</th>
-                                        <th>Статус активации</th>
-                                    </tr>
-                                    </thead>
-                                    <tbody>
-                                    @foreach($data as $key => $item)
-                                        <tr>
-                                            <td>{{ $key+1 }}</td>
-                                            <td>{{ $item['month'] }}</td>
-                                            <?php  ?>
-                                            <td>{{ $item['cost'] }}$</td>
-                                            <td>{{ $item['activation'] }}$</td>
-                                            <td>
-                                                @if($item['cost'] >= $item['activation'] )
-                                                    <h5>Активирован<span class="pull-right">100%</span></h5>
-                                                    <div class="progress ">
-                                                        <div class="progress-bar bg-success wow animated progress-animated" style="width: 100%; height:6px;" role="progressbar"> <span class="sr-only"></span> </div>
-                                                    </div>
-                                                @else
-                                                    <?php $percentage = round($item['cost']*100/$item['activation']) ?>
-                                                    <h5>Не активирован<span class="pull-right">{{ $percentage }}%</span> </h5>
-                                                    <div class="progress ">
-                                                        <div class="progress-bar bg-danger wow animated progress-animated" style="width: {{ $percentage }}%; height:6px;" role="progressbar"> <span class="sr-only"></span> </div>
-                                                    </div>
-                                                @endif
 
-                                            </td>
-                                        </tr>
-                                    @endforeach
-                                    </tbody>
-                                </table>
+                @for($i = 0; $i < 12;$i++)
+                    @php
+                        $activation = \App\Models\Order::whereUserId(Auth::user()->id)
+                            ->whereYear('created_at', '=', date('Y'))
+                            ->whereMonth('created_at', '=', $i+1)
+                            ->sum('amount')
+                    @endphp
+                    <div class="col-md-6 col-lg-3 col-xlg-3">
+                        <div class="card card-inverse @if($activation >= 20) card-success @else @if($i+1 > date('n')) card-warning @else card-danger  @endif @endif">
+                            <div class="box text-center">
+                                <h1 class="font-light text-white">{{ $activation }} BM</h1>
+                                <h6 class="text-white">{{ \App\Facades\Hierarchy::getMonthNameById($i) }}</h6>
                             </div>
                         </div>
                     </div>
-                </div>
+                @endfor
+
             </div>
         </div>
         <!-- ============================================================== -->

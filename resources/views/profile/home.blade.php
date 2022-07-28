@@ -46,6 +46,7 @@
                                             <th>Пакет</th>
                                             <th>Статус</th>
                                             <th>Товарооборот</th>
+                                            <th>Накопительный бонус</th>
                                             <th>Баланс</th>
                                         </tr>
                                         </thead>
@@ -71,6 +72,7 @@
                                             </td>
                                             <td>{{ $status->title }}</td>
                                             <td>{{ $pv_counter_all }} BM</td>
+                                            <td>{{ $pv_accumulative }} BM</td>
                                             <td>${{ $balance }}</td>
                                         </tr>
                                         </tbody>
@@ -105,7 +107,7 @@
                                     </div>
                                 </div>
                                 <div class="col-lg-8 col-xlg-8 col-md-8">
-                                    <h5 class="m-t-30"><small class="text-muted">осталось до </small><span class="pull-right">{{ $next_status->title }} </span></h5>
+                                    <h5 class="m-t-30"><small class="text-muted">осталось до </small><span class="pull-right">{{ $next_status->title }}({{$next_status->pv}}BM) </span></h5>
                                     <div class="progress">
                                         <div class="progress-bar bg-warning active progress-bar-striped" role="progressbar" style="width: {{ round($percentage) }}%; height:18px;" aria-valuenow="25" aria-valuemin="0" aria-valuemax="100">{{ round($percentage) }}%</div>
                                     </div>
@@ -163,11 +165,65 @@
                 </div>
             </div>
 
-            @if(!is_null($package))
-
-
-
+            <!-- Row -->
             <div class="row">
+                <div class="col-lg-12 col-xlg-12 col-md-12">
+                    <div class="card">
+                        <div class="card-block">
+                            <h3 class="card-title">Статус активизаций</h3>
+                            <div class="row">
+                                <!-- Column -->
+                                @if($totalMonths < 7)
+                                    <div class="col-lg-12 col-xlg-12 col-md-12">
+                                        <div class="alert alert-success">
+                                            <button type="button" class="close" data-dismiss="alert" aria-label="Close"></button>
+                                            <h3 class="text-success"><i class="fa fa-check-circle"></i> У вас <b>стартовый период</b> до {{ $activation_start_date }} без ежемесячной активации</h3>
+                                        </div>
+                                    </div>
+                                @else
+                                    <div class="col-lg-3 col-xlg-3 col-md-3">
+                                        <div class="box bg-info text-center">
+                                            <h1 class="font-light text-white">{{ date('t')-date('d') }}</h1>
+                                            <h6 class="text-white">осталось до окончание месяца(день)</h6>
+                                        </div>
+                                    </div>
+                                    <div class="col-lg-3 col-xlg-3 col-md-3">
+                                        <div class="card card-primary card-inverse">
+                                            <div class="box text-center">
+                                                <h1 class="font-light text-white">@if($activation >= 20) 0 @else {{ 20-$activation }} @endif</h1>
+                                                <h6 class="text-white">Оставшиеся сумма личного закупа(BM)</h6>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    @if($activation >= 20)
+                                     <div class="col-lg-6 col-xlg-6 col-md-6">
+                                        <div class="card card-inverse card-success">
+                                            <div class="box text-center">
+                                                <h1 class="font-light text-white"><i class="mdi mdi-checkbox-marked-circle"></i></h1>
+                                                <h6 class="text-white">Вы сделали активизацию</h6>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    @else
+                                    <div class="col-lg-6 col-xlg-6 col-md-6">
+                                        <div class="card card-inverse card-danger">
+                                            <div class="box text-center">
+                                                <h1 class="font-light text-white"><i class="mdi mdi-close-circle"></i></h1>
+                                                <h6 class="text-white">Вы не сделали активизацию, <a href="/main-store" style="color: #cfcaca;">перейти на активизацию</a></h6>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    @endif
+                                @endif
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+
+            @if(!is_null($package))
+                <div class="row">
                 <div class="col-12">
                     <div class="card">
                         <div class="card-block">
