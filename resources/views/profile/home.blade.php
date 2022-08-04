@@ -153,7 +153,7 @@
                                     <div class="card card-primary card-inverse">
                                         <div class="box text-center">
                                             <h1 class="font-light text-white">0</h1>
-                                            <h6 class="text-white">Обьем личного закупа(BM)</h6>
+                                            <h6 class="text-white">Товарооборот личного закупа(BM)</h6>
                                         </div>
                                     </div>
                                 </div>

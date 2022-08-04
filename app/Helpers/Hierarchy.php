@@ -57,6 +57,18 @@ class Hierarchy {
         return Counter::where('user_id',$user_id)->where('position',$position)->whereBetween('created_at', [Carbon::now()->startOfWeek(), Carbon::now()->endOfWeek()])->sum('sum');
     }
 
+    /**
+     * @param $user_id
+     * @return Counter
+     */
+    public function pvPrevMonthCounter($user_id)
+    {
+        $date = new \DateTime();
+        $date->modify('-1 month');
+
+        return Counter::where('user_id',$user_id)->whereMonth('created_at', $date->format('m'))->sum('sum');
+    }
+
 
     /**
      * @param $user_id
@@ -499,7 +511,7 @@ class Hierarchy {
 
                 $small_branch = 0;
                 foreach ($users as $user){
-                    $small_branch_temp = $this->pvCounterAll($user->id);
+                    $small_branch_temp = $this->pvPrevMonthCounter($user->id);
 
                     if($small_branch > $small_branch_temp) $small_branch = $small_branch_temp;
                 }
@@ -508,7 +520,9 @@ class Hierarchy {
                     if($small_branch >= $list_small_branch[$item_user_program->status_id]){
 
                         $sum = $sum*$list_percentage[$key]/100;
-                        Balance::changeBalance($item,   $sum, 'matching_bonus', $id,     $item_user_program->program_id,$item_user_program->package_id, $item_user_program->status_id,0,0,$key+1);
+                        //Balance::changeBalance($item,   $sum, 'matching_bonus', $id,     $item_user_program->program_id,$item_user_program->package_id, $item_user_program->status_id,0,0,$key+1);
+
+
 
                     }
 

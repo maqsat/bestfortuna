@@ -26,32 +26,26 @@ use phpDocumentor\Reflection\DocBlock\Description;
 class TestController extends Controller
 {
 
-    public function testerNew()
+    public function tester()
     {
-        $users = User::where('id','!=',1)->get();
-        $count = 0;
-        foreach ($users as $key => $item){
-            $temp = DB::table('users_tempp')->where('login',$item->id_number)->first();
-            $inviter_program = UserProgram::where('user_id',$item->id)->first();
-            $package = Package::find($item->package_id);
-            $count++;
 
-            if($temp->status == 'Партнёр') {
-                $temp->status = 'Консультант';
-            }
+        $users = UserProgram::where('status_id','>=',2)->get();
 
-            DB::table('user_programs')
-                ->where('user_id', $item->id)
-                ->update(['status_id' => Status::where('title',$temp->status)->first()->id]);
+        foreach ($users as $item){
+            $date = new \DateTime();
+            $date->modify('-1 month');
 
+            $sum = Processing::whereUserId($item->user_id)->where('status', 'turnover_bonus')->whereMonth('created_at', $date->format('m'))->sum('sum');
+
+            echo $item->status_id." => ".Hierarchy::pvPrevMonthCounter($item->user_id)."PV => ".$sum."$<br>";
 
         }
-        echo "   $count++;";
+
     }
 
 
 
-    public function tester()
+    public function testerOld()
     {
         $users = User::where('id','!=',1)->get();
         $count = 0;
