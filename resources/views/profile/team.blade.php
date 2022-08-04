@@ -73,7 +73,8 @@
                                     <tr>
                                         <th>ID #</th>
                                         <th>ФИО</th>
-                                        <th>BM</th>
+                                        <th>Товарооборот</th>
+                                        <th>Накопительный бонус</th>
                                         <th>Статус</th>
                                         <th>Пакет</th>
                                         <th>Номер</th>
@@ -89,7 +90,8 @@
                                         <tr>
                                             <td class="text-center">{{ \App\User::find($item->user_id)->id_number }}</td>
                                             <td><span class="text-success">{{ \App\User::find($item->user_id)->name }}</span></td>
-                                            <td><span class="text-success">{{ \App\Facades\Hierarchy::pvCounterAll($item->user_id) }}</span></td>
+                                            <td><span class="text-success">{{ \App\Facades\Hierarchy::pvCounterAll($item->id) }}</span></td>
+                                            <td><span class="text-success">{{ \App\Facades\Balance::getIncomeBalance($item->id) }}</span></td>
                                             <td class="txt-oflo">{{ \App\Models\Status::find($item->status_id)->title }}</td>
                                             <td class="txt-oflo">@if($item->package_id != 0)  {{ \App\Models\Package::find($item->package_id)->title }} @else Без пакета @endif</td>
                                             <td><span class="text-success">{{ \App\User::find($item->user_id)->number }}</span></td>

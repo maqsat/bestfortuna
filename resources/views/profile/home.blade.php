@@ -144,7 +144,7 @@
                                     <div class="card card-inverse card-info">
                                         <div class="box bg-info text-center">
                                             <h1 class="font-light text-white">{{ $small_branch }}</h1>
-                                            <h6 class="text-white">Обьем (BM) в малой ветке</h6>
+                                            <h6 class="text-white">Товарооборот (BM) в малой ветке</h6>
                                         </div>
                                     </div>
                                 </div>

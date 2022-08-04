@@ -76,7 +76,12 @@ class HomeController extends Controller
                 ->first();
 
             $users = User::where('inviter_id',$user->id)->get();
+
             $small_branch = 0;
+            if(!is_null($users)){
+                $small_branch = Hierarchy::pvCounterAll(User::where('inviter_id',$user->id)->first()->id);
+            }
+
             foreach ($users as $item){
                 $small_branch_temp = Hierarchy::pvCounterAll($item->id);
 

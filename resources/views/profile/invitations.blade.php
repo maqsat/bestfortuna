@@ -11,7 +11,7 @@
             <!-- ============================================================== -->
             <div class="row page-titles">
                 <div class="col-md-6 col-8 align-self-center">
-                    <h3 class="text-themecolor m-b-0 m-t-0">Лично приглашенные</h3>
+                    <h3 class="text-themecolor m-b-0 m-t-0">Лично приглашенные - {{ Auth::user()->name }}(Ваш ID:  {{Auth::user()->id_number}})</h3>
                 </div>
                 <div class="col-md-6 col-4 align-self-center">
                 </div>
@@ -35,7 +35,8 @@
                                         <th>ID #</th>
                                         <th>ФИО</th>
                                         <th>Статус</th>
-                                        <th>BM</th>
+                                        <th>Товарооборот</th>
+                                        <th>Накопительный бонус</th>
                                         <th>Пакет</th>
                                         <th>Номер</th>
                                         <th>Почта</th>
@@ -50,6 +51,7 @@
                                             <td><span class="text-success">{{ $item->name }}</span></td>
                                             <td class="txt-oflo">{{ \App\Models\Status::find(\App\Models\UserProgram::whereUserId($item->id)->first()->status_id)->title }}</td>
                                             <td><span class="text-success">{{ \App\Facades\Hierarchy::pvCounterAll($item->id) }}</span></td>
+                                            <td><span class="text-success">{{ \App\Facades\Balance::getIncomeBalance($item->id) }}</span></td>
                                             <td class="txt-oflo">@if($item->package_id != 0)  {{ \App\Models\Package::find($item->package_id)->title }} @else Без пакета @endif</td>
                                             <td><span class="text-success">{{ $item->number }}</span></td>
                                             <td><span class="text-success">{{ $item->email }}</span></td>
