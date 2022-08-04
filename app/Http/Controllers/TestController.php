@@ -26,7 +26,7 @@ use phpDocumentor\Reflection\DocBlock\Description;
 class TestController extends Controller
 {
 
-    public function tester()
+    public function testerNew()
     {
         $users = User::where('id','!=',1)->get();
         $count = 0;
@@ -51,7 +51,7 @@ class TestController extends Controller
 
 
 
-    public function testerOld()
+    public function tester()
     {
         $users = User::where('id','!=',1)->get();
         $count = 0;
