@@ -13,7 +13,7 @@
                             <div class="alert alert-warning">
                                 <h3 class="text-warning"><i class="fa fa-exclamation-triangle"></i> Квитанция находится на проверке</h3>
                                 Статус модерации:  Квитанция отправлено на проверку <br>
-                                Сумма оплаты: ${{ $orders->amount }} <br>
+                                Сумма оплаты: {{ $orders->amount }} {{ $currency_symbol }}<br>
                                 @if($orders->package_id != 0)
                                     Выбранный пакет: {{ \App\Models\Package::find($orders->package_id)->title }} <br>
                                 @endif
@@ -23,7 +23,7 @@
                             <div class="alert alert-danger">
                                 <h3 class="text-danger"><i class="fa fa-exclamation-triangle"></i> Квитанция отклонена</h3>
                                 Статус модерации:  Фейковая квитанция <br>
-                                Сумма оплаты: ${{ $orders->amount }} <br>
+                                Сумма оплаты: {{ $orders->amount }}  {{ $currency_symbol }}<br>
                                 @if($orders->package_id != 0)
                                     Выбранный пакет: {{ \App\Models\Package::find($orders->package_id)->title }} <br>
                                 @endif

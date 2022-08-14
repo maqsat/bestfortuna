@@ -763,7 +763,7 @@ class UserController extends Controller
         if($request->step == 0){
             $validator = Validator::make($request->all(), [
                 'program_id'    => ['required','integer', 'exists:programs,id'],
-                'inviter_id'    => ['required', 'string', 'max:255',"sponsor_in_program:$program_id", 'exists:users,id'],
+                'inviter_id'    => ['required', 'string', 'max:255',"sponsor_in_program:$program_id", 'exists:users,id_number'],
                 //'sponsor_id'    => ['required', 'string', 'max:255',"sponsor_in_program:$program_id", "sponsor_is_on_this_inviter:$inviter_id" ,'exists:users,id'],
                 //'position'      => ['required', "is_exist_position_sponsor:$sponsor_id"],
                 ],[

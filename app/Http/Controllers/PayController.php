@@ -72,6 +72,16 @@ class PayController extends Controller
 
     public function payPrepare(Request $request)
     {
+
+        if(Auth::user()->country_id == 1){
+            $currency_symbol = '₸';
+            $current_currency = env('DOLLAR_COURSE');
+        }
+        else{
+            $currency_symbol = '$';
+            $current_currency = 1;
+        }
+
         $package_id = 0;
         if (isset($request->upgrade)){
             $package = Package::find($request->package);
@@ -154,13 +164,14 @@ class PayController extends Controller
         }
 
 
+
         //User::find(Auth::user()->id)->update(['package_id' => $package_id]);
 
         $order_id = $order->id;
         $message = "Вы собираетесь оплатить $cost$";
 
         if($request->type == "manual"){
-            return view('processing.manual', compact('order', 'cost'));
+            return view('processing.manual', compact('order', 'cost','currency_symbol'));
         }
         if($request->type == "paypost"){
             $payment_webhook = env('APP_URL', false) . "/pay-processing/$order_id/";
@@ -208,7 +219,7 @@ class PayController extends Controller
             $arHash[] = $m_key;
             $sign = strtoupper(hash('sha256', implode(':', $arHash)));
 
-            return view('processing.payeer', compact('m_shop','m_orderid','m_amount','m_curr','m_desc','m_key','sign','message','cost'));
+            return view('processing.payeer', compact('m_shop','m_orderid','m_amount','m_curr','m_desc','m_key','sign','message','cost','currency_symbol'));
         }
         if($request->type == "indigo"){
 

@@ -33,7 +33,7 @@
                                                     <label for="inviter_id">Для обработки вашего заказа, введите, пожалуйста, ID спонсора(дистрибьютора) :</label>{{--{{ app('request')->input('inviter_id') }}--}}
                                                     @if(!is_null($user))
                                                         <input type="text" class="form-control required" value="{{ $user->name }} - {{ $user->number }}" disabled>
-                                                        <input type="hidden" class="form-control required" id="inviter_id" name="inviter_id" value="{{ $user->id }}">
+                                                        <input type="hidden" class="form-control required" id="inviter_id" name="inviter_id" value="{{ $user->id_number }}">
                                                     @else
                                                         <input type="number" class="form-control required"  id="inviter_id" name="inviter_id" value="">
                                                     @endif

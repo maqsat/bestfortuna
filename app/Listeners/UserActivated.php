@@ -66,13 +66,14 @@ class UserActivated
 
 
         User::whereId($event->user->id)->update([
-            'status' => 1,
+            'status'    => 1,
+            'id_number' => $event->user->id.date('Y').$inviter->id,
         ]);
 
         $list = Hierarchy::getSponsorsList($event->user->id,'').',';
         $inviter_list = Hierarchy::getInviterList($event->user->id,'').',';
 
-        Balance::changeBalance($id,$package_cost,'register',$event->user->id,$event->user->program_id,$package_id,0);
+        Balance::changeBalance($id,$package_cost,'register',$event->user->id,$event->user->program_id,$package_id,0,$package->pv);
 
         $inviter_program = UserProgram::where('user_id',$inviter->id)->first();
         $inviter_status = Status::find($inviter_program->status_id);
@@ -85,7 +86,7 @@ class UserActivated
                 'inviter_list' => $inviter_list,
                 'program_id' => $event->user->program_id,
                 'package_id' => $package_id,
-                'level'   => $inviter_program->level
+                'level'   => $inviter_program->level + 1
             ]
         );
 
