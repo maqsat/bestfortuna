@@ -74,6 +74,9 @@ class UserActivated
 
         Balance::changeBalance($id,$package_cost,'register',$event->user->id,$event->user->program_id,$package_id,0);
 
+        $inviter_program = UserProgram::where('user_id',$inviter->id)->first();
+        $inviter_status = Status::find($inviter_program->status_id);
+
         UserProgram::insert(
             [
                 'user_id' => $event->user->id,
@@ -82,6 +85,7 @@ class UserActivated
                 'inviter_list' => $inviter_list,
                 'program_id' => $event->user->program_id,
                 'package_id' => $package_id,
+                'level'   => $inviter_program->level
             ]
         );
 
@@ -103,8 +107,6 @@ class UserActivated
             Balance::setQV($item,$package->pv,$id,$package->id,0,$item_status->id);
 
             //Реферальный и Структурный бонус
-            $inviter_program = UserProgram::where('user_id',$inviter->id)->first();
-            $inviter_status = Status::find($inviter_program->status_id);
 
             if($key < 5){
                 switch ($key) {

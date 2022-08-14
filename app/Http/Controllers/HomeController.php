@@ -78,7 +78,7 @@ class HomeController extends Controller
             $users = User::where('inviter_id',$user->id)->get();
 
             $small_branch = 0;
-            if(!is_null($users)){
+            if(count($users)){
                 $small_branch = Hierarchy::pvCounterAll(User::where('inviter_id',$user->id)->first()->id);
             }
 

@@ -26,6 +26,11 @@ use phpDocumentor\Reflection\DocBlock\Description;
 class TestController extends Controller
 {
 
+    public function testerOld1()
+    {
+
+    }
+
     public function tester()
     {
 
@@ -35,10 +40,20 @@ class TestController extends Controller
             $date = new \DateTime();
             $date->modify('-1 month');
 
-            $sum = Processing::whereUserId($item->user_id)->where('status', 'turnover_bonus')->whereMonth('created_at', $date->format('m'))->sum('sum');
+            $sums = Processing::whereUserId($item->user_id)->where('status', 'turnover_bonus')->whereMonth('created_at', $date->format('m'))->get();
+            dd($sums);
+            foreach ($sums as $sum){
 
-            echo $item->status_id." => ".Hierarchy::pvPrevMonthCounter($item->user_id)."PV => ".$sum."$<br>";
+                $sum_user_program = UserProgram::whereUserId($sum->user_id)->first();
+                $inviter_list_for_referral = explode(',',trim($sum_user_program->inviter_list,','));
+                $inviter_list_for_referral = array_slice($inviter_list_for_referral, 0, 5);
 
+
+                echo $item->status_id." => ".Hierarchy::pvPrevMonthCounter($item->user_id)."PV => ".$sum->sum."$<br>";
+            }
+
+
+            echo '-------------------------<br>';
         }
 
     }

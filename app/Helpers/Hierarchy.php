@@ -44,7 +44,7 @@ class Hierarchy {
      */
     public function pvCounterAll($user_id)
     {
-        return Counter::where('user_id',$user_id)->sum('sum');
+        return Counter::where('user_id',$user_id)->whereBetween('created_at', [Carbon::now()->startOfMonth(), Carbon::now()->endOfMonth()])->sum('sum');
     }
 
     /**
