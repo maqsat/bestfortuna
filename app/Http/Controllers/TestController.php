@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 
 use App\Facades\Balance;
+use App\Facades\General;
 use App\Models\Counter;
 use App\Models\Order;
 use App\Models\UserProgram;
@@ -26,34 +27,42 @@ use phpDocumentor\Reflection\DocBlock\Description;
 class TestController extends Controller
 {
 
-    public function testerOld1()
-    {
-
-    }
-
     public function tester()
     {
 
         $users = UserProgram::where('status_id','>=',2)->get();
+        $date = new \DateTime();
+        //$date->modify('-1 month');
+
+        $list_percentage = array( 1 =>50,  2 =>20,  3 =>10,  4 =>5,  5 =>5 );
 
         foreach ($users as $item){
-            $date = new \DateTime();
-            $date->modify('-1 month');
+            echo "$item->id -------------------------<br>";
 
-            $sums = Processing::whereUserId($item->user_id)->where('status', 'turnover_bonus')->whereMonth('created_at', $date->format('m'))->get();
-            dd($sums);
-            foreach ($sums as $sum){
+            $item_status = Status::find($item->status_id);
 
-                $sum_user_program = UserProgram::whereUserId($sum->user_id)->first();
-                $inviter_list_for_referral = explode(',',trim($sum_user_program->inviter_list,','));
-                $inviter_list_for_referral = array_slice($inviter_list_for_referral, 0, 5);
+            if(Hierarchy::getSmallBranchPv($item->id) >= $item_status->matching_bonus){
 
+                for ($i = 1; $i <= $item_status->depth_line; $i++){
+                    $sums = 0;
+                    $level_users = UserProgram::where('inviter_list','like','%,'.$item->id.',%')->whereLevel($item->level+$i)->get();
 
-                echo $item->status_id." => ".Hierarchy::pvPrevMonthCounter($item->user_id)."PV => ".$sum->sum."$<br>";
+                    foreach ($level_users as $item_user){
+                        $sums += Processing::whereUserId($item_user->user_id)
+                            ->where('status', 'turnover_bonus')
+                            ->whereBetween('created_at', [Carbon::now()->startOfMonth(), Carbon::now()->endOfMonth()])
+                            ->sum('sum');
+                    }
+
+                    $sum = $sums*$list_percentage[$i]/100;
+
+                    if($sum > 0)
+                        Balance::changeBalance($item->id,   $sum, 'matching_bonus', $item->id, $item->program_id,$item->package_id, $item->status_id, $sums,0,$i);
+
+                }
+
             }
 
-
-            echo '-------------------------<br>';
         }
 
     }

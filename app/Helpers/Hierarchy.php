@@ -3,9 +3,7 @@
 namespace App\Helpers;
 
 use App\Events\ShopTurnover;
-use App\Models\Order;
-use App\Models\Package;
-use App\Models\Revitalization;
+
 use DB;
 use Auth;
 use App\User;
@@ -13,12 +11,16 @@ use Carbon\Carbon;
 use App\Models\Basket;
 use App\Models\Status;
 use App\Facades\Balance;
+
 use App\Models\Program;
 use App\Models\Counter;
 use App\Models\Processing;
 use App\Models\Notification;
 use App\Models\UserProgram;
 use App\Models\UserSubscriber;
+use App\Models\Order;
+use App\Models\Package;
+use App\Models\Revitalization;
 use Illuminate\Support\Facades\Storage;
 
 class Hierarchy {
@@ -532,169 +534,6 @@ class Hierarchy {
         }
     }
 
-
-
-    /*************************** OLD METHODS ****************************/
-
-    /**
-     * @param $sponsor
-     * @param $step
-     * @param $program_id
-     */
-    public function sponsor_advance($sponsor,$step,$program_id)//6 1 1
-    {
-        $sponsor_users = User::join('user_programs','users.id','=','user_programs.user_id')
-            ->where('users.sponsor_id', $sponsor)
-            ->where('users.program_id',$program_id)
-            ->where('users.id','!=',$program_id)
-            ->where('user_programs.step','>=',$step+1)
-            /*->where('user_programs.is_done',0)*/
-            ->get(['users.*']);
-
-        $program = Program::where('id',$program_id)->first();
-
-        if(count($sponsor_users) == $program->tree){
-            $current_user_sponsor = User::where('id', $sponsor)->first();
-
-            $user_program = UserProgram::where('user_id',$sponsor)->first();
-            $bonus_steps = explode(',', $program->step_bonus);
-
-            $end_step = $program->steps;
-
-            if($user_program->step == $end_step) {
-                $this->setIsDone($current_user_sponsor->id,$end_step,$program_id);
-                Balance::changeBalance($current_user_sponsor->id,$bonus_steps[$step],'step_bonus',0,$program_id);
-
-                for ($i = 0; $i < $program->tree; $i++){
-                    $this->writeUserSubscribers($current_user_sponsor->id,$sponsor_users[$i]->id,$step+1,$program_id);
-                }
-
-            }
-            else {
-                $this->moveNextStep($current_user_sponsor->id,$step+1,$program_id);
-                Balance::changeBalance($current_user_sponsor->id,$bonus_steps[$step],'step_bonus',0,$program_id);
-
-                for ($i = 0; $i < $program->tree; $i++){
-                    $this->writeUserSubscribers($current_user_sponsor->id,$sponsor_users[$i]->id,$step+1,$program_id);
-                }
-
-                $this->sponsor_advance($current_user_sponsor->sponsor_id,$step+1,$program_id);
-            }
-        }
-    }
-
-    public function getPositionUsers($user_id, $action, $position)
-    {
-        $query = User::join('user_programs','users.id','=','user_programs.user_id');
-
-        $position_user = User::where('sponsor_id',$user_id)
-            ->where('position',$position)
-            ->where('users.status',1)
-            ->first();
-
-        if (!is_null($position_user)){
-            $query = $query->where('users.status',1)
-                ->where('user_programs.list','like','%'.$position_user->id.','.$user_id.'%');
-
-            if($action == 'count'){
-                return $query->count()+1;
-            }
-            elseif($action == 'first'){
-                return $query->first();
-            }
-            else{
-                $query = $query->get(['users.*']);
-                $query[] = $position_user;
-
-                return $query;
-            }
-        }
-        else return 0;
-    }
-
-    public function getSubscriberUsers($author_id,$subscriber_id,$program_id)
-    {
-        return UserSubscriber::where('author_id',$author_id)
-            ->where('subscriber_id',$subscriber_id)
-            ->where('program_id',$program_id)
-            ->count();
-    }
-
-    /**
-     * @param $program_id
-     * @param $step
-     * @param $user_id
-     */
-    public function setIsDone($user_id,$step,$program_id)
-    {
-        DB::table('user_programs')
-            ->where('program_id',$program_id)
-            ->where('step',$step)
-            ->where('is_done',0)
-            ->where('user_id', $user_id)
-            ->update(['is_done' => 1]);
-    }
-
-    public function followersCount($user_id)
-    {
-        $count =  DB::table('user_programs')
-            ->where('sponsors_list', 'like', '%,' . $user_id . ',%')
-            ->orWhere('sponsors_list', 'like', '%,' . $user_id)
-            ->orWhere('sponsors_list', 'like', $user_id . ',%')
-            ->count();
-
-        return $count;
-    }
-
-    /**
-     * @param $user_id
-     * @param $stage
-     * @param $step
-     */
-    public function moveNextStep($user_id,$step,$program_id)
-    {
-        DB::table('user_programs')
-            ->where('program_id',$program_id)
-            ->where('step',$step)
-            ->where('is_done',0)
-            ->where('user_id', $user_id)
-            ->update(['step' => $step + 1]);
-
-        //set balance
-    }
-
-    /**
-     * @param $author_id
-     * @param $subscriber_id
-     * @param $stage
-     * @param $step
-     */
-    public function writeUserSubscribers($author_id,$follower_id,$step,$program_id)
-    {
-        DB::table('user_subscribers')->insert([
-            'author_id'   => $author_id,
-            'subscriber_id' => $follower_id,
-            'program_id'  => $program_id,
-            'step'        => $step,
-            'created_at' => Carbon::now()->format('Y-m-d H:i:s'),
-        ]);
-    }
-
-    /**
-     * @param $program_id
-     * @param $step
-     * @param $user_id
-     */
-    public function moveNextProgram($program_id,$step,$user_id)
-    {
-        DB::table('user_programs')
-            ->where('program_id',$program_id)
-            ->where('step',$step)
-            ->where('is_done',0)
-            ->where('user_id', $user_id)
-            ->update(['step' => 1,'program_id' => $program_id + 1]);
-    }
-
     public function deleteNonActivations()
     {
         $users = User::whereStatus('0')->whereBetween('created_at', [Carbon::now()->subDay(2),Carbon::now()->subDay(1)])->get();
@@ -703,98 +542,6 @@ class Hierarchy {
             $result = UserProgram::where('user_id',$item->id)->first();
             if(is_null($result))  $item->delete();
         }
-    }
-
-    public function sponsorUsersInFirstStep($sponsor_id,$program_id)
-    {
-        return User::join('user_programs','users.id','=','user_programs.user_id')
-            ->where('users.sponsor_id', $sponsor_id)
-            ->where('users.program_id',$program_id)
-            ->where('users.status',1)
-            ->get(['users.*']);
-    }
-
-    public function getUserSubscribersInThisStatus($user_id,$program_id)
-    {
-        $userProgram = UserProgram::whereUserId($user_id)->first();
-
-        if($userProgram->status_id == 1) {
-            return User::where('mentor_id',$user_id)
-                ->where('status',1)
-                ->where('program_id',$program_id)
-                ->count();
-        }
-        else{
-            return UserProgram::where('list','like','%,'.$user_id.',%')->where('status_id',$userProgram->status_id)->count();
-
-        }
-    }
-
-    public function getUserSubscribersInThisStatusPersonally($user_id,$program_id)
-    {
-        $userProgram = UserProgram::whereUserId($user_id)->first();
-
-            return User::join('user_programs','users.id','=','user_programs.user_id')
-                ->where('users.mentor_id',$user_id)
-                ->where('users.status',1)
-                ->where('user_programs.status_id', '>=',$userProgram->status_id)
-                ->where('users.program_id',$program_id)
-                ->count();
-    }
-
-    public function getPersonallyUsers($user_id)
-    {
-        return User::where('mentor_id',$user_id)->count();
-    }
-
-    public function qvCounterDeleted($user_id,$position)
-    {
-        $month = date('m');
-        return Counter::where('user_id',$user_id)->where('position',$position)
-            ->where(function($query) use ($month){
-                $query->whereMonth('created_at',$month)
-                     ->orWhereMonth('created_at',1);
-            })
-            ->sum('sum');
-    }
-
-    public function qvCounterByMonth($user_id,$position,$month)
-    {
-        return Counter::where('user_id',$user_id)->where('position',$position)
-            ->where(function($query) use ($month){
-                $query->whereMonth('created_at',$month)
-                    ->orWhereMonth('created_at',1);
-            })
-            ->sum('sum');
-    }
-
-    public function qvCounterForTree($user_id,$position)
-    {
-        $month = date('m');
-        return Counter::where('user_id',$user_id)
-            ->where(function($query) use ($month){
-                $query->whereMonth('created_at',$month)
-                    ->orWhereMonth('created_at',1);
-            })
-            ->sum('sum');
-    }
-
-    public function qvCounterAllDeleted($user_id)
-    {
-        $month = date('m');
-        return Counter::where('user_id',$user_id)
-            ->where(function($query) use ($month){
-                $query->whereMonth('created_at',$month)
-                    ->orWhereMonth('created_at',1);
-            })
-            ->sum('sum');
-    }
-
-    public function qvCounterAllLastMonth($user_id)
-    {
-        $month = date('m')-1;
-        //$month = 7;
-        return Counter::where('user_id',$user_id)->whereMonth('created_at',$month)->sum('sum');
     }
 
     public function activationCheck()
@@ -827,6 +574,66 @@ class Hierarchy {
 
         return $sum >= $checker_sum;
     }
+
+    public function getSmallBranchPv($user_id)
+    {
+        $users = User::where('inviter_id',$user_id)->get();
+
+        $small_branch = 0;
+        if(count($users)){
+            $small_branch = $this->pvCounterAll(User::where('inviter_id',$user_id)->first()->id);
+        }
+
+        foreach ($users as $item){
+            $small_branch_temp = $this->pvCounterAll($item->id);
+
+            if($small_branch > $small_branch_temp) $small_branch = $small_branch_temp;
+        }
+
+        return $small_branch;
+    }
+
+
+    public function cumulativeCalculation()
+    {
+        $users = UserProgram::where('status_id','>=',2)->get();
+        $date = new \DateTime();
+        $date->modify('-1 month');
+        $list_percentage = array( 1 =>50,  2 =>20,  3 =>10,  4 =>5,  5 =>5 );
+
+        foreach ($users as $item){
+
+            $item_status = Status::find($item->status_id);
+
+            if(\App\Facades\Hierarchy::getSmallBranchPv($item->id) >= $item_status->matching_bonus){
+
+                for ($i = 1; $i <= $item_status->depth_line; $i++){
+                    $sums = 0;
+                    $level_users = UserProgram::where('inviter_list','like','%,'.$item->id.',%')->whereLevel($item->level+$i)->get();
+
+                    foreach ($level_users as $item_user){
+                        $sums += Processing::whereUserId($item_user->user_id)
+                            ->where('status', 'turnover_bonus')
+                            ->whereBetween('created_at', [Carbon::now()->startOfMonth(), Carbon::now()->endOfMonth()])
+                            ->sum('sum');
+                    }
+
+                    $sum = $sums*$list_percentage[$i]/100;
+
+                    if($sum > 0)
+                        Balance::changeBalance($item->id,   $sum, 'matching_bonus', $item->id, $item->program_id,$item->package_id, $item->status_id, $sums,0,$i);
+
+                }
+
+            }
+
+        }
+
+    }
+
+    /*************************** OLD METHODS ****************************/
+
+
 
     public function getMonthName()
     {
@@ -869,4 +676,8 @@ class Hierarchy {
 
         return $arr[$id];
     }
+
+
+
+
 }

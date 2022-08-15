@@ -2,6 +2,8 @@
     Реферальный бонус
 @elseif($item->status == 'turnover_bonus')
     Структурный бонус
+@elseif($item->status == 'matching_bonus')
+    Кумулятивный бонус
 
 
 
@@ -11,8 +13,6 @@
     Бонус признания
 @elseif($item->status == 'quickstart_bonus')
     Быстрый старт
-@elseif($item->status == 'matching_bonus')
-    Кумулятивный бонус
 @elseif($item->status == 'request')
     Запрос на списание
 @elseif($item->status == 'register')

@@ -46,9 +46,6 @@ class HomeController extends Controller
      */
     public function index(Request $request)
     {
-        if (Auth::user()->admin == 1 && Auth::user()->role_id != 0) {
-            return redirect('/user');
-        }
 
         if(Auth::user()->status == 1){
 
@@ -75,18 +72,7 @@ class HomeController extends Controller
                 ->orderBy('created_at', 'desc')
                 ->first();
 
-            $users = User::where('inviter_id',$user->id)->get();
-
-            $small_branch = 0;
-            if(count($users)){
-                $small_branch = Hierarchy::pvCounterAll(User::where('inviter_id',$user->id)->first()->id);
-            }
-
-            foreach ($users as $item){
-                $small_branch_temp = Hierarchy::pvCounterAll($item->id);
-
-                if($small_branch > $small_branch_temp) $small_branch = $small_branch_temp;
-            }
+            $small_branch = Hierarchy::getSmallBranchPv($user->id);
 
             $date1 = new \DateTime($user->created_at);
             $date2 = new \DateTime();;
