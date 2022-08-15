@@ -544,36 +544,6 @@ class Hierarchy {
         }
     }
 
-    public function activationCheck()
-    {
-        $status = UserProgram::where('user_id',Auth::user()->id)->first();
-
-        if($status->status_id < 5) return true;
-
-        $sp_date = Notification::where('status_id','=',5)->where('user_id','=',Auth::user()->id)->first();
-        $start_activation = Carbon::createFromDate(2020, 01, 01);
-
-        if($sp_date->created_at < $start_activation) $startDate = date("Y-m-d",strtotime($start_activation));
-        else $startDate = date("Y-m-d",strtotime($sp_date->created_at));
-
-        $endDate = date('Y-m-d',strtotime(date("Y-m-d") . "+1 days"));
-
-        $sum = Order::whereBetween('updated_at',[$startDate,$endDate])
-            ->where('type','shop')
-            ->where('user_id', Auth::user()->id)
-            ->where(function($query){
-                $query->where('status',4)
-                    ->orWhere('status',6);
-            })
-            ->sum('amount');
-
-        $sum = $sum/env('DOLLAR_COURSE');
-        $endDate = date("Y-m-d");
-        $months = Balance::getMonthByRange($startDate,$endDate);
-        $checker_sum = env('ACTIVATION_COST')*count($months);
-
-        return $sum >= $checker_sum;
-    }
 
     public function getSmallBranchPv($user_id)
     {
@@ -614,7 +584,7 @@ class Hierarchy {
                     foreach ($level_users as $item_user){
                         $sums += Processing::whereUserId($item_user->user_id)
                             ->where('status', 'turnover_bonus')
-                            ->whereBetween('created_at', [Carbon::now()->startOfMonth(), Carbon::now()->endOfMonth()])
+                            ->whereBetween('created_at', [Carbon::parse($date)->startOfMonth(), Carbon::parse($date)->endOfMonth()])
                             ->sum('sum');
                     }
 
@@ -629,6 +599,46 @@ class Hierarchy {
 
         }
 
+    }
+
+
+    public function checkActivationStatus()
+    {
+
+        $users = UserProgram::all();
+
+        foreach ($users as $user){
+            $date = new \DateTime();
+            //$date->modify('-1 month');
+
+            $sum = Order::whereBetween('created_at', [Carbon::parse($date)->startOfMonth(), Carbon::parse($date)->endOfMonth()])
+                ->where('type','shop')
+                ->where('user_id', $user->id)
+                ->where(function($query){
+                    $query->where('status',4)
+                        ->orWhere('status',6);
+                })
+                ->sum('amount');
+
+            $final_sum = $sum/env('DOLLAR_COURSE');
+            if($final_sum >= 20) $status = 1;
+            else  $status = 0;
+
+            DB::table('activations')->updateOrInsert(
+                [
+                    'user_id' => $user->id,
+                    'month' => Carbon::parse($date)->month,
+                    'year' => Carbon::parse($date)->year,
+                ],
+                [
+                    'user_id' => $user->id,
+                    'month' => Carbon::parse($date)->month,
+                    'year' => Carbon::parse($date)->year,
+                    'sum' => $final_sum,
+                    'status' => $status
+                ]
+            );
+        }
     }
 
     /*************************** OLD METHODS ****************************/
@@ -657,25 +667,6 @@ class Hierarchy {
         return $arr[$month];
     }
 
-    public function getMonthNameById($id)
-    {
-        $arr = [
-            'январь',
-            'февраль',
-            'март',
-            'апрель',
-            'май',
-            'июнь',
-            'июль',
-            'август',
-            'сентябрь',
-            'октябрь',
-            'ноябрь',
-            'декабрь'
-        ];
-
-        return $arr[$id];
-    }
 
 
 

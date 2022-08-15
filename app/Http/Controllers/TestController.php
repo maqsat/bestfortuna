@@ -30,41 +30,7 @@ class TestController extends Controller
     public function tester()
     {
 
-        $users = UserProgram::where('status_id','>=',2)->get();
-        $date = new \DateTime();
-        //$date->modify('-1 month');
-
-        $list_percentage = array( 1 =>50,  2 =>20,  3 =>10,  4 =>5,  5 =>5 );
-
-        foreach ($users as $item){
-            echo "$item->id -------------------------<br>";
-
-            $item_status = Status::find($item->status_id);
-
-            if(Hierarchy::getSmallBranchPv($item->id) >= $item_status->matching_bonus){
-
-                for ($i = 1; $i <= $item_status->depth_line; $i++){
-                    $sums = 0;
-                    $level_users = UserProgram::where('inviter_list','like','%,'.$item->id.',%')->whereLevel($item->level+$i)->get();
-
-                    foreach ($level_users as $item_user){
-                        $sums += Processing::whereUserId($item_user->user_id)
-                            ->where('status', 'turnover_bonus')
-                            ->whereBetween('created_at', [Carbon::now()->startOfMonth(), Carbon::now()->endOfMonth()])
-                            ->sum('sum');
-                    }
-
-                    $sum = $sums*$list_percentage[$i]/100;
-
-                    if($sum > 0)
-                        Balance::changeBalance($item->id,   $sum, 'matching_bonus', $item->id, $item->program_id,$item->package_id, $item->status_id, $sums,0,$i);
-
-                }
-
-            }
-
-        }
-
+       Hierarchy::checkActivationStatus();
     }
 
 

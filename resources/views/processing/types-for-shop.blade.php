@@ -6,6 +6,7 @@
         <!-- Container fluid  -->
         <!-- ============================================================== -->
         <div class="container-fluid">
+            <?php $all_cost = $all_cost*$current_currency; ?>
             <div class="row">
                 <div class="col-12">
                     <div class="row">
@@ -36,30 +37,7 @@
                                     </div>
                                     <!-- Card -->
                                 </div>
-                                {{--<div class="col-lg-2 col-md-6  img-responsive">
-                                    <!-- Card -->
-                                    <div class="card">
-                                        <img class="card-img-top img-responsive" src="https://opencartforum.com/screenshots/monthly_2018_11/robokassa.thumb.png.b405b854136ced060d31d9a19ad41189.png" alt="Card image cap">
-                                        <div class="card-block">
-                                            <h4 class="card-title">Robokassa</h4>
-                                            <p class="card-text">Поддерживает все карты Visa и Master Card</p>
-                                            <a href="/pay-prepare?type=robokassa&@if(!is_null($basket))basket={{ $basket->id }}@endif" class="btn btn-success m-t-10">Оплатить ${{ $all_cost }}</a>
-                                        </div>
-                                    </div>
-                                    <!-- Card -->
-                                </div>--}}
-                                {{--<div class="col-lg-2 col-md-6  img-responsive">
-                                    <!-- Card -->
-                                    <div class="card">
-                                        <img class="card-img-top img-responsive" src="/nrg/paybox.png" alt="Card image cap">
-                                        <div class="card-block">
-                                            <h4 class="card-title">Paybox</h4>
-                                            <p class="card-text">Поддерживает все карты Visa и Master Card</p>
-                                            <a href="/pay-prepare?type=paybox&@if(!is_null($basket))package={{ $basket->id }}@endif" class="btn btn-success m-t-10">Оплатить ${{ $all_cost }}</a>
-                                        </div>
-                                    </div>
-                                    <!-- Card -->
-                                </div>--}}
+
 
                             </div>
                             <!-- Row -->

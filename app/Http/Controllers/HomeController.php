@@ -73,15 +73,9 @@ class HomeController extends Controller
                 ->first();
 
             $small_branch = Hierarchy::getSmallBranchPv($user->id);
+            $activation_start_date = Balance::getActivationStartDate($user->created_at);
+            $totalMonths = Balance::totalMonthFromRegister($user->created_at);
 
-            $date1 = new \DateTime($user->created_at);
-            $date2 = new \DateTime();;
-            $diff = $date1->diff($date2);
-
-            $yearsInMonths = $diff->format('%r%y') * 12;
-            $months = $diff->format('%r%m');
-            $totalMonths = $yearsInMonths + $months;
-            $activation_start_date = date('Y-m-d', strtotime("+6 months", strtotime($user->created_at)));
 
             $activation = Order::whereUserId($user->id)
                 ->whereYear('created_at', '=', date('Y'))

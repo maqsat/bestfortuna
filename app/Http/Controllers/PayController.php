@@ -28,6 +28,24 @@ class PayController extends Controller
         if(isset($request->package)) $package = Package::find($request->package);
         else $package = null;
 
+        if(Auth::user()->country_id == 1){
+            $currency_symbol = '₸';
+            $current_currency = env('DOLLAR_COURSE');
+        }
+        elseif(Auth::user()->country_id == 12){
+            $currency_symbol = '₽';
+            $current_currency = env('DOLLAR_RUB_COURSE');
+        }
+        elseif(Auth::user()->country_id == 13){
+            $currency_symbol = 'с. ';
+            $current_currency = env('DOLLAR_SOM_COURSE');
+        }
+        else{
+            $currency_symbol = '$';
+            $current_currency = 1;
+        }
+
+
         if (isset($request->upgrade)){
             $current_package = Package::find($request->upgrade);
             return view('processing.types-for-upgrade',compact('package','current_package'));
@@ -35,7 +53,6 @@ class PayController extends Controller
         elseif (isset($request->basket)){
 
             $balance = Balance::getBalance(Auth::user()->id);
-            $revitalization = Balance::revitalizationBalance(Auth::user()->id);
 
             $basket = Basket::find($request->basket);
             $all_cost = DB::table('basket_good')
@@ -43,27 +60,9 @@ class PayController extends Controller
                 ->where(['basket_id' => $basket->id])
                 ->sum(DB::raw('basket_good.quantity*products.partner_cost'));//['products.*','basket_good.quantity']
 
-            return view('processing.types-for-shop',compact('basket','all_cost','revitalization','balance'));
+            return view('processing.types-for-shop',compact('basket','all_cost','balance','current_currency','currency_symbol'));
         }
         else {
-
-
-            if(Auth::user()->country_id == 1){
-                $currency_symbol = '₸';
-                $current_currency = env('DOLLAR_COURSE');
-            }
-            elseif(Auth::user()->country_id == 12){
-                $currency_symbol = '₽';
-                $current_currency = env('DOLLAR_RUB_COURSE');
-            }
-            elseif(Auth::user()->country_id == 13){
-                $currency_symbol = 'с. ';
-                $current_currency = env('DOLLAR_SOM_COURSE');
-            }
-            else{
-                $currency_symbol = '$';
-                $current_currency = 1;
-            }
 
 
             return view('processing.types',compact('package','current_currency','currency_symbol'));
@@ -106,9 +105,10 @@ class PayController extends Controller
             $cost = DB::table('basket_good')
                 ->join('products','basket_good.good_id','=','products.id')
                 ->where(['basket_id' => $request->basket])
-                ->sum(DB::raw('basket_good.quantity*products.partner_cost'));//['products.*','basket_good.quantity']
+                ->sum(DB::raw('basket_good.quantity*products.partner_cost'))*$current_currency;//['products.*','basket_good.quantity']
 
             if($request->type == 'revitalization'){
+
                 $order =  Order::updateOrCreate(
                     [
                         'type' => 'shop',

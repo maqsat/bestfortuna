@@ -82,7 +82,7 @@ Route::get('partner/user/offices', 'HomeController@partnerUserOffices')->name("p
  */
 Route::get('product/{id}','StoreController@show');
 Route::get('story-store', 'StoreController@story');
-Route::get('activation-store', 'StoreController@activationStore');
+Route::get('activation-calendar', 'StoreController@activationCalendar');
 Route::get('main-store', 'StoreController@store');
 
 

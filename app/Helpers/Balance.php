@@ -130,6 +130,35 @@ class Balance {
         return round($sum, 2);
     }
 
+
+    public function totalMonthFromRegister($user_created_at)
+    {
+        $date1 = new \DateTime($user_created_at);
+        $date2 = new \DateTime();;
+        $diff = $date1->diff($date2);
+
+        $yearsInMonths = $diff->format('%r%y') * 12;
+        $months = $diff->format('%r%m');
+        $totalMonths = $yearsInMonths + $months;
+
+        return $totalMonths;
+    }
+
+
+    public function getActivationStartDate($user_created_at)
+    {
+        $date1 = new \DateTime($user_created_at);
+        $date2 = new \DateTime();;
+        $diff = $date1->diff($date2);
+
+        $yearsInMonths = $diff->format('%r%y') * 12;
+        $months = $diff->format('%r%m');
+
+        $activation_start_date = date('Y-m-d', strtotime("+6 months", strtotime($user_created_at)));
+
+        return $activation_start_date;
+    }
+
     /*************************** OLD METHODS ****************************/
 
     public function getBalanceAllUsers()

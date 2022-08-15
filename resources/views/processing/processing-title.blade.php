@@ -4,11 +4,11 @@
     Структурный бонус
 @elseif($item->status == 'matching_bonus')
     Кумулятивный бонус
-
-
-
 @elseif($item->status == 'cashback')
-    Кэшбек
+    Личный закуп
+
+
+
 @elseif($item->status == 'status_bonus')
     Бонус признания
 @elseif($item->status == 'quickstart_bonus')

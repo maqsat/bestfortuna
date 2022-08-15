@@ -57,8 +57,12 @@ class StoreController extends Controller
         return view('basket.story',compact('list'));
     }
 
-    public function activationStore()
+    public function activationCalendar()
     {
+        return view('basket.activation');
+
+
+
         $status = UserProgram::where('user_id',Auth::user()->id)->first();
 
         if($status->status_id < 5) $data = [];
@@ -69,7 +73,7 @@ class StoreController extends Controller
 
     public function activationCore()
     {
-        $sp_date = Notification::where('status_id','=',5)->where('user_id','=',Auth::user()->id)->first();
+        $sp_date = Notification::where('status_id','=',2)->where('user_id','=',Auth::user()->id)->first();
         $start_activation = Carbon::createFromDate(2020, 01, 01);
 
         if($sp_date->created_at < $start_activation) $startDate = date("Y-m-d",strtotime($start_activation));
