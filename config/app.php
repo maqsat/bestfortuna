@@ -178,6 +178,7 @@ return [
         App\Providers\RouteServiceProvider::class,
         App\Providers\BalanceServiceProvider::class,
         App\Providers\HierarchyServiceProvider::class,
+        App\Providers\GeneralServiceProvider::class,
         //UniSharp\LaravelFilemanager\LaravelFilemanagerServiceProvider::class,
         Intervention\Image\ImageServiceProvider::class,
 
@@ -231,6 +232,7 @@ return [
         'View' => Illuminate\Support\Facades\View::class,
         'Balance'=> App\Facades\Balance::class,
         'Hierarchy' => App\Facades\Hierarchy::class,
+        'General' => App\Facades\General::class,
         'Image' => Intervention\Image\Facades\Image::class,
         'JWTAuth' => Tymon\JWTAuth\Facades\JWTAuth::class,
     ],

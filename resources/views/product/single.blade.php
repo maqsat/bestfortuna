@@ -67,8 +67,6 @@
                     <div class="info_wrapper">
                         <h4 class="product_title">{{ $product->title }}</h4>
                         <div class="price">Цена:<span style="font-weight:bold;color:#0275d8;"> {{ $product->partner_cost }}$</span></div>
-                        {{--<div class="cv">CV:<span style="font-weight:bold;color:red;">{{ $product->cv }}cv</span></div>--}}
-                        <div class="cv">PV:<span style="font-weight:bold;color:red;"> {{ $product->pv }}pv</span></div>
                         <div class="description">{!! $product->description !!}</div>
                         <button onclick="addBasket({{ $product->id }},{{ Auth::user()->id }},true)" id="btn{{$product->id}}" class="buy_button btn btn-info waves-effect waves-light" type="button"><span class="btn-label"><i class="fa fa-shopping-cart"></i></span>Купить</button>
                     </div>

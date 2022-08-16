@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Facades\Hierarchy;
 use App\Models\Order;
 use App\Models\UserProgram;
 use DB;
@@ -20,9 +21,6 @@ class StoreController extends Controller
     {
         $user = Auth::user();
 
-        $balance = Balance::revitalizationBalance(Auth::user()->id);
-
-
         if($request->history == 'delete'){
             Order::where('user_id', Auth::user()->id)->where('type','shop')->where('status',0)->update(['status' => 12]);
         }
@@ -35,16 +33,21 @@ class StoreController extends Controller
             if($request->has('tag')){
                 $list = Tag::find($request->tag)->products;
             }
-            return view('product.user-main', compact('list','tag','orders','balance'));
+            return view('product.user-main', compact('list','tag','orders'));
         }
         else{
+
+            $date = new \DateTime();
+
+            $sum = Hierarchy::orderSumOfMonth($date,$user->id);
+
             $list = Product::whereNull('is_client')->orderBy('created_at','desc')->get();
             $tag = Tag::all();
             if($request->has('tag')){
                 $list = Tag::find($request->tag)->products;
             }
 
-            return view('product.main', compact('list','tag','orders','balance'));
+            return view('product.main', compact('list','tag','orders','sum'));
         }
 
 
@@ -57,8 +60,12 @@ class StoreController extends Controller
         return view('basket.story',compact('list'));
     }
 
-    public function activationStore()
+    public function activationCalendar()
     {
+        return view('basket.activation');
+
+
+
         $status = UserProgram::where('user_id',Auth::user()->id)->first();
 
         if($status->status_id < 5) $data = [];
@@ -69,7 +76,7 @@ class StoreController extends Controller
 
     public function activationCore()
     {
-        $sp_date = Notification::where('status_id','=',5)->where('user_id','=',Auth::user()->id)->first();
+        $sp_date = Notification::where('status_id','=',2)->where('user_id','=',Auth::user()->id)->first();
         $start_activation = Carbon::createFromDate(2020, 01, 01);
 
         if($sp_date->created_at < $start_activation) $startDate = date("Y-m-d",strtotime($start_activation));

@@ -35,7 +35,6 @@ class PayController extends Controller
         elseif (isset($request->basket)){
 
             $balance = Balance::getBalance(Auth::user()->id);
-            $revitalization = Balance::revitalizationBalance(Auth::user()->id);
 
             $basket = Basket::find($request->basket);
             $all_cost = DB::table('basket_good')
@@ -43,30 +42,10 @@ class PayController extends Controller
                 ->where(['basket_id' => $basket->id])
                 ->sum(DB::raw('basket_good.quantity*products.partner_cost'));//['products.*','basket_good.quantity']
 
-            return view('processing.types-for-shop',compact('basket','all_cost','revitalization','balance'));
+            return view('processing.types-for-shop',compact('basket','all_cost','balance'));
         }
         else {
-
-
-            if(Auth::user()->country_id == 1){
-                $currency_symbol = '₸';
-                $current_currency = env('DOLLAR_COURSE');
-            }
-            elseif(Auth::user()->country_id == 12){
-                $currency_symbol = '₽';
-                $current_currency = env('DOLLAR_RUB_COURSE');
-            }
-            elseif(Auth::user()->country_id == 13){
-                $currency_symbol = 'с. ';
-                $current_currency = env('DOLLAR_SOM_COURSE');
-            }
-            else{
-                $currency_symbol = '$';
-                $current_currency = 1;
-            }
-
-
-            return view('processing.types',compact('package','current_currency','currency_symbol'));
+            return view('processing.types',compact('package'));
         }
     }
 
@@ -98,44 +77,26 @@ class PayController extends Controller
                 ->where(['basket_id' => $request->basket])
                 ->sum(DB::raw('basket_good.quantity*products.partner_cost'));//['products.*','basket_good.quantity']
 
-            if($request->type == 'revitalization'){
-                $order =  Order::updateOrCreate(
-                    [
-                        'type' => 'shop',
-                        'status' => 0,
-                        'payment' => $request->type,
-                        'uuid' => 0,
-                        'user_id' => Auth::user()->id,
-                        'basket_id' => $request->basket,
-                        'not_original' => 1
-                    ],
-                    ['amount' => $cost, 'package_id' => 0]
-                );
-
-            }
-            else{
-
-                $order =  Order::updateOrCreate(
-                    [
-                        'type' => 'shop',
-                        'status' => 0,
-                        'payment' => $request->type,
-                        'uuid' => 0,
-                        'user_id' => Auth::user()->id,
-                        'basket_id' => $request->basket
-                    ],
-                    ['amount' => $cost, 'package_id' => 0]
-                );
-            }
+            $order =  Order::updateOrCreate(
+                [
+                    'type' => 'shop',
+                    'status' => 0,
+                    'payment' => $request->type,
+                    'uuid' => 0,
+                    'user_id' => Auth::user()->id,
+                    'basket_id' => $request->basket
+                ],
+                ['amount' => $cost, 'package_id' => 0]
+            );
 
         }
         else{
             if(!is_null($request->package)){
                 $package = Package::find($request->package);
-                $cost = ($package->cost + $package->old_cost)*env('DOLLAR_COURSE');
+                $cost = ($package->cost + $package->old_cost);
                 $package_id  = $package->id;
             }
-            else $cost = env('REGISTRATION_FEE');
+            else dd('Пакет не выбран');
 
             $order =  Order::updateOrCreate(
                 [
@@ -153,8 +114,6 @@ class PayController extends Controller
             $user->save();
         }
 
-
-        //User::find(Auth::user()->id)->update(['package_id' => $package_id]);
 
         $order_id = $order->id;
         $message = "Вы собираетесь оплатить $cost$";
@@ -193,125 +152,6 @@ class PayController extends Controller
             else{
                 dd("Что то пошло не так, уведовимте администратора сайта");
             }
-        }
-        if($request->type == "payeer"){
-
-            $m_shop = '1014438338';
-            $m_curr = 'USD';
-            $m_key = 'G1UvTbE6370Q0Vj3';
-            $m_orderid = $order_id;
-            $m_amount = number_format($cost, 2, '.', '');
-            $m_desc = base64_encode($message);
-
-            $arHash = array($m_shop, $m_orderid, $m_amount, $m_curr, $m_desc);
-
-            $arHash[] = $m_key;
-            $sign = strtoupper(hash('sha256', implode(':', $arHash)));
-
-            return view('processing.payeer', compact('m_shop','m_orderid','m_amount','m_curr','m_desc','m_key','sign','message','cost'));
-        }
-        if($request->type == "indigo"){
-
-            $body = json_encode([
-                'operator_id' => config('pay.indigo_operator_id'),
-                'order_id' => $order_id,
-                'amount' => intval($cost)*env('DOLLAR_COURSE'),
-                'expiration_date' => date("Y-m-d H:i:s", time() + 3600 * 240000),
-                'description' => $message,
-                'success_url' => env('APP_URL', false) . '/home?success=1', //http://nrg-max.local
-                'fail_url' => env('APP_URL', false) . '/home?fail=1',
-                'result_url' => env('APP_URL', false) . "/pay-processing/$order_id",
-            ]);
-
-            $signature = md5($body . config('pay.indigo_key'));
-
-            $data = [
-                'body' => $body,
-                'signature' => $signature
-            ];
-
-            $url = 'https://billing.indigo24.com/api/v1/payment';
-            $ch = curl_init();
-            curl_setopt($ch, CURLOPT_URL, $url);
-            curl_setopt($ch, CURLOPT_HTTPHEADER, array("Content-Type: application/x-www-form-urlencoded","Accept: application/json"));
-            curl_setopt($ch, CURLOPT_POSTFIELDS, http_build_query($data));
-            curl_setopt($ch, CURLOPT_POST, true);
-            curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
-            $response = curl_exec($ch);
-
-            if (!$response) dd("Error 1. Свяжитесь с Администратором, номер заказа  $order_id");
-
-            $response = json_decode($response);
-
-            if (isset($response->errors)) dd("Error 1. Свяжитесь с Администратором, номер заказа  $order_id");
-
-            return redirect($response->redirect_url);
-        }
-        if($request->type == "balance"){
-
-            if(Balance::getBalance(Auth::user()->id) < $order->amount)
-                return redirect()->back()->with('status', 'У вас недостаточно средств!');
-
-            Order::where( 'id',$order_id)
-                ->update(
-                    [
-                        'status' => 1,
-                    ]
-                );
-            Basket::whereId($order->basket_id)->update(['status' => 1]);
-            $basket = Basket::find($order->basket_id);
-
-            $sum_pv = 0;
-            foreach ($basket->basket_goods as $bg){
-                $sum_pv += $bg->product->pv * $bg->quantity;
-            }
-
-            Balance::changeBalance(Auth::user()->id,$order->amount,'shop',Auth::user()->id,1,0,0);
-            Balance::changeBalance(Auth::user()->id,$order->amount*0.2,'cashback',Auth::user()->id,1,1,1,$sum_pv);
-
-            $data = [];
-            $data['pv'] = $sum_pv;
-            $data['user_id'] = Auth::user()->id;
-
-            event(new ShopTurnover($data));
-
-            return redirect('/story-store');
-        }
-        if($request->type == "revitalization"){
-
-            if(Balance::revitalizationBalance(Auth::user()->id) < $order->amount)
-                return redirect()->back()->with('status', 'У вас недостаточно средств!');
-
-            Order::where( 'id',$order_id)
-                ->update(
-                    [
-                        'status' => 1,
-                    ]
-                );
-            Basket::whereId($order->basket_id)->update(['status' => 1]);
-            $basket = Basket::find($order->basket_id);
-
-            $order_pv = Hierarchy::orderPv($order_id, Auth::user()->id);
-
-            $data = [];
-            $data['pv'] = $order_pv;
-            $data['user_id'] = Auth::user()->id;
-
-            Balance::changeBalance(Auth::user()->id,$order->amount,'revitalization-shop',Auth::user()->id,1,0,0);
-            Balance::changeBalance(Auth::user()->id,$order->amount*0.2,'cashback',Auth::user()->id,1,1,1,0);
-
-            if(!$data['pv']) {
-                $sum_pv = 0;
-                foreach ($basket->basket_goods as $bg){
-                    $sum_pv += $bg->product->pv * $bg->quantity;
-                }
-                $data['pv'] = $sum_pv;
-                $data['pv_0'] = true;
-            }
-
-            event(new ShopTurnover($data));
-
-            return redirect('/story-store');
         }
     }
 

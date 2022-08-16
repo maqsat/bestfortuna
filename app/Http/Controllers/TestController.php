@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 
 use App\Facades\Balance;
+use App\Facades\General;
 use App\Models\Counter;
 use App\Models\Order;
 use App\Models\UserProgram;
@@ -29,18 +30,11 @@ class TestController extends Controller
     public function tester()
     {
 
-        $users = UserProgram::where('status_id','>=',2)->get();
+        $data = [];
+        $data['user_id'] = 6;
+        $data['sum'] = 100;
 
-        foreach ($users as $item){
-            $date = new \DateTime();
-            $date->modify('-1 month');
-
-            $sum = Processing::whereUserId($item->user_id)->where('status', 'turnover_bonus')->whereMonth('created_at', $date->format('m'))->sum('sum');
-
-            echo $item->status_id." => ".Hierarchy::pvPrevMonthCounter($item->user_id)."PV => ".$sum."$<br>";
-
-        }
-
+        event(new ShopTurnover($data = $data));
     }
 
 

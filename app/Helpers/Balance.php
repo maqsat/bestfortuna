@@ -62,17 +62,20 @@ class Balance {
         return round($sum, 2);
     }
 
+
+    public function getIncomeBalance($user_id)
+    {
+        $sum =  Processing::whereUserId($user_id)->whereIn('status', ['invite_bonus','turnover_bonus', 'matching_bonus', 'cashback', 'quickstart_bonus',            'status_bonus', 'admin_add'])->sum('sum');
+        return round($sum, 2);
+    }
+
+
     public function getWeekBalance($user_id)
     {
         $sum = Processing::whereUserId($user_id)->whereIn('status', ['admin_add', 'turnover_bonus', 'status_bonus', 'invite_bonus','quickstart_bonus','matching_bonus'])->whereBetween('created_at', [Carbon::now()->startOfWeek(), Carbon::now()->endOfWeek()])->sum('sum');
         return round($sum, 2);
     }
 
-    public function getIncomeBalance($user_id)
-    {
-        $sum =  Processing::whereUserId($user_id)->whereIn('status', ['admin_add', 'turnover_bonus', 'status_bonus', 'invite_bonus','quickstart_bonus','matching_bonus'])->sum('sum');
-        return round($sum, 2);
-    }
 
     public function getBalanceOut($user_id)
     {
@@ -128,6 +131,35 @@ class Balance {
 
         $sum = Processing::whereUserId($user_id)->where('status', $status)->whereBetween('created_at', [$date_from, $date_to])->sum('sum');
         return round($sum, 2);
+    }
+
+
+    public function totalMonthFromRegister($user_created_at)
+    {
+        $date1 = new \DateTime($user_created_at);
+        $date2 = new \DateTime();;
+        $diff = $date1->diff($date2);
+
+        $yearsInMonths = $diff->format('%r%y') * 12;
+        $months = $diff->format('%r%m');
+        $totalMonths = $yearsInMonths + $months;
+
+        return $totalMonths;
+    }
+
+
+    public function getActivationStartDate($user_created_at)
+    {
+        $date1 = new \DateTime($user_created_at);
+        $date2 = new \DateTime();;
+        $diff = $date1->diff($date2);
+
+        $yearsInMonths = $diff->format('%r%y') * 12;
+        $months = $diff->format('%r%m');
+
+        $activation_start_date = date('Y-m-d', strtotime("+6 months", strtotime($user_created_at)));
+
+        return $activation_start_date;
     }
 
     /*************************** OLD METHODS ****************************/

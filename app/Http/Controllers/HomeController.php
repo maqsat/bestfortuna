@@ -46,9 +46,6 @@ class HomeController extends Controller
      */
     public function index(Request $request)
     {
-        if (Auth::user()->admin == 1 && Auth::user()->role_id != 0) {
-            return redirect('/user');
-        }
 
         if(Auth::user()->status == 1){
 
@@ -75,27 +72,10 @@ class HomeController extends Controller
                 ->orderBy('created_at', 'desc')
                 ->first();
 
-            $users = User::where('inviter_id',$user->id)->get();
+            $small_branch = Hierarchy::getSmallBranchPv($user->id);
+            $activation_start_date = Balance::getActivationStartDate($user->created_at);
+            $totalMonths = Balance::totalMonthFromRegister($user->created_at);
 
-            $small_branch = 0;
-            if(!is_null($users)){
-                $small_branch = Hierarchy::pvCounterAll(User::where('inviter_id',$user->id)->first()->id);
-            }
-
-            foreach ($users as $item){
-                $small_branch_temp = Hierarchy::pvCounterAll($item->id);
-
-                if($small_branch > $small_branch_temp) $small_branch = $small_branch_temp;
-            }
-
-            $date1 = new \DateTime($user->created_at);
-            $date2 = new \DateTime();;
-            $diff = $date1->diff($date2);
-
-            $yearsInMonths = $diff->format('%r%y') * 12;
-            $months = $diff->format('%r%m');
-            $totalMonths = $yearsInMonths + $months;
-            $activation_start_date = date('Y-m-d', strtotime("+6 months", strtotime($user->created_at)));
 
             $activation = Order::whereUserId($user->id)
                 ->whereYear('created_at', '=', date('Y'))

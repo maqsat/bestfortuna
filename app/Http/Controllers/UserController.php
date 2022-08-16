@@ -597,9 +597,6 @@ class UserController extends Controller
 
     public function successBasket($basket_id)
     {
-        if(!Gate::allows('admin_user_success_basket')) {
-            abort('401');
-        }
 
         $order = Order::where( 'type','shop')
             ->where('basket_id',$basket_id)
@@ -646,12 +643,12 @@ class UserController extends Controller
 
         Balance::changeBalance($basket->user_id,$order->amount*0.2,'cashback',$basket->user_id,1,$user_program->package_id,$user_program->status_id,$sum_pv);
 
-        if($sum_pv > 0) {
+        if($order->amount > 0) {
             $data = [];
-            $data['pv'] = $sum_pv;
             $data['user_id'] = $basket->user_id;
+            $data['sum'] = $order->amount;
 
-            //event(new ShopTurnover($data = $data));
+            event(new ShopTurnover($data = $data));
 
             $user = User::find($basket->user_id);
 
@@ -763,7 +760,7 @@ class UserController extends Controller
         if($request->step == 0){
             $validator = Validator::make($request->all(), [
                 'program_id'    => ['required','integer', 'exists:programs,id'],
-                'inviter_id'    => ['required', 'string', 'max:255',"sponsor_in_program:$program_id", 'exists:users,id'],
+                'inviter_id'    => ['required', 'string', 'max:255',"sponsor_in_program:$program_id", 'exists:users,id_number'],
                 //'sponsor_id'    => ['required', 'string', 'max:255',"sponsor_in_program:$program_id", "sponsor_is_on_this_inviter:$inviter_id" ,'exists:users,id'],
                 //'position'      => ['required', "is_exist_position_sponsor:$sponsor_id"],
                 ],[

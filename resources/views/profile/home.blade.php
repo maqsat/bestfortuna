@@ -6,6 +6,10 @@
         <!-- Container fluid  -->
         <!-- ============================================================== -->
         <div class="container-fluid">
+            <div class="alert alert-danger">
+                <button type="button" class="close" data-dismiss="alert" aria-label="Close"> <span aria-hidden="true">&times;</span> </button>
+                <h3 class="text-danger"><i class="fa fa-check-circle"></i> На сайте ведутся технические работы</h3>
+            </div>
 
                 @if(!is_null($move_status))
                     <div class="alert alert-success">
@@ -46,7 +50,7 @@
                                             <th>Пакет</th>
                                             <th>Статус</th>
                                             <th>Товарооборот</th>
-                                            <th>Накопительный бонус</th>
+                                            <th>Накопительный</th>
                                             <th>Баланс</th>
                                         </tr>
                                         </thead>

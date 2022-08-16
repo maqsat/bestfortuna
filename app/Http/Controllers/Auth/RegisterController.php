@@ -57,7 +57,7 @@ class RegisterController extends Controller
         //$position = $data['position'];
 
         return Validator::make($data, [
-            'inviter_id' => ['required', 'string', 'max:255',"sponsor_in_program:$program_id", 'exists:users,id'],
+            'inviter_id' => ['required', 'string', 'max:255',"sponsor_in_program:$program_id", 'exists:users,id_number'],
             //'email' => ['required', 'string', 'email', 'max:255', 'unique:users'],
             'password' => ['required', 'string', 'min:6', 'confirmed'],
             'birthday' => ['required'],
@@ -83,24 +83,26 @@ class RegisterController extends Controller
      */
     protected function create(array $data)
     {
+        $inviter_id = User::where('id_number',$data['inviter_id'])->first()->id;
+
         return User::create([
             'name' => $data['name'],
             'number' => $data['number'],
             'email' => $data['email'],
             'password' => Hash::make($data['password']),
             'gender' => $data['gender'],
-            'inviter_id' => $data['inviter_id'],
+            'inviter_id' => $inviter_id,
             'program_id' => $data['program_id'],
             'birthday' => $data['birthday'],
             'city_id' => $data['city_id'],
-            //'sponsor_id' => $data['sponsor_id'],
-            //'position' => $data['position'],
             'country_id'    => $data['country_id'],
             'office_id'     =>  $data['office_id'],
             'iin' => $data['iin'],
             'address' => $data['address'],
             'post_index' => $data['post_index'],
 
+            //'sponsor_id' => $data['sponsor_id'],
+            //'position' => $data['position'],
             //'package_id' => $data['package_id'],
 
         ]);

@@ -43,11 +43,7 @@
                                             <th class="text-center">#</th>
                                             <th>Наименование</th>
                                             <th class="text-right">Количество</th>
-                                           {{-- <th class="text-right">CV</th>--}}
-                                            <th class="text-right">PV</th>
                                             <th class="text-right">Цена за одного</th>
-                                            {{--<th class="text-right">Сумма CV</th>--}}
-                                            <th class="text-right">Сумма PV</th>
                                             <th class="text-right">Сумма</th>
                                             <th class="text-right">Удалить</th>
                                         </tr>
@@ -75,11 +71,7 @@
                                                         </button>
                                                     @endif
                                                 </td>
-                                               {{-- <td class="text-right"> {{ $item->cv }} cv </td>--}}
-                                                <td class="text-right"> {{ $item->pv }} pv </td>
                                                 <td class="text-right"> ${{ $item->partner_cost }} </td>
-                                                {{--<td  class="text-right"><span id="cv{{$item->id}}">{{ $item->cv*$item->quantity }}</span>cv </td>--}}
-                                                <td  class="text-right"><span id="pv{{$item->id}}">{{ $item->pv*$item->quantity }}</span>pv </td>
                                                 <td class="text-right"> $<span id="product_sum{{$item->id}}">{{ $item->partner_cost*$item->quantity }} </span></td>
                                                 <td class="text-right">
                                                     <button style="background:transparent;border:none;" onclick="addBasket(this,{{ $item->id }},{{ Auth::user()->id }},{{$key}},false,false,true)">
