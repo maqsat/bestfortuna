@@ -63,13 +63,19 @@
                         @endif
                     @endif
 
-                    <div class="card">
-                        <div class="card-block">
-                            <div class="row button-group text-center">
-                               <h2 class="m-l-20">  Оставшиеся сумма активизации - ${{ $balance }}</h2>
+                        <div class="col-lg-12 col-md-12 p-0">
+                            <div class="card">
+                                <div class="d-flex flex-row">
+                                    <div class="p-10 bg-success">
+                                        <h3 class="text-white box m-b-0"><i class="ti-wallet"></i></h3>
+                                    </div>
+                                    <div class="align-self-center m-l-20 pay_button">
+                                        <h3 class="m-b-0 text-success"></h3>
+                                        <h5 class="text-muted m-b-0">Соверщана активизация на сумму ({{ \App\Facades\General::getMonthNameById(date('n')-1) }}) - {{ $sum }}</h5>
+                                    </div>
+                                </div>
                             </div>
                         </div>
-                    </div>
                 </div>
             </div>
 
@@ -81,8 +87,6 @@
 
                             <div class="card ribbon-wrapper">
                                 <div class="ribbon ribbon-bookmark  ribbon-success">{{ $item->partner_cost }} $</div>
-                                {{--<div class="ribbon ribbon-bookmark  ribbon-danger">+ {{ $item->cv }} cv</div>--}}
-                                <div class="ribbon ribbon-bookmark  ribbon-info">+ {{ $item->pv }} pv</div>
                                 <img class="card-img-top img-fluid" src="{{ $item->image1 }}" alt="{{ $item->title }}">
                                 <div class="card-block">
                                     <h4 class="card-title">{{ $item->title }}</h4>

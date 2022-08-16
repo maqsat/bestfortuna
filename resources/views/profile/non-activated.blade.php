@@ -13,7 +13,7 @@
                             <div class="alert alert-warning">
                                 <h3 class="text-warning"><i class="fa fa-exclamation-triangle"></i> Квитанция находится на проверке</h3>
                                 Статус модерации:  Квитанция отправлено на проверку <br>
-                                Сумма оплаты: {{ $orders->amount }} {{ $currency_symbol }}<br>
+                                Сумма оплаты: {{ $orders->amount }} {{ config('marketing.dollar_symbol') }}<br>
                                 @if($orders->package_id != 0)
                                     Выбранный пакет: {{ \App\Models\Package::find($orders->package_id)->title }} <br>
                                 @endif
@@ -23,7 +23,7 @@
                             <div class="alert alert-danger">
                                 <h3 class="text-danger"><i class="fa fa-exclamation-triangle"></i> Квитанция отклонена</h3>
                                 Статус модерации:  Фейковая квитанция <br>
-                                Сумма оплаты: {{ $orders->amount }}  {{ $currency_symbol }}<br>
+                                Сумма оплаты: {{ $orders->amount }}  {{ config('marketing.dollar_symbol') }}<br>
                                 @if($orders->package_id != 0)
                                     Выбранный пакет: {{ \App\Models\Package::find($orders->package_id)->title }} <br>
                                 @endif
@@ -38,25 +38,9 @@
                         @if(!isset($fk))
                             @if(is_null($orders) or $orders->status != 12)
                                 <div class="alert alert-danger">
-                                    <h3 class="text-danger"><i class="fa fa-exclamation-triangle"></i> Примечание!</h3> Вам необходимо оплатить регистрационный сбор и выбрать пакет. У вас есть 24 часа чтобы активировать кабинет, по истечению срока ваш кабинет удалится.
+                                    <h3 class="text-danger"><i class="fa fa-exclamation-triangle"></i> Примечание!</h3> Вам необходимо выбрать пакет и оплатить. У вас есть 24 часа чтобы активировать кабинет, по истечению срока ваш кабинет удалится.
                                 </div>
                             @endif
-                            {{--<div class="col-lg-12 col-md-12 p-0">
-                                <div class="card">
-                                    <div class="d-flex flex-row">
-                                        <div class="p-10 bg-success">
-                                            <h3 class="text-white box m-b-0"><i class="ti-wallet"></i></h3>
-                                        </div>
-                                        <div class="align-self-center m-l-20 pay_button">
-                                            <h3 class="m-b-0 text-success">{{ env('REGISTRATION_FEE')*$current_currency }} {{$currency_symbol}}</h3>
-                                            <h5 class="text-muted m-b-0">Регистрационный сбор</h5>
-                                        </div>
-                                        <a href="/pay-types">
-                                            <button class="btn btn-success waves-effect waves-light m-t-15 m-b-15 m-r-10">Оплатить без БИЗНЕС ПАКЕТА</button>
-                                        </a>
-                                    </div>
-                                </div>
-                            </div>--}}
                         @endif
 
                             <div class="card">
@@ -69,13 +53,13 @@
                                                         <div class="pricing-header">
                                                             @if($item->id == 2) <h4 class="price-lable text-white bg-warning"> Popular</h4>@endif
                                                             <h4 class="text-center">{{ $item->title }}</h4>
-                                                            <h2 class="text-center"><span class="price-sign">{{$currency_symbol}}</span>{{ ($item->cost+$item->old_cost)*$current_currency }}</h2>
+                                                            <h2 class="text-center"><span class="price-sign">{{ config('marketing.dollar_symbol') }}</span>{{ ($item->cost+$item->old_cost) }}</h2>
                                                         </div>
                                                         <div class="price-table-content">
                                                             <div class="price-row"><i class="fa fa-product-hunt"></i> {{ $item->pv }} BM</div>
-                                                            <div class="price-row"><i class="fa fa-money"></i> {{ $item->income }}</div>
                                                             <div class="price-row"><i class="fa fa-money"></i> {{ $item->cost }}$ стоимость пакета</div>
                                                             <div class="price-row"><i class="fa fa-money"></i> {{ $item->old_cost }}$ складской сбор(5%)</div>
+                                                            <div class="price-row"><i class="fa fa-money"></i> {{ $item->income }}</div>
                                                             <div class="price-row"><i class="fa fa-star"></i> {{ $item->statusName->title }}</div>
                                                             <div class="price-row"><i class="fa fa-shopping-basket"></i> {{ $item->goods }}</div>
                                                             <div class="price-row">

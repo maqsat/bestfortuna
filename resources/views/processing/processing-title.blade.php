@@ -6,13 +6,12 @@
     Кумулятивный бонус
 @elseif($item->status == 'cashback')
     Личный закуп
-
+@elseif($item->status == 'quickstart_bonus')
+    Пассивный бонус
 
 
 @elseif($item->status == 'status_bonus')
     Бонус признания
-@elseif($item->status == 'quickstart_bonus')
-    Быстрый старт
 @elseif($item->status == 'request')
     Запрос на списание
 @elseif($item->status == 'register')

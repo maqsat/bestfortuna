@@ -30,7 +30,11 @@ class TestController extends Controller
     public function tester()
     {
 
-       Hierarchy::checkActivationStatus();
+        $data = [];
+        $data['user_id'] = 6;
+        $data['sum'] = 100;
+
+        event(new ShopTurnover($data = $data));
     }
 
 

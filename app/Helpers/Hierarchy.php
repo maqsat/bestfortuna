@@ -545,6 +545,9 @@ class Hierarchy {
     }
 
 
+    /*************************** New METHODS for BEST FORTUNA ****************************/
+
+    //Получение PV  в малой ветке
     public function getSmallBranchPv($user_id)
     {
         $users = User::where('inviter_id',$user_id)->get();
@@ -564,6 +567,7 @@ class Hierarchy {
     }
 
 
+    //Кумулятивный бонус через крон
     public function cumulativeCalculation()
     {
         $users = UserProgram::where('status_id','>=',2)->get();
@@ -602,26 +606,18 @@ class Hierarchy {
     }
 
 
+    //Проверка и запись статусов активизации
     public function checkActivationStatus()
     {
-
         $users = UserProgram::all();
 
         foreach ($users as $user){
             $date = new \DateTime();
             //$date->modify('-1 month');
 
-            $sum = Order::whereBetween('created_at', [Carbon::parse($date)->startOfMonth(), Carbon::parse($date)->endOfMonth()])
-                ->where('type','shop')
-                ->where('user_id', $user->id)
-                ->where(function($query){
-                    $query->where('status',4)
-                        ->orWhere('status',6);
-                })
-                ->sum('amount');
+            $sum = $this->orderSumOfMonth($date,$user->id);
 
-            $final_sum = $sum/env('DOLLAR_COURSE');
-            if($final_sum >= 20) $status = 1;
+            if($sum >= 20) $status = 1;
             else  $status = 0;
 
             DB::table('activations')->updateOrInsert(
@@ -634,41 +630,51 @@ class Hierarchy {
                     'user_id' => $user->id,
                     'month' => Carbon::parse($date)->month,
                     'year' => Carbon::parse($date)->year,
-                    'sum' => $final_sum,
+                    'sum' => $sum,
                     'status' => $status
                 ]
             );
         }
     }
 
-    /*************************** OLD METHODS ****************************/
-
-
-
-    public function getMonthName()
+    //Сумма заказов за месяц
+    public function orderSumOfMonth($date,$user_id)
     {
-        $arr = [
-            'январь',
-            'февраль',
-            'март',
-            'апрель',
-            'май',
-            'июнь',
-            'июль',
-            'август',
-            'сентябрь',
-            'октябрь',
-            'ноябрь',
-            'декабрь'
-        ];
+        $sum = Order::whereBetween('created_at', [Carbon::parse($date)->startOfMonth(), Carbon::parse($date)->endOfMonth()])
+            ->where('type','shop')
+            ->where('user_id', $user_id)
+            ->where(function($query){
+                $query->where('status',4)
+                    ->orWhere('status',6);
+            })
+            ->sum('amount');
 
-
-        $month = date('n')-1;
-        return $arr[$month];
+        return $sum;
     }
 
+    //Проверка и перевод статуса
+    public function checkAndMoveNextStatus($item,$item_user_program)
+    {
+        $item_status = Status::find($item_user_program->status_id);
+        $next_status = Status::find($item_status->order+1);
+        if(!is_null($next_status)){
+            $pv = Balance::getIncomeBalance($item);
+            $next_status_pv = $next_status->pv;
 
+            if($next_status_pv <= $pv){
+                $this->moveNextStatus($item,$next_status->id,$item_user_program->program_id);
+                $item_user_program = UserProgram::where('user_id',$item)->first();
 
+                Notification::create([
+                    'user_id'   => $item,
+                    'type'      => 'move_status',
+                    'status_id' => $item_user_program->status_id
+                ]);
+            }
+        }
+    }
+
+    /*************************** OLD METHODS ****************************/
 
 
 }

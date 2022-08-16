@@ -11,7 +11,7 @@
             <!-- ============================================================== -->
             <div class="row page-titles">
                 <div class="col-md-6 col-8 align-self-center">
-                    <h3 class="text-themecolor m-b-0 m-t-0">Тип оплата  - "Скан квитанции", Сумма оплаты - {{ $cost }} {{ $currency_symbol }}</h3>
+                    <h4 class="text-themecolor m-b-0 m-t-0">Тип оплата  - "Скан квитанции", Сумма оплаты - {{ $cost }} {{ config('marketing.dollar_symbol') }}(В тенге {{ $cost*config('marketing.dollar_course') }} {{ config('marketing.tenge_symbol') }})</h4>
                 </div>
                 <div class="col-md-6 col-4 align-self-center">
                 </div>

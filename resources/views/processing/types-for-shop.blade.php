@@ -6,7 +6,7 @@
         <!-- Container fluid  -->
         <!-- ============================================================== -->
         <div class="container-fluid">
-            <?php $all_cost = $all_cost*$current_currency; ?>
+
             <div class="row">
                 <div class="col-12">
                     <div class="row">
@@ -25,8 +25,8 @@
                                     </div>
                                     <!-- Card -->
                                 </div>
-                                <div class="col-lg-2 col-md-6  img-responsive">
-                                    <!-- Card -->
+<!--                                <div class="col-lg-2 col-md-6  img-responsive">
+                                    &lt;!&ndash; Card &ndash;&gt;
                                     <div class="card">
                                         <img class="card-img-top img-responsive" src="/nrg/paypost.png" alt="Card image cap">
                                         <div class="card-block">
@@ -35,8 +35,8 @@
                                             <a href="/pay-prepare?type=paypost&@if(!is_null($basket))basket={{ $basket->id }}@endif" class="btn btn-success m-t-10">Оплатить ${{ $all_cost }}</a>
                                         </div>
                                     </div>
-                                    <!-- Card -->
-                                </div>
+                                    &lt;!&ndash; Card &ndash;&gt;
+                                </div>-->
 
 
                             </div>

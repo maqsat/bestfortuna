@@ -62,17 +62,20 @@ class Balance {
         return round($sum, 2);
     }
 
+
+    public function getIncomeBalance($user_id)
+    {
+        $sum =  Processing::whereUserId($user_id)->whereIn('status', ['invite_bonus','turnover_bonus', 'matching_bonus', 'cashback', 'quickstart_bonus',            'status_bonus', 'admin_add'])->sum('sum');
+        return round($sum, 2);
+    }
+
+
     public function getWeekBalance($user_id)
     {
         $sum = Processing::whereUserId($user_id)->whereIn('status', ['admin_add', 'turnover_bonus', 'status_bonus', 'invite_bonus','quickstart_bonus','matching_bonus'])->whereBetween('created_at', [Carbon::now()->startOfWeek(), Carbon::now()->endOfWeek()])->sum('sum');
         return round($sum, 2);
     }
 
-    public function getIncomeBalance($user_id)
-    {
-        $sum =  Processing::whereUserId($user_id)->whereIn('status', ['admin_add', 'turnover_bonus', 'status_bonus', 'invite_bonus','quickstart_bonus','matching_bonus'])->sum('sum');
-        return round($sum, 2);
-    }
 
     public function getBalanceOut($user_id)
     {

@@ -72,11 +72,13 @@ class UserActivated
 
         $list = Hierarchy::getSponsorsList($event->user->id,'').',';
         $inviter_list = Hierarchy::getInviterList($event->user->id,'').',';
-
-        Balance::changeBalance($id,$package_cost,'register',$event->user->id,$event->user->program_id,$package_id,0,$package->pv);
-
         $inviter_program = UserProgram::where('user_id',$inviter->id)->first();
         $inviter_status = Status::find($inviter_program->status_id);
+
+
+        Balance::changeBalance($id,$package_cost,'register',$event->user->id,$event->user->program_id,$package_id,0,$package->pv);
+        Balance::changeBalance($id,$package_cost*0.05,'register',$event->user->id,$event->user->program_id,$package_id,0,$package->pv);
+
 
         UserProgram::insert(
             [
@@ -90,10 +92,8 @@ class UserActivated
             ]
         );
 
-        if (Auth::check())
-            $author_id = Auth::user()->id;
-        else
-            $author_id = 0;
+        if (Auth::check()) $author_id = Auth::user()->id;
+        else $author_id = 0;
 
         Notification::create([
             'user_id' => $event->user->id,
@@ -146,22 +146,7 @@ class UserActivated
             }
 
             //Смена статуса
-            $next_status = Status::find($item_status->order+1);
-            if(!is_null($next_status)){
-                $pv = Balance::getIncomeBalance($item);
-                $next_status_pv = $next_status->pv;
-
-                if($next_status_pv <= $pv){
-                    Hierarchy::moveNextStatus($item,$next_status->id,$item_user_program->program_id);
-                    $item_user_program = UserProgram::where('user_id',$item)->first();
-
-                    Notification::create([
-                        'user_id'   => $item,
-                        'type'      => 'move_status',
-                        'status_id' => $item_user_program->status_id
-                    ]);
-                }
-            }
+            Hierarchy::checkAndMoveNextStatus($item,$item_user_program);
 
 
         }
