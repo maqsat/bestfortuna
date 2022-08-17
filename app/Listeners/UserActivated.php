@@ -76,6 +76,7 @@ class UserActivated
         $inviter_status = Status::find($inviter_program->status_id);
 
 
+        Balance::setQV($id,$package->pv,$id,$package->id,0,$status_id);
         Balance::changeBalance($id,$package_cost,'register',$event->user->id,$event->user->program_id,$package_id,0,$package->pv);
         Balance::changeBalance($id,$package_cost*0.05,'register',$event->user->id,$event->user->program_id,$package_id,0,$package->pv);
 

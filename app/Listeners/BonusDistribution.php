@@ -44,39 +44,39 @@ class BonusDistribution
 
             $item_user_program = UserProgram::where('user_id',$item)->first();
 
-            //Пассивный бонус
-            if($key < 4){
+            if(!is_null($item_user_program) ){
+                //Пассивный бонус
+                if($key < 4){
 
-                switch ($key) {
-                    case 0:
-                        $sum = $order_sum*4/100;
-                        $status_name = 'quickstart_bonus';
-                        Balance::changeBalance($item,   $sum, $status_name, $user_id, 1,$item_user_program->package_id, $item_user_program->status_id,$order_sum,0,$key+1);
-                        break;
-                    case 1:
-                        $sum = $order_sum*3/100;
-                        $status_name = 'quickstart_bonus';
-                        Balance::changeBalance($item,   $sum, $status_name, $user_id, 1,$item_user_program->package_id, $item_user_program->status_id,$order_sum,0,$key+1);
-                        break;
-                    case 2:
-                        $sum = $order_sum*2/100;
-                        $status_name = 'quickstart_bonus';
-                        Balance::changeBalance($item,   $sum, $status_name, $user_id, 1,$item_user_program->package_id, $item_user_program->status_id,$order_sum,0,$key+1);
-                        break;
-                    case 3:
-                        $sum = $order_sum*1/100;
-                        $status_name = 'quickstart_bonus';
-                        Balance::changeBalance($item,   $sum, $status_name, $user_id, 1,$item_user_program->package_id, $item_user_program->status_id,$order_sum,0,$key+1);
-                        break;
+                    switch ($key) {
+                        case 0:
+                            $sum = $order_sum*4/100;
+                            $status_name = 'quickstart_bonus';
+                            Balance::changeBalance($item,   $sum, $status_name, $user_id, 1,$item_user_program->package_id, $item_user_program->status_id,$order_sum,0,$key+1);
+                            break;
+                        case 1:
+                            $sum = $order_sum*3/100;
+                            $status_name = 'quickstart_bonus';
+                            Balance::changeBalance($item,   $sum, $status_name, $user_id, 1,$item_user_program->package_id, $item_user_program->status_id,$order_sum,0,$key+1);
+                            break;
+                        case 2:
+                            $sum = $order_sum*2/100;
+                            $status_name = 'quickstart_bonus';
+                            Balance::changeBalance($item,   $sum, $status_name, $user_id, 1,$item_user_program->package_id, $item_user_program->status_id,$order_sum,0,$key+1);
+                            break;
+                        case 3:
+                            $sum = $order_sum*1/100;
+                            $status_name = 'quickstart_bonus';
+                            Balance::changeBalance($item,   $sum, $status_name, $user_id, 1,$item_user_program->package_id, $item_user_program->status_id,$order_sum,0,$key+1);
+                            break;
+                    }
+
+                    //Окончание Пассивного бонуса
                 }
 
-                //Окончание Пассивного бонуса
+                //Смена статуса
+                Hierarchy::checkAndMoveNextStatus($item,$item_user_program);
             }
-
-            //Смена статуса
-            Hierarchy::checkAndMoveNextStatus($item,$item_user_program);
-
-
         }
     }
 }

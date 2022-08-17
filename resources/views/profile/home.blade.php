@@ -148,7 +148,7 @@
                                     <div class="card card-inverse card-info">
                                         <div class="box bg-info text-center">
                                             <h1 class="font-light text-white">{{ $small_branch }}</h1>
-                                            <h6 class="text-white">Товарооборот (BM) в малой ветке</h6>
+                                            <h6 class="text-white">Товарооборот (BM) для кумулятивного</h6>
                                         </div>
                                     </div>
                                 </div>
@@ -177,7 +177,7 @@
                             <h3 class="card-title">Статус активизаций</h3>
                             <div class="row">
                                 <!-- Column -->
-                                @if($totalMonths < 7)
+                                @if($totalMonths < 7 && $user_program_status < 3)
                                     <div class="col-lg-12 col-xlg-12 col-md-12">
                                         <div class="alert alert-success">
                                             <button type="button" class="close" data-dismiss="alert" aria-label="Close"></button>

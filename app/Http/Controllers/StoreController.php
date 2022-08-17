@@ -62,16 +62,9 @@ class StoreController extends Controller
 
     public function activationCalendar()
     {
-        return view('basket.activation');
+        $user_program = UserProgram::where('user_id',Auth::user()->id)->first();
 
-
-
-        $status = UserProgram::where('user_id',Auth::user()->id)->first();
-
-        if($status->status_id < 5) $data = [];
-        else $data = $this->activationCore();
-
-        return view('basket.activation',compact('data'));
+        return view('basket.activation', compact('user_program'));
     }
 
     public function activationCore()

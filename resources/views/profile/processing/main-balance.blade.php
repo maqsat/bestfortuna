@@ -43,7 +43,7 @@
                     <h3 class="text-white box m-b-0"><i class="ti-wallet"></i></h3></div>
                 <div class="align-self-center m-l-20">
                     <h3 class="m-b-0">{{ number_format($shop, 0, '', ' ') }}$</h3>
-                    <h6 class="text-muted m-b-0">Личный закуп({{ \App\Facades\Hierarchy::getMonthName() }})</h6>
+                    <h6 class="text-muted m-b-0">Личный закуп({{ \App\Facades\General::getMonthName() }})</h6>
                 </div>
             </div>
         </div>

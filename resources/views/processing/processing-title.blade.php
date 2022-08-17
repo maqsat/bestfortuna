@@ -5,27 +5,26 @@
 @elseif($item->status == 'matching_bonus')
     Кумулятивный бонус
 @elseif($item->status == 'cashback')
-    Личный закуп
+    Бонус от Личного закупа
 @elseif($item->status == 'quickstart_bonus')
     Пассивный бонус
-
-
 @elseif($item->status == 'status_bonus')
-    Бонус признания
+    Мировой бонус
+
+
+
 @elseif($item->status == 'request')
     Запрос на списание
 @elseif($item->status == 'register')
-    <span style="color: red">Регистрация</span>
+    Регистрация
 @elseif($item->status == 'out')
     Выведено
 @elseif($item->status == 'cancel')
     Отменено
-@elseif($item->status == 'revitalization')
-    Автоматическая покупка
 @elseif($item->status == 'revitalization-shop')
     Покупка с баланса(повторная)
 @elseif($item->status == 'shop')
-    Покупка с карты(повторная)
+    Личный закуп
 @elseif($item->status == 'upgrade')
     Апгрейд
 @elseif($item->status == 'admin_add')

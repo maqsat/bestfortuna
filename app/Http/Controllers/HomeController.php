@@ -72,8 +72,8 @@ class HomeController extends Controller
                 ->orderBy('created_at', 'desc')
                 ->first();
 
-            $small_branch = Hierarchy::getSmallBranchPv($user->id);
-            $activation_start_date = Balance::getActivationStartDate($user->created_at);
+            $small_branch = Hierarchy::pvCounterAll($user->id);
+            $activation_start_date = Balance::getActivationStartDate($user->created_at,$user->id );
             $totalMonths = Balance::totalMonthFromRegister($user->created_at);
 
 
