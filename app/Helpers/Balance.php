@@ -4,6 +4,7 @@ namespace App\Helpers;
 
 use App\Models\Counter;
 use App\Models\Log;
+use App\Models\Notification;
 use App\Models\UserProgram;
 use App\User;
 use App\Models\UserSubscriber;
@@ -14,6 +15,8 @@ use App\Facades\Hierarchy;
 use App\Models\Processing;
 
 class Balance {
+
+    /*************************** New METHODS for BEST FORTUNA ****************************/
 
     public function changeBalance($user_id,$sum,$status,$in_user,$program_id,$package_id=0,$status_id=0,$pv = 0,$limited_sum = 0,$matching_line = 0,$card_number = 0,$message = '', $withdrawal_method = null)
     {
@@ -56,16 +59,46 @@ class Balance {
         );
     }
 
-    public function getBalance($user_id)
+    public function getIncomeBalance($user_id)
     {
-        $sum = $this->getIncomeBalance($user_id) - $this->getBalanceOut($user_id) - $this->getWeekBalance($user_id);
+        $sum =  Processing::whereUserId($user_id)
+            ->whereIn('status', ['invite_bonus','turnover_bonus', 'matching_bonus', 'cashback', 'quickstart_bonus', 'status_bonus', 'admin_add'])->sum('sum');
         return round($sum, 2);
     }
 
 
-    public function getIncomeBalance($user_id)
+    public function getActivationStartDate($user_created_at, $user_id)
     {
-        $sum =  Processing::whereUserId($user_id)->whereIn('status', ['invite_bonus','turnover_bonus', 'matching_bonus', 'cashback', 'quickstart_bonus',            'status_bonus', 'admin_add'])->sum('sum');
+        $user_program =  UserProgram::find($user_id);
+        if($user_program->status_id < 3){
+            $date1 = new \DateTime($user_created_at);
+            $date2 = new \DateTime();;
+            $diff = $date1->diff($date2);
+
+            $yearsInMonths = $diff->format('%r%y') * 12;
+            $months = $diff->format('%r%m');
+
+            $activation_start_date = date('Y-m-d', strtotime("+6 months", strtotime($user_created_at)));
+        }
+
+        else {
+            $activation_start_date = Notification::where('user_id', $user_id)
+                ->where('type', 'move_status')
+                ->where('status_id', 3)
+                ->first()->created_at ;
+        }
+
+        return $activation_start_date;
+    }
+
+
+
+    /*************************** Old METHODS from CORE ****************************/
+
+
+    public function getBalance($user_id)
+    {
+        $sum = $this->getIncomeBalance($user_id) - $this->getBalanceOut($user_id) - $this->getWeekBalance($user_id);
         return round($sum, 2);
     }
 
@@ -148,19 +181,6 @@ class Balance {
     }
 
 
-    public function getActivationStartDate($user_created_at)
-    {
-        $date1 = new \DateTime($user_created_at);
-        $date2 = new \DateTime();;
-        $diff = $date1->diff($date2);
-
-        $yearsInMonths = $diff->format('%r%y') * 12;
-        $months = $diff->format('%r%m');
-
-        $activation_start_date = date('Y-m-d', strtotime("+6 months", strtotime($user_created_at)));
-
-        return $activation_start_date;
-    }
 
     /*************************** OLD METHODS ****************************/
 

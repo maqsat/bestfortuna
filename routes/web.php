@@ -41,16 +41,16 @@ Route::get('faq', 'WebController@faq');
 /*
 ************************ Profile ***********************
  */
-Route::get('home', 'HomeController@index')->name('home');
-Route::get('invitations', 'HomeController@invitations')->name('invitations');
-Route::get('hierarchy', 'HomeController@hierarchy')->name('hierarchy');
-Route::get('hierarchy/{id}', 'HomeController@hierarchyTree')->name('hierarchyTree');
-Route::get('tree/{id}', 'HomeController@tree')->name('tree');
-Route::get('team', 'HomeController@team')->name('team');
-Route::get('user_processing', 'HomeController@processing')->name('processing');//->middleware("activation");
-Route::get('programs' , 'HomeController@programs')->name('programs');
-Route::get('notifications', 'HomeController@notifications')->name('notifications');
-Route::get('profile', 'HomeController@profile')->name('profile');
+Route::get('home', 'HomeController@index')->name('home')->middleware("auth");
+Route::get('invitations', 'HomeController@invitations')->name('invitations')->middleware("auth");
+Route::get('hierarchy', 'HomeController@hierarchy')->name('hierarchy')->middleware("auth");
+Route::get('hierarchy/{id}', 'HomeController@hierarchyTree')->name('hierarchyTree')->middleware("auth");
+Route::get('tree/{id}', 'HomeController@tree')->name('tree')->middleware("auth");
+Route::get('team', 'HomeController@team')->name('team')->middleware("auth");
+Route::get('user_processing', 'HomeController@processing')->name('processing')->middleware("auth");
+Route::get('programs' , 'HomeController@programs')->name('programs')->middleware("auth");
+Route::get('notifications', 'HomeController@notifications')->name('notifications')->middleware("auth");
+Route::get('profile', 'HomeController@profile')->name('profile')->middleware("auth");
 Route::get('reviews', 'WebController@reviews')->name('reviews');
 Route::get('review/{id}/view', 'WebController@review')->name('review_id');
 Route::get('my_reviews', 'HomeController@my_reviews')->name('my_reviews');
@@ -80,10 +80,10 @@ Route::get('partner/user/offices', 'HomeController@partnerUserOffices')->name("p
 /*
 ************************ Shop ***********************
  */
-Route::get('product/{id}','StoreController@show');
-Route::get('story-store', 'StoreController@story');
-Route::get('activation-calendar', 'StoreController@activationCalendar');
-Route::get('main-store', 'StoreController@store');
+Route::get('product/{id}','StoreController@show')->middleware("auth");
+Route::get('story-store', 'StoreController@story')->middleware("auth");
+Route::get('activation-calendar', 'StoreController@activationCalendar')->middleware("auth");
+Route::get('main-store', 'StoreController@store')->middleware("auth");
 
 
 /*

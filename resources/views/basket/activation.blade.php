@@ -25,21 +25,30 @@
 
                 <div class="alert alert-success">
                     <h3 class="text-success"><i class="fa fa-check-circle"></i>  Статус стартового периода</h3>
+                    <b>Сумма ежемесячного личного закуп: {{ config('marketing.activation_sum') }} {{ config('marketing.dollar_symbol') }}</b><br>
                     <b>Дата вашей регистрации: {{ Auth::user()->created_at }}</b><br>
-                    <b>Дата окончание Стартового периода:  {{ \App\Facades\Balance::getActivationStartDate(Auth::user()->created_at) }}</b><br>
-                    После окончание стартового периода вам необходимо совершать ежемесячный личный закуп(активизацию), приобретая продукцию Компании на сумму не более 20 BM в интернет магазине.
+                    <b>Дата окончание Стартового периода:  {{ \App\Facades\Balance::getActivationStartDate(Auth::user()->created_at, Auth::user()->id) }}</b><br>
+                    После окончание стартового периода вам необходимо совершать ежемесячный личный закуп(активизацию), приобретая продукцию Компании на сумму не более 20 BM в интернет магазине. <br>  Если вы достигли статуса Менеджер в течение стартового периода, то со дня достижение статуса менеджер Вы должны совершать ежемесячный личный закуп(активизацию)
                 </div>
 
                 @for($i = 1; $i <= 12;$i++)
                     @php
-                        $activation = DB::table('activations')
+                        if(date('n') != $i){
+                                $activation = DB::table('activations')
                                         ->where('user_id', Auth::user()->id)
                                         ->where('year', '=', date('Y'))
                                         ->where('month', '=', $i)
                                         ->first();
+                                if(!is_null($activation)) $activation = $activation->sum;
+                                else $activation = 0;
+                        }
+                        else{
+                                $date = new \DateTime();
+                                $activation = \App\Facades\Hierarchy::orderSumOfMonth($date,Auth::user()->id);
+                        }
 
-                        if(!is_null($activation)) $activation = $activation->sum;
-                        else $activation = 0
+
+
                     @endphp
                     <div class="col-md-6 col-lg-3 col-xlg-3">
                         <div class="card card-inverse @if($activation >= 20) card-success @else @if($i+1 > date('n')) card-warning @else card-danger  @endif @endif">

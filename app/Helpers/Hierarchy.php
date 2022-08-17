@@ -29,25 +29,239 @@ class Hierarchy {
     public $sponsor_id;
 
 
-    /**
-     * @param $user_id
-     * @param $position
-     * @return Counter
+    /*************************** New METHODS for BEST FORTUNA ****************************/
+
+    /***************************
+     *  Данные
+     ***************************
      */
-    public function pvCounter($user_id,$position)
+
+    //Товароборот
+    public function pvCounterAll($user_id, $date_status = 0)
     {
-        return Counter::where('user_id',$user_id)->where('position',$position)->sum('sum');
+        $date = new \DateTime();
+        if($date_status == -1){
+            $date->modify('-1 month');
+        }
+
+        $pv_from_register  = Counter::where('user_id',$user_id)->whereBetween('created_at', [Carbon::parse($date)->startOfMonth(), Carbon::parse($date)->endOfMonth()])->sum('sum');
+
+        $pv_from_own_shop = $this->orderSumOfMonth($date,$user_id);;
+
+        $pv_from_inviters_shop = 0;
+        $inviters_list = $this->inviterList($user_id);
+        foreach ($inviters_list as $item){
+            $pv_from_inviters_shop += $this->orderSumOfMonth($date,$item->user_id);
+        }
+
+        return $pv_from_register + $pv_from_own_shop + $pv_from_inviters_shop;
+    }
+
+    //Список команды
+    public function inviterList($user_id)
+    {
+        $list = UserProgram::where('inviter_list','like','%,'.$user_id.',%')->get();
+        return $list;
+    }
+
+    //Товароборот для мировго бонуса
+    public function pvCounterForWorldBonus($date_status = 0)
+    {
+        $date = new \DateTime();
+        if($date_status == -1){
+            $date->modify('-1 month');
+        }
+
+        $pv_from_register  = Counter::whereBetween('created_at', [Carbon::parse($date)->startOfMonth(), Carbon::parse($date)->endOfMonth()])->sum('sum');
+        $pv_from_own_shop = Order::whereBetween('created_at', [Carbon::parse($date)->startOfMonth(), Carbon::parse($date)->endOfMonth()])
+            ->where('type','shop')
+            ->where(function($query){
+                $query->where('status',4)
+                    ->orWhere('status',6);
+            })
+            ->sum('amount');
+
+        return $pv_from_register + $pv_from_own_shop;
+    }
+
+    //Сумма заказов за месяц
+    public function orderSumOfMonth($date,$user_id, $date_status = 0)
+    {
+        $sum = Order::whereBetween('created_at', [Carbon::parse($date)->startOfMonth(), Carbon::parse($date)->endOfMonth()])
+            ->where('type','shop')
+            ->where('user_id', $user_id)
+            ->where(function($query){
+                $query->where('status',4)
+                    ->orWhere('status',6);
+            })
+            ->sum('amount');
+
+        return $sum;
+    }
+
+
+
+    /***************************
+     *  Процессы
+     ***************************
+     */
+
+    //Кумулятивный бонус через крон
+    public function cumulativeCalculation()
+    {
+        $users = UserProgram::where('status_id','>=',2)->get();
+        $date = new \DateTime();
+        $date->modify('-1 month');
+        $list_percentage = array( 1 =>50,  2 =>20,  3 =>10,  4 =>5,  5 =>5 );
+
+        foreach ($users as $item){
+
+            $item_status = Status::find($item->status_id);
+
+            if(\App\Facades\Hierarchy::pvCounterAll($item->id,-1) >= $item_status->matching_bonus*2){
+
+                for ($i = 1; $i <= $item_status->depth_line; $i++){
+                    $sums = 0;
+                    $level_users = UserProgram::where('inviter_list','like','%,'.$item->id.',%')->whereLevel($item->level+$i)->get();
+
+                    foreach ($level_users as $item_user){
+                        $sums += Processing::whereUserId($item_user->user_id)
+                            ->where('status', 'turnover_bonus')
+                            ->whereBetween('created_at', [Carbon::parse($date)->startOfMonth(), Carbon::parse($date)->endOfMonth()])
+                            ->sum('sum');
+                    }
+
+                    $sum = $sums*$list_percentage[$i]/100;
+
+                    if($sum > 0)
+                        Balance::changeBalance($item->id,   $sum, 'matching_bonus', $item->id, $item->program_id,$item->package_id, $item->status_id, $sums,0,$i);
+
+                }
+
+            }
+
+        }
 
     }
 
-    /**
-     * @param $user_id
-     * @return Counter
-     */
-    public function pvCounterAll($user_id)
+    //Мировой Бонус Директоров
+    public function cumulativeWorldBonusForDirectors()
     {
-        return Counter::where('user_id',$user_id)->whereBetween('created_at', [Carbon::now()->startOfMonth(), Carbon::now()->endOfMonth()])->sum('sum');
+        $percentage_for_directors = $this->pvCounterForWorldBonus()*0.015;
+        $directors_pv_sum = 0;
+
+        $directors = UserProgram::where('status_id',5)->get();
+
+        //расчет общего количество балов
+        foreach ($directors as $director){
+            if(Balance::getIncomeBalance($director->user_id) >= 400){
+                $directors_pv_sum +=  Balance::getIncomeBalance($director->user_id)/100;
+            }
+        }
+
+        //цена одного бала
+        $point_cost = $percentage_for_directors/$directors_pv_sum;
+
+        //начисление бонуса
+        foreach ($directors as $director){
+            if(Balance::getIncomeBalance($director->user_id) >= 400){
+                $sum = $point_cost * Balance::getIncomeBalance($director->user_id)/100;
+                Balance::changeBalance($director->user_id,   $sum, 'status_bonus', 1, 1, 1, 5, $point_cost,0,0);
+            }
+        }
     }
+
+    //Мировой Бонус Мастеров
+    public function cumulativeWorldBonusForMasters()
+    {
+        $percentage_for_masters = $this->pvCounterForWorldBonus()*0.045;
+        $masters_pv_sum = 0;
+
+        $masters = UserProgram::whereIn('status_id',[6,7,8,9,10])->get();
+
+        //расчет общего количество балов
+        foreach ($masters as $master){
+            if(Balance::getIncomeBalance($master->user_id) >= 0){//400
+
+                $masters_pv_sum += Balance::getIncomeBalance($master->user_id)/100 + Status::find($master->status_id)->status_bonus;
+            }
+        }
+
+        //цена одного бала
+        $point_cost = $percentage_for_masters/$masters_pv_sum;
+
+        //начисление бонуса
+        foreach ($masters as $master){
+            if(Balance::getIncomeBalance($master->user_id) >= 0){//400
+                $sum = $point_cost * (Balance::getIncomeBalance($master->user_id)/100 + Status::find($master->status_id)->status_bonus);
+                Balance::changeBalance($master->user_id,   $sum, 'status_bonus', 1, 1, 1, $master->status_id, $point_cost,0,0);
+            }
+        }
+    }
+
+    //Проверка и запись статусов активизации
+    public function checkActivationStatus()
+    {
+        $users = UserProgram::all();
+
+        foreach ($users as $user){
+            $date = new \DateTime();
+            //$date->modify('-1 month');
+
+            $sum = $this->orderSumOfMonth($date,$user->id);
+
+            if($sum >= 20) $status = 1;
+            else  $status = 0;
+
+            DB::table('activations')->updateOrInsert(
+                [
+                    'user_id' => $user->id,
+                    'month' => Carbon::parse($date)->month,
+                    'year' => Carbon::parse($date)->year,
+                ],
+                [
+                    'user_id' => $user->id,
+                    'month' => Carbon::parse($date)->month,
+                    'year' => Carbon::parse($date)->year,
+                    'sum' => $sum,
+                    'status' => $status
+                ]
+            );
+        }
+    }
+
+    //Проверка и перевод статуса
+    public function checkAndMoveNextStatus($item,$item_user_program)
+    {
+        $item_status = Status::find($item_user_program->status_id);
+        $next_status = Status::find($item_status->order+1);
+        if(!is_null($next_status)){
+            $pv = Balance::getIncomeBalance($item);
+            $next_status_pv = $next_status->pv;
+
+            if($next_status_pv <= $pv){
+                $this->moveNextStatus($item,$next_status->id,$item_user_program->program_id);
+                $item_user_program = UserProgram::where('user_id',$item)->first();
+
+                Notification::create([
+                    'user_id'   => $item,
+                    'type'      => 'move_status',
+                    'status_id' => $item_user_program->status_id
+                ]);
+            }
+        }
+    }
+
+
+
+
+
+
+    /*************************** Old METHODS from CORE ****************************/
+
+
+
+
 
     /**
      * @param $user_id
@@ -57,18 +271,6 @@ class Hierarchy {
     public function pvWeekCounter($user_id,$position)
     {
         return Counter::where('user_id',$user_id)->where('position',$position)->whereBetween('created_at', [Carbon::now()->startOfWeek(), Carbon::now()->endOfWeek()])->sum('sum');
-    }
-
-    /**
-     * @param $user_id
-     * @return Counter
-     */
-    public function pvPrevMonthCounter($user_id)
-    {
-        $date = new \DateTime();
-        $date->modify('-1 month');
-
-        return Counter::where('user_id',$user_id)->whereMonth('created_at', $date->format('m'))->sum('sum');
     }
 
 
@@ -218,31 +420,7 @@ class Hierarchy {
         return $str;
     }
 
-    public function followersList($user_id)
-    {
-        $count =  DB::table('user_programs')
-            ->where('list', 'like', '%,' . $user_id . ',%')
-            ->orWhere('list', 'like', '%,' . $user_id)
-            ->orWhere('list', 'like', $user_id . ',%')
-            ->orWhere('user_id', $user_id)
-            ->groupBy('user_id')
-            ->get();
 
-        return $count;
-    }
-
-    public function inviterList($user_id)
-    {
-        $count =  DB::table('user_programs')
-            ->where('inviter_list', 'like', '%,' . $user_id . ',%')
-            ->orWhere('inviter_list', 'like', '%,' . $user_id)
-            ->orWhere('inviter_list', 'like', $user_id . ',%')
-            ->orWhere('user_id', $user_id)
-            ->groupBy('user_id')
-            ->get();
-
-        return $count;
-    }
 
     /**
      * @param $id
@@ -496,43 +674,6 @@ class Hierarchy {
 
     }
 
-    public function controlBonus($id, $sum)
-    {
-        $user_program = UserProgram::where('user_id',$id)->first();
-        $list = explode(",", trim($user_program->inviter_list,','));
-        $list_array = array_slice($list, 0, 5);
-        $list_percentage = [50,20,10,5,5];
-        $list_small_branch = [0,0,200,600,1000,1600,2000,2000,2000,2000];
-        $list_status = [2,3,4,5,5];
-
-        foreach ($list_array as $key => $item){
-            if($item != ''){
-                $item_user_program = UserProgram::where('user_id',$item)->first();
-
-                $users = User::where('inviter_id',$item)->get();
-
-                $small_branch = 0;
-                foreach ($users as $user){
-                    $small_branch_temp = $this->pvPrevMonthCounter($user->id);
-
-                    if($small_branch > $small_branch_temp) $small_branch = $small_branch_temp;
-                }
-
-                if($item_user_program->status_id >= $list_status[$key]){
-                    if($small_branch >= $list_small_branch[$item_user_program->status_id]){
-
-                        $sum = $sum*$list_percentage[$key]/100;
-                        //Balance::changeBalance($item,   $sum, 'matching_bonus', $id,     $item_user_program->program_id,$item_user_program->package_id, $item_user_program->status_id,0,0,$key+1);
-
-
-
-                    }
-
-                }
-            }
-
-        }
-    }
 
     public function deleteNonActivations()
     {
@@ -545,136 +686,6 @@ class Hierarchy {
     }
 
 
-    /*************************** New METHODS for BEST FORTUNA ****************************/
-
-    //Получение PV  в малой ветке
-    public function getSmallBranchPv($user_id)
-    {
-        $users = User::where('inviter_id',$user_id)->get();
-
-        $small_branch = 0;
-        if(count($users)){
-            $small_branch = $this->pvCounterAll(User::where('inviter_id',$user_id)->first()->id);
-        }
-
-        foreach ($users as $item){
-            $small_branch_temp = $this->pvCounterAll($item->id);
-
-            if($small_branch > $small_branch_temp) $small_branch = $small_branch_temp;
-        }
-
-        return $small_branch;
-    }
-
-
-    //Кумулятивный бонус через крон
-    public function cumulativeCalculation()
-    {
-        $users = UserProgram::where('status_id','>=',2)->get();
-        $date = new \DateTime();
-        $date->modify('-1 month');
-        $list_percentage = array( 1 =>50,  2 =>20,  3 =>10,  4 =>5,  5 =>5 );
-
-        foreach ($users as $item){
-
-            $item_status = Status::find($item->status_id);
-
-            if(\App\Facades\Hierarchy::getSmallBranchPv($item->id) >= $item_status->matching_bonus){
-
-                for ($i = 1; $i <= $item_status->depth_line; $i++){
-                    $sums = 0;
-                    $level_users = UserProgram::where('inviter_list','like','%,'.$item->id.',%')->whereLevel($item->level+$i)->get();
-
-                    foreach ($level_users as $item_user){
-                        $sums += Processing::whereUserId($item_user->user_id)
-                            ->where('status', 'turnover_bonus')
-                            ->whereBetween('created_at', [Carbon::parse($date)->startOfMonth(), Carbon::parse($date)->endOfMonth()])
-                            ->sum('sum');
-                    }
-
-                    $sum = $sums*$list_percentage[$i]/100;
-
-                    if($sum > 0)
-                        Balance::changeBalance($item->id,   $sum, 'matching_bonus', $item->id, $item->program_id,$item->package_id, $item->status_id, $sums,0,$i);
-
-                }
-
-            }
-
-        }
-
-    }
-
-
-    //Проверка и запись статусов активизации
-    public function checkActivationStatus()
-    {
-        $users = UserProgram::all();
-
-        foreach ($users as $user){
-            $date = new \DateTime();
-            //$date->modify('-1 month');
-
-            $sum = $this->orderSumOfMonth($date,$user->id);
-
-            if($sum >= 20) $status = 1;
-            else  $status = 0;
-
-            DB::table('activations')->updateOrInsert(
-                [
-                    'user_id' => $user->id,
-                    'month' => Carbon::parse($date)->month,
-                    'year' => Carbon::parse($date)->year,
-                ],
-                [
-                    'user_id' => $user->id,
-                    'month' => Carbon::parse($date)->month,
-                    'year' => Carbon::parse($date)->year,
-                    'sum' => $sum,
-                    'status' => $status
-                ]
-            );
-        }
-    }
-
-    //Сумма заказов за месяц
-    public function orderSumOfMonth($date,$user_id)
-    {
-        $sum = Order::whereBetween('created_at', [Carbon::parse($date)->startOfMonth(), Carbon::parse($date)->endOfMonth()])
-            ->where('type','shop')
-            ->where('user_id', $user_id)
-            ->where(function($query){
-                $query->where('status',4)
-                    ->orWhere('status',6);
-            })
-            ->sum('amount');
-
-        return $sum;
-    }
-
-    //Проверка и перевод статуса
-    public function checkAndMoveNextStatus($item,$item_user_program)
-    {
-        $item_status = Status::find($item_user_program->status_id);
-        $next_status = Status::find($item_status->order+1);
-        if(!is_null($next_status)){
-            $pv = Balance::getIncomeBalance($item);
-            $next_status_pv = $next_status->pv;
-
-            if($next_status_pv <= $pv){
-                $this->moveNextStatus($item,$next_status->id,$item_user_program->program_id);
-                $item_user_program = UserProgram::where('user_id',$item)->first();
-
-                Notification::create([
-                    'user_id'   => $item,
-                    'type'      => 'move_status',
-                    'status_id' => $item_user_program->status_id
-                ]);
-            }
-        }
-    }
-
-    /*************************** OLD METHODS ****************************/
 
 
 }
