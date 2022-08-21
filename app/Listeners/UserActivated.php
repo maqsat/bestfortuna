@@ -102,56 +102,15 @@ class UserActivated
             'author_id' => $author_id
         ]);
 
-        foreach (explode(",", trim($inviter_list,',')) as $key => $item){
 
-            $item_user_program = UserProgram::where('user_id',$item)->first();
-            $item_status = Status::find($item_user_program->status_id);
-            Balance::setQV($item,$package->pv,$id,$package->id,0,$item_status->id);
+        //Реферальный бонус
+        Hierarchy::setInviterBonus($inviter,$package,$id,$program,$inviter_status);
 
-            //Реферальный и Структурный бонус
+        //Структурный бонус
+        Hierarchy::setStructureBonus($inviter_list,$package,$id,$program);
 
-            if($key < 5){
-                switch ($key) {
-                    case 0:
-                        $sum = $package->pv*$package->invite_bonus/100;
-                        $status_name = 'invite_bonus';
-                        Balance::changeBalance($item,   $sum, $status_name, $id,     $program->id,$package->id, $inviter_status->id,$package->pv,0,$key+1);
-                        break;
-                    case 1:
-                        $sum = $package->pv*4/100;
-                        $status_name = 'turnover_bonus';
-                        Balance::changeBalance($item,   $sum, $status_name, $id,     $program->id,$package->id, $inviter_status->id,$package->pv,0,$key+1);
-                        break;
-                    case 2:
-                        $sum = $package->pv*3/100;
-                        $status_name = 'turnover_bonus';
-                        Balance::changeBalance($item,   $sum, $status_name, $id,     $program->id,$package->id, $inviter_status->id,$package->pv,0,$key+1);
-                        break;
-                    case 3:
-                        $sum = $package->pv*2/100;
-                        $status_name = 'turnover_bonus';
-                        Balance::changeBalance($item,   $sum, $status_name, $id,     $program->id,$package->id, $inviter_status->id,$package->pv,0,$key+1);
-                        break;
-                    case 4:
-                        $sum = $package->pv*1/100;
-                        $status_name = 'turnover_bonus';
-                        Balance::changeBalance($item,   $sum, $status_name, $id,     $program->id,$package->id, $inviter_status->id,$package->pv,0,$key+1);
-                        break;
-                }
-
-                //Окончание Реферальный и Структурный бонус
-
-
-                //Hierarchy::controlBonus($item, $sum);
-
-            }
-
-            //Смена статуса
-            Hierarchy::checkAndMoveNextStatus($item,$item_user_program);
-
-
-        }
-
+        //Проверка и поднятие на следующий статус + ТО
+        Hierarchy::setInvitersPV($inviter_list, $package, $id);
 
 
     }

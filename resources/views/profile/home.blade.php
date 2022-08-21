@@ -177,7 +177,11 @@
                             <h3 class="card-title">Статус активизаций</h3>
                             <div class="row">
                                 <!-- Column -->
-                                @if($totalMonths < 7 && $user_program_status < 3)
+                                @php
+                                    $now = \Illuminate\Support\Carbon::now()
+                                @endphp
+
+                                @if($now->lte($activation_start_date))
                                     <div class="col-lg-12 col-xlg-12 col-md-12">
                                         <div class="alert alert-success">
                                             <button type="button" class="close" data-dismiss="alert" aria-label="Close"></button>

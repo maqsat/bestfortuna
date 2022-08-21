@@ -35,12 +35,10 @@ class BonusDistribution
         $user_id = $event->data['user_id'];
         $order_sum = $event->data['sum'];
 
-        $inviter_list = Hierarchy::getInviterList($user_id,'').',';
 
-        $inviter_list_for_slice = explode(',',trim($inviter_list,','));
-        $inviter_list = array_slice($inviter_list_for_slice, 0, 4);
+        $user_program = UserProgram::where('user_id',$user_id)->first();
 
-        foreach ($inviter_list as $key => $item){
+        foreach (Hierarchy::decompression($user_program->inviter_list,1,4) as $key => $item){
 
             $item_user_program = UserProgram::where('user_id',$item)->first();
 
@@ -51,23 +49,19 @@ class BonusDistribution
                     switch ($key) {
                         case 0:
                             $sum = $order_sum*4/100;
-                            $status_name = 'quickstart_bonus';
-                            Balance::changeBalance($item,   $sum, $status_name, $user_id, 1,$item_user_program->package_id, $item_user_program->status_id,$order_sum,0,$key+1);
+                            Balance::changeBalance($item,   $sum, 'quickstart_bonus', $user_id, 1,$item_user_program->package_id, $item_user_program->status_id,$order_sum,0,$key+1);
                             break;
                         case 1:
                             $sum = $order_sum*3/100;
-                            $status_name = 'quickstart_bonus';
-                            Balance::changeBalance($item,   $sum, $status_name, $user_id, 1,$item_user_program->package_id, $item_user_program->status_id,$order_sum,0,$key+1);
+                            Balance::changeBalance($item,   $sum, 'quickstart_bonus', $user_id, 1,$item_user_program->package_id, $item_user_program->status_id,$order_sum,0,$key+1);
                             break;
                         case 2:
                             $sum = $order_sum*2/100;
-                            $status_name = 'quickstart_bonus';
-                            Balance::changeBalance($item,   $sum, $status_name, $user_id, 1,$item_user_program->package_id, $item_user_program->status_id,$order_sum,0,$key+1);
+                            Balance::changeBalance($item,   $sum, 'quickstart_bonus', $user_id, 1,$item_user_program->package_id, $item_user_program->status_id,$order_sum,0,$key+1);
                             break;
                         case 3:
                             $sum = $order_sum*1/100;
-                            $status_name = 'quickstart_bonus';
-                            Balance::changeBalance($item,   $sum, $status_name, $user_id, 1,$item_user_program->package_id, $item_user_program->status_id,$order_sum,0,$key+1);
+                            Balance::changeBalance($item,   $sum, 'quickstart_bonus', $user_id, 1,$item_user_program->package_id, $item_user_program->status_id,$order_sum,0,$key+1);
                             break;
                     }
 

@@ -32,7 +32,10 @@
                                     <input type="checkbox" name="remember" id="remember" {{ old('remember') ? 'checked' : '' }}>
                                     <label for="checkbox-signup"> {{ __('app.remember me') }} </label>
                                 </div>
-                                <a href="javascript:void(0)" id="to-recover" class="text-dark pull-right"><i class="fa fa-lock m-r-5"></i> {{ __('app.forgot pwd?') }}</a>
+<!--                                <a href="javascript:void(0)" id="to-recover" class="text-dark pull-right"><i class="fa fa-lock m-r-5"></i> {{ __('app.forgot pwd?') }}</a>-->
+                                <a href="https://wa.me/+77015309871?text=Я забыл пароль от Бек офиса"  target="_blank" class="text-dark pull-right"><i class="fa fa-lock m-r-5"></i> {{ __('app.forgot pwd?') }}</a>
+
+
                             </div>
 
                         </div>

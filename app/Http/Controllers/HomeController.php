@@ -108,7 +108,7 @@ class HomeController extends Controller
 
             if(Auth::user()->country_id == 1){
                 $currency_symbol = '₸';
-                $current_currency = env('DOLLAR_COURSE');
+                $current_currency = config('marketing.dollar_course');
             }
             else{
                 $currency_symbol = '$';

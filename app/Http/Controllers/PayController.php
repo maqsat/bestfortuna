@@ -57,7 +57,7 @@ class PayController extends Controller
             $package_id  = $package->id;
             $current_package = Package::find($request->upgrade);
             if (is_null($current_package))  $cost = $package->cost - 0;
-            else $cost = $package->cost - $current_package->cost;
+            else $cost = Hierarchy::upgradeCost($current_package,$package, Auth::user());
 
             $order =  Order::updateOrCreate(
                 [
@@ -76,6 +76,7 @@ class PayController extends Controller
                 ->join('products','basket_good.good_id','=','products.id')
                 ->where(['basket_id' => $request->basket])
                 ->sum(DB::raw('basket_good.quantity*products.partner_cost'));//['products.*','basket_good.quantity']
+            $cost = $cost + $cost*0.05;
 
             $order =  Order::updateOrCreate(
                 [
@@ -93,7 +94,7 @@ class PayController extends Controller
         else{
             if(!is_null($request->package)){
                 $package = Package::find($request->package);
-                $cost = ($package->cost + $package->old_cost);
+                $cost = $package->cost + $package->old_cost;
                 $package_id  = $package->id;
             }
             else dd('Пакет не выбран');
@@ -126,7 +127,7 @@ class PayController extends Controller
 
             try {
                 $payPost = PayPost::generateUrl([
-                    'amount' => $cost*env('DOLLAR_COURSE'),
+                    'amount' => $cost*config('marketing.dollar_course'),
                     //'amount' => 10,
                     'email' => Auth::user()->email,
                     'language' => 'ru',

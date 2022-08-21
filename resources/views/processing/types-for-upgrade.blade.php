@@ -26,6 +26,7 @@
                                                 $current_package_id = 0;
                                             }
 
+                                            $all_cost = \App\Facades\Hierarchy::upgradeCost($current_package,$package, Auth::user())
                                         @endphp
                                         <table class="table stylish-table">
                                             <thead>
@@ -38,7 +39,7 @@
                                             </thead>
                                             <tbody>
                                             <tr>
-                                                <td><span class="round"><i class="ti-shopping-cart"></i></span></td>
+                                                <td><span class="round bg-danger"><i class="ti-shopping-cart"></i></span></td>
                                                 <td>
                                                     <h6><a href="javascript:void(0)" class="link">Текущий пакет {{ $current_package_title }}</a></h6><small class="text-muted">Package ID : {{ $current_package_id}}  </small></td>
                                                 <td>
@@ -64,8 +65,8 @@
                                                 </td>
                                                 @if(!is_null($package))
                                                     <td><h5>1</h5></td>
-                                                    <td><h5>${{ $package->cost - $current_package_cost }}</h5></td>
-                                                    <?php $all_cost = $package->cost - $current_package_cost ?>
+                                                    <td><h5>${{ $all_cost }}</h5></td>
+
                                                 @endif
                                             </tr>
                                             </tbody>
@@ -83,75 +84,16 @@
                                 <div class="col-lg-2 col-md-6  img-responsive">
                                     <!-- Card -->
                                     <div class="card">
-                                        <img class="card-img-top img-responsive " src="/nrg/chek.jpeg" alt="Card image cap">
+                                        <img class="card-img-top img-responsive " src="/nrg/chek.jpg" alt="Card image cap">
                                         <div class="card-block">
                                             <h4 class="card-title">Скан квитанции</h4>
                                             <p class="card-text">Прикрепите Скан квитанции к форме</p>
                                             <a href="/pay-prepare?type=manual&upgrade={{$current_package_id}}&@if(!is_null($package))package={{ $package->id }} @endif" class="btn btn-success m-t-10">Оплатить ${{ $all_cost }}</a>
+                                            <p class="card-text">В тенге {{ $all_cost*config('marketing.dollar_course') }} {{ config('marketing.tenge_symbol') }}</p>
                                         </div>
                                     </div>
                                     <!-- Card -->
                                 </div>
-                                <div class="col-lg-2 col-md-6  img-responsive">
-                                    <!-- Card -->
-                                    <div class="card">
-                                        <img class="card-img-top img-responsive" src="/nrg/paypost.png" alt="Card image cap">
-                                        <div class="card-block">
-                                            <h4 class="card-title">PayPost</h4>
-                                            <p class="card-text">В карте должен быть подключен 3D secure</p>
-                                            <a href="/pay-prepare?type=paypost&upgrade={{$current_package_id}}&@if(!is_null($package))package={{ $package->id }}@endif" class="btn btn-success m-t-10">Оплатить ${{ $all_cost }}</a>
-                                        </div>
-                                    </div>
-                                    <!-- Card -->
-                                </div>
-                                {{--<div class="col-lg-2 col-md-6  img-responsive">
-                                    <!-- Card -->
-                                    <div class="card">
-                                        <img class="card-img-top img-responsive" src="https://opencartforum.com/screenshots/monthly_2018_11/robokassa.thumb.png.b405b854136ced060d31d9a19ad41189.png" alt="Card image cap">
-                                        <div class="card-block">
-                                            <h4 class="card-title">Robokassa</h4>
-                                            <p class="card-text">Поддерживает все карты Visa и Master Card</p>
-                                            <a href="/pay-prepare?type=robokassa&upgrade={{$current_package_id}}&@if(!is_null($package))package={{ $package->id }}@endif" class="btn btn-success m-t-10">Оплатить ${{ $all_cost }}</a>
-                                        </div>
-                                    </div>
-                                    <!-- Card -->
-                                </div>--}}
-                                <div class="col-lg-2 col-md-6  img-responsive">
-                                    <!-- Card -->
-                                    <div class="card">
-                                        <img class="card-img-top img-responsive" src="https://makoli.com/wp-content/uploads/payeer-logo.png" alt="Card image cap">
-                                        <div class="card-block">
-                                            <h4 class="card-title">Payeer</h4>
-                                            <p class="card-text">Оплачивайте через электронный кошелёк</p>
-                                            <a href="/pay-prepare?type=payeer&upgrade={{$current_package_id}}&@if(!is_null($package))package={{ $package->id }}@endif" class="btn btn-success m-t-10">Оплатить ${{ $all_cost }}</a>
-                                        </div>
-                                    </div>
-                                    <!-- Card -->
-                                </div>
-                                {{--<div class="col-lg-2 col-md-6  img-responsive">
-                                    <!-- Card -->
-                                    <div class="card">
-                                        <img class="card-img-top img-responsive" src="/nrg/paybox.png" alt="Card image cap">
-                                        <div class="card-block">
-                                            <h4 class="card-title">Paybox</h4>
-                                            <p class="card-text">Поддерживает все карты Visa и Master Card</p>
-                                            <a href="/pay-prepare?type=paybox&upgrade={{$current_package_id}}&@if(!is_null($package))package={{ $package->id }}@endif" class="btn btn-success m-t-10">Оплатить ${{ $all_cost }}</a>
-                                        </div>
-                                    </div>
-                                    <!-- Card -->
-                                </div>--}}
-                                {{--<div class="col-lg-2 col-md-6  img-responsive">
-                                    <!-- Card -->
-                                    <div class="card">
-                                        <img class="card-img-top img-responsive" src="https://indigo24.com/img/logo.png" alt="Card image cap">
-                                        <div class="card-block">
-                                            <h4 class="card-title">indigo24</h4>
-                                            <p class="card-text">Отечественный электронный кошелёк</p>
-                                            <a href="/pay-prepare?type=indigo&upgrade={{$current_package_id}}&@if(!is_null($package))package={{ $package->id }}@endif" class="btn btn-success m-t-10">Оплатить ${{ $all_cost }}</a>
-                                        </div>
-                                    </div>
-                                    <!-- Card -->
-                                </div>--}}
                             </div>
                             <!-- Row -->
                         </div>

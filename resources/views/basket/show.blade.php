@@ -92,12 +92,9 @@
                             <div class="col-md-12">
                                 <div class="pull-right m-t-30 text-right">
                                     <p>Сумма: $<span id="total_sum">{{ $all }}</span></p>
-                                  {{--  <p>Доставка : $8 </p>--}}
-                                   {{-- <p>Сумма CV: <span id="all_cv">{{ $all_cv }}</span> cv</p>--}}
-                                    <p>Сумма PV: <span id="all_pv">{{$all_pv}}</span> pv</p>
-                                   {{-- <p>Итого в тенге: <span id="total_sum_tg">{{ ($all+0)*385 }}</span> ₸</p>--}}
+                                    <p>Складской сбор(5%): $<span id="storage_sum">{{$all*0.05}}</span></p>
                                     <hr>
-                                    <h3><b>Итого :</b> $<span id="itogo">{{ $all+0 }}</span></h3>
+                                    <h3><b>Итого :</b> $<span id="itogo">{{ $all+$all*0.05 }}</span></h3>
                                 </div>
                                 <div class="clearfix"></div>
                                 <hr>
@@ -156,18 +153,13 @@
                     if(increase) {
                         /*quantity of product*/
                         $("#q" + data["goods"][row_order]["id"]).html(data["quantity"]);
-                        /*total cv of product*/
-                      /*  $("#cv" + data["goods"][row_order]["id"]).html(data["product_total_cv"]);*/
-                        /*total qv of product*/
                         $("#pv" + data["goods"][row_order]["id"]).html(data["product_total_pv"]);
                         /*total price of product*/
                         $("#product_sum" + data["goods"][row_order]["id"]).html(data["product_total_sum"]);
-                        /*Total cv*/
-                      /*  $("#all_cv").html(parseInt($("#all_cv").text()) + parseInt(data["cv"]));*/
-                        /*Total qv*/
                         $("#all_pv").html(parseInt($("#all_pv").text()) + parseInt(data["pv"]));
                         /*Total sum*/
                         $("#total_sum").html(parseInt($("#total_sum").text()) + parseInt(data["cost"]));
+                        $("#storage_sum").html(parseInt($("#total_sum").text())*0.05);
                         /*Total sum tg*/
                         $("#total_sum_tg").html(parseInt($("#total_sum_tg").text()) + parseInt(data["cost"]) * 385);
                     }
@@ -177,26 +169,18 @@
                         }
                         /*quantity of product*/
                         $("#q" + data["goods"][row_order]["id"]).html(data["quantity"]);
-                        /*total cv of product*/
-                      /*  $("#cv" + data["goods"][row_order]["id"]).html(data["product_total_cv"]);*/
-                        /*total qv of product*/
                         $("#pv" + data["goods"][row_order]["id"]).html(data["product_total_pv"]);
                         /*total price of product*/
                         $("#product_sum" + data["goods"][row_order]["id"]).html(data["product_total_sum"]);
-                        /*Total cv*/
-                     /*   $("#all_cv").html(parseInt($("#all_cv").text()) - parseInt(data["cv"]));*/
-                        /*Total qv*/
                         $("#all_pv").html(parseInt($("#all_pv").text()) - parseInt(data["pv"]));
                         /*Total sum*/
                         $("#total_sum").html(parseInt($("#total_sum").text()) - parseInt(data["cost"]));
+                        $("#storage_sum").html();
                         /*Total sum tg*/
                         $("#total_sum_tg").html(parseInt($("#total_sum_tg").text()) - parseInt(data["cost"]) * 385);
                     }
                     else if(is_delete){
                         $(button).closest('tr').remove();
-                        /*Total cv*/
-                     /*   $("#all_cv").html(parseInt($("#all_cv").text()) - parseInt(data["product_total_cv"]));*/
-                        /*Total qv*/
                         $("#all_pv").html(parseInt($("#all_pv").text()) - parseInt(data["product_total_pv"]));
                         /*Total sum*/
                         $("#total_sum").html(parseInt($("#total_sum").text()) - parseInt(data["product_total_sum"]));
@@ -204,7 +188,7 @@
                         $("#total_sum_tg").html(parseInt($("#total_sum_tg").text()) - parseInt(data["product_total_sum"]) * 385);
                     }
                     /*Itogo*/
-                    $("#itogo").html(parseInt($("#total_sum").text()));
+                    $("#itogo").html(parseInt(($("#total_sum")).text()) + parseInt($("#total_sum").text())*0.05);
 
                     $(".minusButton").attr("disabled", false);
 

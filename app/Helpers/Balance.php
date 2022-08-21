@@ -66,10 +66,24 @@ class Balance {
         return round($sum, 2);
     }
 
+    public function getIncomePrevMonthBalance($user_id)
+    {
+        $date = new \DateTime();
+        $date->modify('-1 month');
+
+        $sum =  Processing::whereUserId($user_id)
+            ->whereIn('status', ['invite_bonus','turnover_bonus', 'matching_bonus', 'cashback', 'quickstart_bonus', 'status_bonus', 'admin_add'])
+            ->whereBetween('created_at', [Carbon::parse($date)->startOfMonth(), Carbon::parse($date)->endOfMonth()])
+            ->sum('sum');
+        return round($sum, 2);
+    }
+
+
 
     public function getActivationStartDate($user_created_at, $user_id)
     {
-        $user_program =  UserProgram::find($user_id);
+        $user_program =  UserProgram::where('user_id',$user_id)->first();
+
         if($user_program->status_id < 3){
             $date1 = new \DateTime($user_created_at);
             $date2 = new \DateTime();;
