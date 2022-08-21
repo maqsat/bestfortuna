@@ -699,15 +699,12 @@ class UserController extends Controller
 
     public function activationUpgrade($order_id)
     {
-        if(!Gate::allows('admin_user_upgrade')) {
-            abort('401');
-        }
 
         $order = Order::find($order_id);
 
-        if(true){
-            tap(Order::where( 'id',$order_id))
-                ->update(
+        if(!is_null($order)){
+
+                Order::where( 'id',$order_id)->update(
                     [
                         'status' => 4,
                     ]
@@ -722,8 +719,10 @@ class UserController extends Controller
                 'type'      => 'admin_upgrade_user',
                 'message'   => 'Апгрейд пользователя ' . $user->name . ' ( ' . $user->id . ' ) ',
             ]);
+
             return "<h2>Success upgraded!</h2>";
         }
+
         return "<h2>Already upgraded!</h2>";
     }
 

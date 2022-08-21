@@ -67,43 +67,6 @@ class StoreController extends Controller
         return view('basket.activation', compact('user_program'));
     }
 
-    public function activationCore()
-    {
-        $sp_date = Notification::where('status_id','=',2)->where('user_id','=',Auth::user()->id)->first();
-        $start_activation = Carbon::createFromDate(2020, 01, 01);
-
-        if($sp_date->created_at < $start_activation) $startDate = date("Y-m-d",strtotime($start_activation));
-        else $startDate = date("Y-m-d",strtotime($sp_date->created_at));
-
-        $endDate = date("Y-m-d");
-
-        $months = Balance::getMonthByRange($startDate,$endDate);
-
-
-        $data = [];
-
-        foreach ($months as $key => $item){
-            $data[$key]['month'] = $item;
-
-            $startDate = date("Y-m-d",strtotime($item));
-            $endDate = date('Y-m-d',strtotime(date("Y-m-t") . "+1 days"));
-
-            $sum = Order::whereBetween('updated_at',[$startDate,$endDate])
-                ->where('type','shop')
-                ->where('user_id', Auth::user()->id)
-                ->where(function($query){
-                    $query->where('status',4)
-                        ->orWhere('status',6);
-                })
-                ->sum('amount');
-
-
-            $data[$key]['cost'] =   $sum/env('DOLLAR_COURSE');;
-            $data[$key]['activation'] = env('ACTIVATION_COST');
-        }
-
-        return $data;
-    }
 
     public function show($id){
         if(Auth::check()){

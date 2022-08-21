@@ -99,6 +99,107 @@ class Hierarchy {
         return $sum;
     }
 
+    //Проверка активен ли пользователь
+    public function checkIsActive($user_id)
+    {
+        if($user_id == 1)  return true;
+
+        $date = new \DateTime();
+        //$date->modify('-1 month');
+
+        $activation_status = DB::table('activations')
+            ->where('user_id',$user_id)
+            ->where('month',Carbon::parse($date)->month)
+            ->where('year',Carbon::parse($date)->year)
+            ->where('status',1)
+            ->first();
+
+        if(!is_null($activation_status)) return true;
+        else{
+            $user_program = UserProgram::where('user_id',$user_id)->first();
+
+            if($user_program->status_id >= 3) return false;
+            else {
+                $user = User::find($user_id);
+                $activation_start_date = Balance::getActivationStartDate($user->created_at, $user_id);
+                $activation_start_date = Carbon::parse($activation_start_date);
+                $now = Carbon::parse($date);
+
+                if($now->lte($activation_start_date)){ // less than or equals
+                    return true;
+                }
+                else{
+                    return false;
+                }
+
+            }
+        }
+    }
+
+    //Декомпрессия
+    public function decompression($list, $check_inviter, $length)
+    {
+        $list = explode(",", trim($list,','));
+        $new_list = [];
+
+        foreach ($list as $key => $item)
+        {
+
+            if( $key === 0 && $check_inviter === 0 )   continue;
+            else{
+
+                if($this->checkIsActive($item)){
+                    $new_list[] = $item;
+                }
+
+                if(count($new_list) == $length) break;
+            }
+
+        }
+
+        return $new_list;
+
+    }
+
+    //Цена апгрейде
+    public function upgradeCost($current_package, $package, $user, $only_cost = 0)
+    {
+        $created_at = Carbon::parse($user->created_at);
+
+        $date = new \DateTime();
+        $now = Carbon::parse($date)->format('m');
+
+
+        if($created_at->format('m') == $now){
+            if($only_cost == 0)
+                return  $package->cost+$package->old_cost - $current_package->cost+$current_package->old_cost ;
+            else  return  $package->cost - $current_package->cost;
+        }
+        else{
+            if($only_cost == 0)
+                return  $package->cost+$package->old_cost;
+            else  return  $package->cost;
+        }
+
+    }
+
+    //PV апгрейде
+    public function upgradeCostPv($current_package, $package, $user)
+    {
+        $created_at = Carbon::parse($user->created_at);
+
+        $date = new \DateTime();
+        $now = Carbon::parse($date)->format('m');
+
+
+        if($created_at->format('m') == $now){
+            return  $package->pv-$current_package->pv;
+        }
+        else{
+            return $package->pv;
+        }
+
+    }
 
 
     /***************************
@@ -116,28 +217,31 @@ class Hierarchy {
 
         foreach ($users as $item){
 
-            $item_status = Status::find($item->status_id);
+            if($this->checkIsActive($item->id)){
 
-            if(\App\Facades\Hierarchy::pvCounterAll($item->id,-1) >= $item_status->matching_bonus*2){
+                $item_status = Status::find($item->status_id);
 
-                for ($i = 1; $i <= $item_status->depth_line; $i++){
-                    $sums = 0;
-                    $level_users = UserProgram::where('inviter_list','like','%,'.$item->id.',%')->whereLevel($item->level+$i)->get();
+                if(\App\Facades\Hierarchy::pvCounterAll($item->id,-1) >= $item_status->matching_bonus*2){
 
-                    foreach ($level_users as $item_user){
-                        $sums += Processing::whereUserId($item_user->user_id)
-                            ->where('status', 'turnover_bonus')
-                            ->whereBetween('created_at', [Carbon::parse($date)->startOfMonth(), Carbon::parse($date)->endOfMonth()])
-                            ->sum('sum');
+                    for ($i = 1; $i <= $item_status->depth_line; $i++){
+                        $sums = 0;
+                        $level_users = UserProgram::where('inviter_list','like','%,'.$item->id.',%')->whereLevel($item->level+$i)->get();
+
+                        foreach ($level_users as $item_user){
+                            $sums += Processing::whereUserId($item_user->user_id)
+                                ->where('status', 'turnover_bonus')
+                                ->whereBetween('created_at', [Carbon::parse($date)->startOfMonth(), Carbon::parse($date)->endOfMonth()])
+                                ->sum('sum');
+                        }
+
+                        $sum = $sums*$list_percentage[$i]/100;
+
+                        if($sum > 0)
+                            Balance::changeBalance($item->id,   $sum, 'matching_bonus', $item->id, $item->program_id,$item->package_id, $item->status_id, $sums,0,$i);
+
                     }
 
-                    $sum = $sums*$list_percentage[$i]/100;
-
-                    if($sum > 0)
-                        Balance::changeBalance($item->id,   $sum, 'matching_bonus', $item->id, $item->program_id,$item->package_id, $item->status_id, $sums,0,$i);
-
                 }
-
             }
 
         }
@@ -154,9 +258,13 @@ class Hierarchy {
 
         //расчет общего количество балов
         foreach ($directors as $director){
-            if(Balance::getIncomeBalance($director->user_id) >= 400){
-                $directors_pv_sum +=  Balance::getIncomeBalance($director->user_id)/100;
+            if($this->checkIsActive($director->user_id)){
+                $balance = Balance::getIncomePrevMonthBalance($director->user_id);
+                if($balance >= 400){
+                    $directors_pv_sum +=  $balance/100;
+                }
             }
+
         }
 
         //цена одного бала
@@ -164,9 +272,12 @@ class Hierarchy {
 
         //начисление бонуса
         foreach ($directors as $director){
-            if(Balance::getIncomeBalance($director->user_id) >= 400){
-                $sum = $point_cost * Balance::getIncomeBalance($director->user_id)/100;
-                Balance::changeBalance($director->user_id,   $sum, 'status_bonus', 1, 1, 1, 5, $point_cost,0,0);
+            if($this->checkIsActive($director->user_id)){
+                $balance = Balance::getIncomePrevMonthBalance($director->user_id);
+                if($balance >= 400){
+                    $sum = $point_cost * $balance/100;
+                    Balance::changeBalance($director->user_id,   $sum, 'status_bonus', 1, 1, 1, 5, $point_cost,0,0);
+                }
             }
         }
     }
@@ -181,9 +292,10 @@ class Hierarchy {
 
         //расчет общего количество балов
         foreach ($masters as $master){
-            if(Balance::getIncomeBalance($master->user_id) >= 0){//400
+            $balance = Balance::getIncomePrevMonthBalance($master->user_id);
+            if($balance >= 400){//
 
-                $masters_pv_sum += Balance::getIncomeBalance($master->user_id)/100 + Status::find($master->status_id)->status_bonus;
+                $masters_pv_sum += $balance/100 + Status::find($master->status_id)->status_bonus;
             }
         }
 
@@ -192,8 +304,9 @@ class Hierarchy {
 
         //начисление бонуса
         foreach ($masters as $master){
-            if(Balance::getIncomeBalance($master->user_id) >= 0){//400
-                $sum = $point_cost * (Balance::getIncomeBalance($master->user_id)/100 + Status::find($master->status_id)->status_bonus);
+            $balance = Balance::getIncomePrevMonthBalance($master->user_id);
+            if($balance >= 400){//
+                $sum = $point_cost * ($balance/100 + Status::find($master->status_id)->status_bonus);
                 Balance::changeBalance($master->user_id,   $sum, 'status_bonus', 1, 1, 1, $master->status_id, $point_cost,0,0);
             }
         }
@@ -252,8 +365,73 @@ class Hierarchy {
         }
     }
 
+    //Проверка и поднятие на следующий статус + ТО
+    public function setInvitersPV($inviter_list, $package, $id)
+    {
+        foreach (explode(",", trim($inviter_list,',')) as $key => $item){
 
+            $item_user_program = UserProgram::where('user_id',$item)->first();
+            $item_status = Status::find($item_user_program->status_id);
 
+            Balance::setQV($item,$package->pv,$id,$package->id,0,$item_status->id);
+
+            //Смена статуса
+            $this->checkAndMoveNextStatus($item,$item_user_program);
+
+        }
+    }
+
+    //Структурный бонус
+    public function setStructureBonus($inviter_list,$package,$id,$program, $cost = 0)
+    {
+
+        foreach (Hierarchy::decompression($inviter_list,0,4) as $key => $item){
+            $item_user_program = UserProgram::where('user_id',$item)->first();
+            $item_status = Status::find($item_user_program->status_id);
+
+            if($cost == 0 ){
+                $sum = $package->pv;
+            }
+            else{
+                $sum = $cost;
+            }
+
+            switch ($key) {
+                case 0:
+                    Balance::changeBalance($item,   $sum*4/100, 'turnover_bonus', $id,     $program->id,$package->id,  $item_status->id,$package->pv,0,$key+1);
+                    break;
+                case 1:
+                    Balance::changeBalance($item,   $sum*3/100, 'turnover_bonus', $id,     $program->id,$package->id,  $item_status->id,$package->pv,0,$key+1);
+                    break;
+                case 2:
+                    Balance::changeBalance($item,   $sum*2/100, 'turnover_bonus', $id,     $program->id,$package->id,  $item_status->id,$package->pv,0,$key+1);
+                    break;
+                case 3:
+                    Balance::changeBalance($item,   $sum*1/100, 'turnover_bonus', $id,     $program->id,$package->id, $item_status->id,$package->pv,0,$key+1);
+                    break;
+            }
+        }
+
+    }
+
+    //Реферальный бонус
+    public function setInviterBonus($inviter,$package,$id,$program,$inviter_status, $cost = 0)
+    {
+        if($this->checkIsActive($inviter->id)){
+
+            if($cost == 0 ){
+                $sum = $package->pv;
+            }
+            else{
+                $sum = $cost;
+            }
+
+            $inviter_package = Package::find($inviter->package_id);
+            Balance::changeBalance($inviter->id,    $sum*$inviter_package->invite_bonus/100, 'invite_bonus', $id,     $program->id,$package->id, $inviter_status->id,$package->pv,0);
+
+        }
+
+    }
 
 
 

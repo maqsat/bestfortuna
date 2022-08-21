@@ -65,10 +65,10 @@
                                                         <div class="pricing-header">
                                                             @if($item->id == 3) <h4 class="price-lable text-white bg-warning"> Popular</h4>@endif
                                                             <h4 class="text-center">{{ $item->title }}</h4>
-                                                            <h2 class="text-center"><span class="price-sign">$</span>{{ $item->cost-$current_package_cost }}</h2>
+                                                            <h2 class="text-center"><span class="price-sign">$</span>{{ \App\Facades\Hierarchy::upgradeCost($current_package,$item, Auth::user()) }}</h2>
                                                         </div>
                                                         <div class="price-table-content">
-                                                            <div class="price-row"><i class="fa fa-product-hunt"></i> {{ $item->pv-$current_package_pv }} PV</div>
+                                                            <div class="price-row"><i class="fa fa-product-hunt"></i> {{ \App\Facades\Hierarchy::upgradeCostPv($current_package,$item, Auth::user()) }} PV</div>
                                                             <div class="price-row"><i class="fa fa-money"></i> {{ $item->income }}</div>
                                                             <div class="price-row"><i class="fa fa-star"></i> {{ $item->statusName->title }}</div>
                                                             <div class="price-row"><i class="fa fa-shopping-basket"></i> {{ $item->goods }}</div>

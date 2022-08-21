@@ -20,7 +20,7 @@
                                         <div class="card-block">
                                             <h4 class="card-title">Чек Kaspi</h4>
                                             <p class="card-text">Прикрепите Скан квитанции к форме</p>
-                                            <a href="/pay-prepare?type=manual&@if(!is_null($basket))basket={{ $basket->id }} @endif" class="btn btn-success m-t-10">Оплатить ${{ $all_cost }}</a>
+                                            <a href="/pay-prepare?type=manual&@if(!is_null($basket))basket={{ $basket->id }} @endif" class="btn btn-success m-t-10">Оплатить ${{  $all_cost+$all_cost*0.05 }}</a>
                                         </div>
                                     </div>
                                     <!-- Card -->
