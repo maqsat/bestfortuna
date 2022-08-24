@@ -34,7 +34,7 @@
                     @endif
 
 
-                    @if(is_null($orders) or $orders->status == 12)
+                    @if(is_null($orders) or $orders->status == 12 or $orders->status == 0)
                         @if(!isset($fk))
                             @if(is_null($orders) or $orders->status != 12)
                                 <div class="alert alert-danger">
