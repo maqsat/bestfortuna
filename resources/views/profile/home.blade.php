@@ -257,7 +257,7 @@
                             <div class="input-group m-t-15">
                                 <script src="https://yastatic.net/es5-shims/0.0.2/es5-shims.min.js"></script>
                                 <script src="https://yastatic.net/share2/share.js"></script>
-                                <div class="ya-share2" data-services="vkontakte,facebook,odnoklassniki,moimir,viber,whatsapp,skype,telegram" data-title="Реферальная ссылка от {{ Auth::user()->name }}" data-url="https://nrg-max.com/register?inviter_id={{ Auth::user()->id }}"></div>
+                                <div class="ya-share2" data-services="vkontakte,facebook,odnoklassniki,moimir,viber,whatsapp,skype,telegram" data-title="Реферальная ссылка от {{ Auth::user()->name }}" data-url="{{env('APP_URL', false)}}/register?inviter_id={{ Auth::user()->id }}"></div>
                             </div>
                         </div>
                     </div>
