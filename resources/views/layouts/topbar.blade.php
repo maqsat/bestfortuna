@@ -12,7 +12,7 @@
                     <!-- Dark Logo icon -->
                     <img src="/bestfortune/logo-lg.svg" alt="homepage" class="dark-logo" />
                     <!-- Light Logo icon -->
-                    <img src="/unilife/logo.svg" alt="homepage" class="light-logo" />
+                    <img src="/bestfortune/logo-lg.svg" alt="homepage" class="light-logo" />
                     </b>
                     <!--End Logo icon -->
             </a>

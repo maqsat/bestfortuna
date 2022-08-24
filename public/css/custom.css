@@ -27,6 +27,10 @@
     width: 200px;
 }
 
+.topbar .top-navbar .navbar-header .navbar-brand {
+    margin-left: 15px;
+}
+
 .card-outline-success .card-header, .card-outline-info .card-header{
     color: #fff;
     font-weight: 700;
