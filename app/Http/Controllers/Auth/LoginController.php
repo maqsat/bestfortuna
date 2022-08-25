@@ -58,11 +58,18 @@ class LoginController extends Controller
     {
         $login = request()->input('login');
 
-        $fieldType = filter_var($login, FILTER_VALIDATE_EMAIL) ? 'email' : 'id_number';
+        if(preg_match('/^([0-9\s\-\+\(\)]*)$/', $login) && strlen($login) >= 10){
+            $fieldType = 'number';
+        } elseif (filter_var($login, FILTER_VALIDATE_EMAIL)) {
+            $fieldType = 'email';
+        } else {
+            $fieldType = 'id_number';
+        }
 
         request()->merge([$fieldType => $login]);
 
         return $fieldType;
+
     }
 
     /**
