@@ -45,17 +45,23 @@
                                     </thead>
                                     <tbody>
                                     @foreach($list as $item)
-                                        <tr>
+                                        <tr @if($item->status == 0) class="text-danger" @endif>
 
-                                            <td class="text-center">{{ $item->id_number }}</td>
-                                            <td><span class="text-success">{{ $item->name }}</span></td>
-                                            <td class="txt-oflo">{{ \App\Models\Status::find(\App\Models\UserProgram::whereUserId($item->id)->first()->status_id)->title }}</td>
-                                            <td><span class="text-success">{{ \App\Facades\Hierarchy::pvCounterAll($item->id) }}</span></td>
-                                            <td><span class="text-success">{{ \App\Facades\Balance::getIncomeBalance($item->id) }}</span></td>
-                                            <td class="txt-oflo">@if($item->package_id != 0)  {{ \App\Models\Package::find($item->package_id)->title }} @else Без пакета @endif</td>
-                                            <td><span class="text-success">{{ $item->number }}</span></td>
-                                            <td><span class="text-success">{{ $item->email }}</span></td>
-                                            <td><span class="text-success">{{ $item->created_at }}</span></td>
+                                            <td>{{ $item->id_number }}</td>
+                                            <td>{{ $item->name }}</td>
+                                            <td>
+                                                @if($item->status == 1)
+                                                    {{ \App\Models\Status::find(\App\Models\UserProgram::whereUserId($item->id)->first()->status_id)->title }}
+                                                @else
+                                                    Не активирован
+                                                @endif
+                                            </td>
+                                            <td>{{ \App\Facades\Hierarchy::pvCounterAll($item->id) }}</td>
+                                            <td>{{ \App\Facades\Balance::getIncomeBalance($item->id) }}</td>
+                                            <td>@if($item->package_id != 0)  {{ \App\Models\Package::find($item->package_id)->title }} @else Без пакета @endif</td>
+                                            <td>{{ $item->number }}</td>
+                                            <td>{{ $item->email }}</td>
+                                            <td>{{ $item->created_at }}</td>
                                         </tr>
                                     @endforeach
                                     </tbody>

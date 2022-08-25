@@ -596,7 +596,7 @@ class HomeController extends Controller
 
     public function invitations()
     {
-        $list = User::where('inviter_id',Auth::user()->id)->whereStatus(1)->get();
+        $list = User::where('inviter_id',Auth::user()->id)->get();
 
         return view('profile.invitations', compact('list'));
     }

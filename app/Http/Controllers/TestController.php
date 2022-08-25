@@ -30,7 +30,7 @@ class TestController extends Controller
     public function tester()
     {
 
-       dd(config('marketing.dollar_course'));
+      dd(Balance::getIncomeBalance(14));
 
 
     }
