@@ -704,12 +704,6 @@ class UserController extends Controller
 
         if(!is_null($order)){
 
-                Order::where( 'id',$order_id)->update(
-                    [
-                        'status' => 4,
-                    ]
-                );
-
             event(new Upgrade($order = $order));
 
             $user = User::find($order->user_id);
