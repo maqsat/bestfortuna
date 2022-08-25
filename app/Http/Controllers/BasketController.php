@@ -14,6 +14,16 @@ use Illuminate\Support\Collection;
 
 class BasketController extends Controller
 {
+    /**
+     * Create a new controller instance.
+     *
+     */
+    public function __construct()
+    {
+        $this->middleware('auth');
+        $this->middleware('activation')->only('index');
+    }
+
     public function index(Request $request)
     {
         $orders = Order::where('user_id', Auth::user()->id)->where('type','shop')->whereNotIn('status',[1,6,4])->where('payment','manual')->orderBy('id','desc')->first();

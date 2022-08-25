@@ -39,6 +39,12 @@
                             @if(is_null($orders) or $orders->status != 12)
                                 <div class="alert alert-danger">
                                     <h3 class="text-danger"><i class="fa fa-exclamation-triangle"></i> Примечание!</h3> Вам необходимо выбрать пакет и оплатить. У вас есть 24 часа чтобы активировать кабинет, по истечению срока ваш кабинет удалится.
+                                    <ul>
+                                        <li>{{ Auth::user()->name }}</li>
+                                        <li>{{ Auth::user()->number }}</li>
+                                        <li>Спонсор: {{ \App\User::find(Auth::user()->inviter_id)->name }}</li>
+                                        <li>{{ \App\Models\City::find(Auth::user()->city_id)->title }}</li>
+                                    </ul>
                                 </div>
                             @endif
                         @endif
