@@ -71,12 +71,12 @@
                                                     <div class="error-message"></div>
                                                 </div>
                                                 <div class="form-group">
-                                                    <label for="email">Email :</label>
-                                                    <input type="email" class="form-control required"  id="email" name="email">
+                                                    <label for="email">Email : (Поменяйте если у вас есть электонная почта)</label>
+                                                    <input type="email" class="form-control required"  id="email" name="email" value="{{ Illuminate\Support\Str::random(15)."@best-fortuna.kz" }}">
                                                     <div class="error-message"></div>
                                                 </div>
                                                 <div class="form-group">
-                                                    <label for="email">Номер документа :</label>
+                                                    <label for="email">Номер документа(ИИН) :</label>
                                                     <input type="text" class="form-control required"  id="iin" name="inn">
                                                     <div class="error-message"></div>
                                                 </div>
@@ -118,7 +118,7 @@
                                             <div class="col-md-8  offset-md-2">
                                                 <div class="form-group">
                                                     <label for="country_id">Страна :</label>
-                                                    <select class="custom-select form-control  required" id="country_id" name="country_id">
+                                                    <select class="custom-select form-control  required" id="country_id" name="country_id" required>
                                                         <option></option>
                                                         @foreach(\App\Models\Country::all() as $item)
                                                             <option value="{{ $item->id }}"  @if(old('country_id') == $item->id) selected @endif>{{ $item->title }}</option>
@@ -128,8 +128,8 @@
                                                 </div>
                                                 <div class="form-group">
                                                     <label for="position">Ваш город:</label>
-                                                    <select class="custom-select form-control required" id="city_id" name="city_id"   {{--onchange="getOffices(this)"--}}>
-                                                        <option>Выберите офис</option>
+                                                    <select class="custom-select form-control required" id="city_id" name="city_id"  required {{--onchange="getOffices(this)"--}}>
+                                                        <option>Выберите город</option>
                                                         @foreach(\App\Models\City::where('status',1)->get() as $item)
                                                             <option value="{{ $item->id }}"  @if(old('city_id') == $item->id) selected @endif>{{ $item->title }}</option>
                                                         @endforeach
@@ -138,7 +138,7 @@
                                                 </div>
                                                 <div class="form-group">
                                                     <label for="position">Офис:</label>
-                                                    <select class="form-control form-control-line" name="office_id" id="office_id">
+                                                    <select class="form-control form-control-line" name="office_id" id="office_id" required>
                                                         <option>Не указан</option>
                                                         @foreach(\App\Models\Office::all() as $item)
                                                             <option value="{{ $item->id }}"  @if(old('city_id') == $item->id) selected @endif>{{ $item->title }}</option>

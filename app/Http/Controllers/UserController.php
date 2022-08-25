@@ -777,6 +777,7 @@ class UserController extends Controller
                 'password'      => ['required', 'string', 'min:6', 'confirmed'],
                 'gender'           => ['required', Rule::notIn([0])],//,'size:12'
                 'birthday'      => ['required'],
+                'iin'      => ['required'],
             ],[
                 'required' => 'Пожалуйста, заполните это поле.',
             ]);
@@ -785,7 +786,7 @@ class UserController extends Controller
         if($request->step == 2){
             $validator = Validator::make($request->all(), [
                 'city_id'       => ['required', Rule::notIn([0])],
-               /* 'office_id'       => ['required', Rule::notIn([0]), Rule::notIn([-1])],*/
+                'office_id'       => ['required', Rule::notIn([0])],
                 'country_id'       => ['required', Rule::notIn([0])],
                 'terms'         => ['required','accepted'],
             ],[
