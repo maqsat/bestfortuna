@@ -42,6 +42,12 @@ class UserUpgraded
      */
     public function handle(Upgrade $event)
     {
+
+        $upgrade_status =  Order::where('type','upgrade')->where('status','!=',4)->where('status','!=',6)->where('id',$event->order->id)->first();
+        if(is_null($upgrade_status)) dd("Апгрейд произведен ранее, ссылка не активна");
+        Order::where( 'id',$event->order->id)->update(['status' => 4]);
+
+
         $id = $event->order->user_id;
         $user_program = UserProgram::whereUserId($id)->first();
         $current_user = User::find($id);
@@ -49,7 +55,7 @@ class UserUpgraded
         $inviter = User::find($current_user->inviter_id);
         $new_package = Package::find($event->order->package_id);
         $old_package = Package::find($current_user->package_id);
-        $package_cost = Hierarchy::upgradeCost($new_package,$old_package, Auth::user(),1);
+        $package_cost = Hierarchy::upgradeCost($old_package, $new_package, $current_user);
         $status_id = $new_package->rank;
 
 

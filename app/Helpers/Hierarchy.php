@@ -172,7 +172,7 @@ class Hierarchy {
 
         if($created_at->format('m') == $now){
             if($only_cost == 0)
-                return  $package->cost+$package->old_cost - $current_package->cost+$current_package->old_cost ;
+                return  ($package->cost+$package->old_cost) - ($current_package->cost+$current_package->old_cost);
             else  return  $package->cost - $current_package->cost;
         }
         else{

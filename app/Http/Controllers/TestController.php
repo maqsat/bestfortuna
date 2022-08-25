@@ -30,7 +30,11 @@ class TestController extends Controller
     public function tester()
     {
 
-      dd(Balance::getIncomeBalance(14));
+        $new_package = Package::find(2);
+        $old_package = Package::find(1);
+
+        $package_cost = Hierarchy::upgradeCost($new_package,$old_package, User::find(42));
+        dd($package_cost);
 
 
     }
