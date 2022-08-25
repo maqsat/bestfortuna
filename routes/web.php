@@ -11,22 +11,14 @@
 |
 */
 
+
 /*
 ************************ Auth Elements ***********************
  */
-
-use App\Facades\Hierarchy;
-use App\Models\Counter;
-use App\Models\Processing;
-use App\Models\UserProgram;
-use App\User;
-use Carbon\Carbon;
-use Illuminate\Support\Facades\Storage;
-
-//dd(date('Ymd'));
 //dd(bcrypt(123456789));
 Auth::routes();
 Route::post('register-validate', 'UserController@registerValidate')->name('validate');
+
 
 /*
 ************************ Website ***********************
@@ -51,6 +43,27 @@ Route::get('user_processing', 'HomeController@processing')->name('processing')->
 Route::get('programs' , 'HomeController@programs')->name('programs')->middleware("auth");
 Route::get('notifications', 'HomeController@notifications')->name('notifications')->middleware("auth");
 Route::get('profile', 'HomeController@profile')->name('profile')->middleware("auth");
+Route::post('/request', 'ProcessingController@request')->name('request');
+Route::get('faq-profile','FaqController@index')->middleware("auth");
+Route::post('updateProfile', 'HomeController@updateProfile')->name('updateProfile');
+Route::post('updateAvatar', 'HomeController@updateAvatar')->name('updateAvatar');
+
+Route::get('marketing', 'HomeController@marketing')->name('marketing');
+
+/*
+************************ Shop ***********************
+ */
+Route::get('product/{id}','StoreController@show')->middleware("activation");
+Route::get('story-store', 'StoreController@story')->middleware("activation");
+Route::get('activation-calendar', 'StoreController@activationCalendar')->middleware("activation");
+Route::get('main-store', 'StoreController@store')->middleware("activation");
+
+
+
+
+/*
+************************ Not Used ***********************
+ */
 Route::get('reviews', 'WebController@reviews')->name('reviews');
 Route::get('review/{id}/view', 'WebController@review')->name('review_id');
 Route::get('my_reviews', 'HomeController@my_reviews')->name('my_reviews');
@@ -61,29 +74,23 @@ Route::get('review/add', 'HomeController@review')->name('review_add');
 Route::post('review/{id}/view', 'HomeController@commentAdd')->name('comment_add');
 Route::post('review', 'HomeController@updateReview')->name('review');
 Route::post('update_review_image', 'HomeController@updateReviewImage')->name('updateReviewImage');
-Route::get('faq-profile','FaqController@index');
-Route::post('updateProfile', 'HomeController@updateProfile')->name('updateProfile');
-Route::post('updateAvatar', 'HomeController@updateAvatar')->name('updateAvatar');
-Route::get('marketing', 'HomeController@marketing')->name('marketing');
-Route::post('transfer', 'ProcessingController@transfer')->name('transfer');
-Route::get('transfer/{status}/{processing_id}', 'ProcessingController@transferAnswer');
-Route::get('rang-history', 'UserController@rangHistory')->middleware("activation");// скоро нужно удалить
-Route::post('/transfer', 'ProcessingController@transfer')->name('transfer');
-Route::post('/request', 'ProcessingController@request')->name('request');
-Route::get('/transfer/{status}/{processing_id}', 'ProcessingController@transferAnswer');
+
 Route::get('partner/create', 'HomeController@partner')->name('partner_create');
 Route::post('partner/create', 'HomeController@partnerStore')->name('partner_store');
 Route::get('partner/sponsor/users', 'HomeController@partnerSponsorUsers')->name("partner_sponsor_users");
 Route::get('partner/sponsor/positions', 'HomeController@partnerSponsorPositions')->name("partner_sponsor_positions");
 Route::get('partner/user/offices', 'HomeController@partnerUserOffices')->name("partner_user_offices");
 
-/*
-************************ Shop ***********************
- */
-Route::get('product/{id}','StoreController@show')->middleware("auth");
-Route::get('story-store', 'StoreController@story')->middleware("auth");
-Route::get('activation-calendar', 'StoreController@activationCalendar')->middleware("auth");
-Route::get('main-store', 'StoreController@store')->middleware("auth");
+Route::get('rang-history', 'UserController@rangHistory')->middleware("activation");// скоро нужно удалить
+
+Route::post('transfer', 'ProcessingController@transfer')->name('transfer');
+Route::get('transfer/{status}/{processing_id}', 'ProcessingController@transferAnswer');
+Route::post('/transfer', 'ProcessingController@transfer')->name('transfer');
+Route::get('/transfer/{status}/{processing_id}', 'ProcessingController@transferAnswer');
+
+
+
+
 
 
 /*
