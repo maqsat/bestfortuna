@@ -36,7 +36,7 @@
                                     </thead>
                                     <tbody>
                                     @php
-                                        $list = \App\Models\Status::all();
+                                        $list = \App\Models\Status::orderBy('id')->get();
                                     @endphp
 
                                     @foreach($list as $key => $item)

@@ -95,7 +95,7 @@
                         <div class="card-block">
                             <h4 class="card-title">Выведено</h4>
                             <div class="text-right">
-                                <h1 class="font-light"><sup><i class="ti-arrow-up text-danger"></i></sup> ${{ number_format($out, 0, '', ' ') }}</h1>
+                                <h1 class="font-light"><sup><i class="ti-arrow-down text-danger"></i></sup> ${{ number_format($out, 0, '', ' ') }}</h1>
                             </div>
                             <span class="text-danger">25%</span>
                             <div class="progress">

@@ -183,7 +183,7 @@ class Hierarchy {
 
     }
 
-    //PV апгрейде
+    //PV при апгрейде
     public function upgradeCostPv($current_package, $package, $user)
     {
         $created_at = Carbon::parse($user->created_at);
