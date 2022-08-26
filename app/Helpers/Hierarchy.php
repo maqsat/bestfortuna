@@ -102,6 +102,7 @@ class Hierarchy {
     //Проверка активен ли пользователь
     public function checkIsActive($user_id)
     {
+        return true;
         if($user_id == 1)  return true;
 
         $date = new \DateTime();

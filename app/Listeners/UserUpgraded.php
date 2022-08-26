@@ -59,7 +59,7 @@ class UserUpgraded
         $status_id = $new_package->rank;
 
 
-        Balance::changeBalance($id,$package_cost,'upgrade',$id,$program->id,$new_package->id,1,$new_package->pv);
+        Balance::changeBalance($id,$package_cost,'upgrade',$id,$program->id,$new_package->id,1,$new_package->pv - $old_package->pv );
 
         User::whereId($id)->update(['package_id' => $new_package->id]);
         UserProgram::whereUserId($id)->update(['package_id' => $new_package->id,'status_id' => $status_id]);
