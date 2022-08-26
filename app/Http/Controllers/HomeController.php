@@ -76,12 +76,8 @@ class HomeController extends Controller
             $activation_start_date = Balance::getActivationStartDate($user->created_at,$user->id );
             $totalMonths = Balance::totalMonthFromRegister($user->created_at);
 
-
-            $activation = Order::whereUserId($user->id)
-                ->whereYear('created_at', '=', date('Y'))
-                ->whereMonth('created_at', '=', date('m'))
-                ->sum('amount');
-
+            $date = new \DateTime();
+            $activation =  Hierarchy::orderSumOfMonth($date,$user->id);
 
             return view('profile.home', compact(
                 'package',
