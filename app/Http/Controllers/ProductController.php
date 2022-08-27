@@ -114,7 +114,7 @@ class ProductController extends Controller
         ]);
 
 
-        return redirect()->back()->with('status', 'Успешно добавлено');
+        return redirect('/store')->with('status', 'Успешно добавлено');
     }
 
     /**

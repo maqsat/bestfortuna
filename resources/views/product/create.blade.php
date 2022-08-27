@@ -28,7 +28,7 @@
             <div class="row">
                 <div class="col-lg-12">
                     @foreach ($errors->all() as $error)
-                        <span class="help-block"><small>{{ $error }}</small></span>
+                        <span class="help-block text-danger"><small>{{ $error }}</small></span>
                     @endforeach
                     <div class="card">
                         <div class="card-block">
@@ -39,7 +39,7 @@
                                     <div class="col-md-12">
                                         <input type="text" value="{{ old('title') }}" name="title" class="form-control form-control-line">
                                         @if ($errors->has('title'))
-                                            <span class="help-block"><small>{{ $errors->first('title') }}</small></span>
+                                            <span class="help-block text-danger"><small>{{ $errors->first('title') }}</small></span>
                                         @endif
                                     </div>
                                 </div>
@@ -49,45 +49,49 @@
                                         <textarea class="form-control form-control-lin"  name="description" rows="6"  id="editor">{{ old('description') }}</textarea>
                                     </div>
                                     @if ($errors->has('description'))
-                                        <span class="help-block"><small>{{ $errors->first('description') }}</small></span>
+                                        <span class="help-block text-danger"><small>{{ $errors->first('description') }}</small></span>
                                     @endif
                                 </div>
                                 <div class="form-group">
                                     <label class="col-md-12">Цена</label>
                                     <div class="col-md-12">
-                                        <input type="text" value="{{ old('cost') }}" name="cost" class="form-control form-control-line">
+                                        <input type="number" value="{{ old('cost') }}" name="cost" class="form-control form-control-line">
                                         @if ($errors->has('cost'))
-                                            <span class="help-block"><small>{{ $errors->first('cost') }}</small></span>
+                                            <span class="help-block text-danger"><small>{{ $errors->first('cost') }}</small></span>
                                         @endif
                                     </div>
                                 </div>
                                 <div class="form-group">
                                     <label class="col-md-12">Цена для партнеров</label>
                                     <div class="col-md-12">
-                                        <input type="text" value="{{ old('partner_cost') }}" name="partner_cost" class="form-control form-control-line">
+                                        <input type="number" value="{{ old('partner_cost') }}" name="partner_cost" class="form-control form-control-line">
                                         @if ($errors->has('partner_cost'))
-                                            <span class="help-block"><small>{{ $errors->first('partner_cost') }}</small></span>
+                                            <span class="help-block text-danger"><small>{{ $errors->first('partner_cost') }}</small></span>
                                         @endif
                                     </div>
                                 </div>
                                 <div class="form-group">
                                     <label class="col-md-12">Категория</label>
                                     <div class="col-md-12">
-                                        <input type="text" value="{{ old('category_id') }}" name="category_id" class="form-control form-control-line">
+                                        <select class="form-control form-control-line select2" name="category_id">
+                                            <option>Выберите категорию</option>
+                                            @foreach($tags as $item)
+                                                <option value="{{ $item->id }}" @if(old('category_id') == $item->id) selected @endif>{{ $item->tag_name }}</option>
+                                            @endforeach
+                                        </select>
                                         @if ($errors->has('category_id'))
-                                            <span class="help-block"><small>{{ $errors->first('category_id') }}</small></span>
+                                            <span class="help-block text-danger"><small>{{ $errors->first('category_id') }}</small></span>
                                         @endif
                                     </div>
                                 </div>
 
-                                <input name="tags" placeholder="write some tags" value="">
 
                                 <div class="form-group">
                                     <label class="col-md-12">Скидка</label>
                                     <div class="col-md-12">
-                                        <input type="text" value="{{ old('sale') }}" name="sale" class="form-control form-control-line">
+                                        <input type="number" value="{{ old('sale') }}" name="sale" class="form-control form-control-line">
                                         @if ($errors->has('sale'))
-                                            <span class="help-block"><small>{{ $errors->first('sale') }}</small></span>
+                                            <span class="help-block text-danger"><small>{{ $errors->first('sale') }}</small></span>
                                         @endif
                                     </div>
                                 </div>
@@ -103,9 +107,9 @@
                                 <div class="form-group">
                                     <label class="col-md-12">PV</label>
                                     <div class="col-md-12">
-                                        <input type="text" value="{{ old('pv') }}" name="pv" class="form-control form-control-line">
+                                        <input type="number" value="{{ old('pv') }}" name="pv" class="form-control form-control-line">
                                         @if ($errors->has('pv'))
-                                            <span class="help-block"><small>{{ $errors->first('pv') }}</small></span>
+                                            <span class="help-block text-danger"><small>{{ $errors->first('pv') }}</small></span>
                                         @endif
                                     </div>
                                 </div>
@@ -116,7 +120,7 @@
                                         <input type="file" name="image2" class="form-control form-control-line">
                                         <input type="file" name="image3" class="form-control form-control-line">
                                         @if ($errors->has('image1'))
-                                            <span class="help-block"><small>{{ $errors->first('image1') }}</small></span>
+                                            <span class="help-block text-danger"><small>{{ $errors->first('image1') }}</small></span>
                                         @endif
                                     </div>
                                 </div>
