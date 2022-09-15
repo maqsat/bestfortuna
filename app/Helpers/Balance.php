@@ -99,7 +99,15 @@ class Balance {
             $activation_start_date = Notification::where('user_id', $user_id)
                 ->where('type', 'move_status')
                 ->where('status_id', 3)
-                ->first()->created_at ;
+                ->first();
+
+            if(is_null($activation_start_date))
+            {
+                $activation_start_date = '2022-08-31 00:13:28';
+            }
+            else{
+                $activation_start_date = $activation_start_date->created_at ;
+            }
         }
 
         return $activation_start_date;
