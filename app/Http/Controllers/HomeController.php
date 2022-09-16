@@ -68,7 +68,7 @@ class HomeController extends Controller
             $not_cash_bonuses = DB::table('not_cash_bonuses')->where('user_id', $user->id)->where('status',0)->get();
 
             $move_status = Notification::where('user_id',$user->id)->where('type','move_status')
-                ->whereBetween('created_at', [Carbon::now()->subDays(7), Carbon::now()])
+                ->whereBetween('created_at', [Carbon::now()->subDays(1), Carbon::now()])
                 ->orderBy('created_at', 'desc')
                 ->first();
 
