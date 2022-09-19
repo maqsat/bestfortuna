@@ -122,10 +122,12 @@ class TestController extends Controller
 
     public function testerExportPackage()
     {
-        $users_tempp = DB::table('processing')->get();
+        $users_tempp = DB::table('users_tempp_second')->get();
 
         foreach ($users_tempp as $key => $value) {
-            Balance::changeBalance($value->user_id, $value->sum, 'out', $value->in_user, 1,1, 1,$value->pv,0);
+            $user = DB::table('users')->where('id_number', $value->login)->first();
+
+            UserProgram::whereUserId($user->id)->update(['status_id' => $value->status]);
 
         }
     }
