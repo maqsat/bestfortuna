@@ -67,7 +67,7 @@ class UserActivated
 
         User::whereId($event->user->id)->update([
             'status'    => 1,
-            'id_number' => $event->user->id.date('Y').$inviter->id,
+            'id_number' => date('y').$event->user->id,
         ]);
 
         $list = Hierarchy::getSponsorsList($event->user->id,'').',';
