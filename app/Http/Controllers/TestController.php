@@ -30,7 +30,7 @@ class TestController extends Controller
     public function tester()
     {
 
-        $sponsor = User::where('id_number','')->first();
+        echo  str_limit('The quick brown fox jumps over the lazy dog', 9,'');
 
 
     }
