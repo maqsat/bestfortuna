@@ -646,12 +646,12 @@ class UserController extends Controller
             ->where('status' ,4)
             ->first();
 
-        Balance::changeBalance($basket->user_id,$order->amount*0.2,'cashback',$basket->user_id,1,$user_program->package_id,$user_program->status_id,$sum_pv);
+        Balance::changeBalance($basket->user_id,$order->uuid*0.2,'cashback',$basket->user_id,1,$user_program->package_id,$user_program->status_id,$sum_pv);
 
-        if($order->amount > 0) {
+        if($order->uuid > 0) {
             $data = [];
             $data['user_id'] = $basket->user_id;
-            $data['sum'] = $order->amount;
+            $data['sum'] = $order->uuid;
 
             event(new ShopTurnover($data = $data));
 
