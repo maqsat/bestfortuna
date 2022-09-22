@@ -76,6 +76,7 @@ class PayController extends Controller
                 ->join('products','basket_good.good_id','=','products.id')
                 ->where(['basket_id' => $request->basket])
                 ->sum(DB::raw('basket_good.quantity*products.partner_cost'));//['products.*','basket_good.quantity']
+            $firstly_cost = $cost;
             $cost = $cost + $cost*0.05;
 
             $order =  Order::updateOrCreate(
@@ -83,7 +84,7 @@ class PayController extends Controller
                     'type' => 'shop',
                     'status' => 0,
                     'payment' => $request->type,
-                    'uuid' => 0,
+                    'uuid' => $firstly_cost,
                     'user_id' => Auth::user()->id,
                     'basket_id' => $request->basket
                 ],

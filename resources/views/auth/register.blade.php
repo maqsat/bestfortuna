@@ -35,7 +35,7 @@
                                                         <input type="text" class="form-control required" value="{{ $user->name }} - {{ $user->number }}" disabled>
                                                         <input type="hidden" class="form-control required" id="inviter_id" name="inviter_id" value="{{ $user->id_number }}">
                                                     @else
-                                                        <input type="number" class="form-control required"  id="inviter_id" name="inviter_id" value="">
+                                                        <input type="text" class="form-control required"  id="inviter_id" name="inviter_id" value="">
                                                     @endif
                                                     <div class="error-message"></div>
                                                 </div>

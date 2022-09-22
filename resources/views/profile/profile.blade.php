@@ -84,7 +84,7 @@
                                         <div class="form-group">
                                             <label class="col-md-12">{{ __('app.email') }}</label>
                                             <div class="col-md-12">
-                                                <input type="email" value="{{ Auth::user()->email }}" name="email" class="form-control form-control-line" disabled>
+                                                <input type="email" value="{{ Auth::user()->email }}" name="email" class="form-control form-control-line">
                                                 @if ($errors->has('email'))
                                                     <span class="text-danger"><small>{{ $errors->first('email') }}</small></span>
                                                 @endif
