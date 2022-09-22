@@ -25,9 +25,9 @@
                         <li><a href="">История Upgrade</a></li>
                         <li><a href="/user?upgrade_request=1">Заявки на Upgrade</a></li>
                         @endif
-                        @if(Gate::allows('admin_user_create'))
+                        {{--@if(Gate::allows('admin_user_create'))
                         <li><a href="/user/create">Добавить</a></li>
-                        @endif
+                        @endif--}}
                     </ul>
                 </li>
                 @endif
