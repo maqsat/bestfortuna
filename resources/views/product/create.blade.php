@@ -55,7 +55,7 @@
                                 <div class="form-group">
                                     <label class="col-md-12">Цена</label>
                                     <div class="col-md-12">
-                                        <input type="number" value="{{ old('cost') }}" name="cost" class="form-control form-control-line">
+                                        <input type="text" value="{{ old('cost') }}" name="cost" class="form-control form-control-line">
                                         @if ($errors->has('cost'))
                                             <span class="help-block text-danger"><small>{{ $errors->first('cost') }}</small></span>
                                         @endif
@@ -64,7 +64,7 @@
                                 <div class="form-group">
                                     <label class="col-md-12">Цена для партнеров</label>
                                     <div class="col-md-12">
-                                        <input type="number" value="{{ old('partner_cost') }}" name="partner_cost" class="form-control form-control-line">
+                                        <input type="text" value="{{ old('partner_cost') }}" name="partner_cost" class="form-control form-control-line">
                                         @if ($errors->has('partner_cost'))
                                             <span class="help-block text-danger"><small>{{ $errors->first('partner_cost') }}</small></span>
                                         @endif
