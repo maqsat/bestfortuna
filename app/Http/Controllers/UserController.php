@@ -67,6 +67,7 @@ class UserController extends Controller
             $list = User::whereNotNull('program_id')->where('name','like','%'.$request->s.'%')
                 ->orWhere('id','like','%'.$request->s.'%')
                 ->orWhere('email','like','%'.$request->s.'%')
+                ->orWhere('id_number','like','%'.$request->s.'%')
                 ->orderBy('id','desc')
                 ->paginate(30);
         }
