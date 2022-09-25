@@ -86,7 +86,7 @@ class Balance {
 
         if($user_program->status_id < 3){
             $date1 = new \DateTime($user_created_at);
-            $date2 = new \DateTime();;
+            $date2 = new \DateTime();
             $diff = $date1->diff($date2);
 
             $yearsInMonths = $diff->format('%r%y') * 12;

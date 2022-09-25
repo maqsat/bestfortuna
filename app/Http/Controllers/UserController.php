@@ -255,6 +255,8 @@ class UserController extends Controller
             //'birthday'      => 'required',
             'country_id'    => 'required',
             'city_id'       => 'required',
+            'benefit'       => 'required',
+            'benefit_time'       => 'required',
             //'address'       => 'required',
             //'card'          => 'required',
             //'bank'          => 'required',
@@ -317,6 +319,8 @@ class UserController extends Controller
             'gender'        => $request->gender,
             'bank'          => $request->bank,
             'created_at'    => $date,
+            'benefit'       => $request->benefit,
+            'benefit_time'       => $request->benefit_time,
         ]);
 
         return redirect()->back()->with('status', 'Успешно изменено');

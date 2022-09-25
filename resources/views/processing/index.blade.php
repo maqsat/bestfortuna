@@ -205,7 +205,7 @@
                                                     </form>
                                                 </td>
                                             @endif
-                                            <td><span class="text-success">{{ round($item->sum,2) }} $</span></td>
+                                            <td><span class="text-success">{{ round($item->sum,2) }} $ ({{ $item->limited_sum }}$)</span></td>
                                             <?php
                                                 $in_user = \App\User::find($item->in_user);
                                                 $user_id = \App\User::find($item->user_id);

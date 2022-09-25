@@ -3,6 +3,7 @@
         <div class="card">
             <div class="card-block p-b-0">
                 <h4 class="card-title">Доступные операции</h4>
+                <p>Льгота: {{ Hierarchy::getBenefit(Auth::user()->benefit)->title }} - {{ Hierarchy::getBenefitPercentage(Auth::user()->id) }}% до <b>{{ Auth::user()->benefit_time }}</b>, если срок истек вам нужно повторная модерация</p>
                 <!-- Nav tabs -->
                 <ul class="nav nav-tabs customtab" role="tablist">
                     <li class="nav-item">
@@ -21,10 +22,11 @@
                             {{ csrf_field() }}
                             <div class="row">
                                 <div class="col-lg-12">
+                                    <div class="form-control-feedback text-danger" id="demo"></div>
                                     <div class="input-group">
                                         <input type="hidden" value="1" name="program_id">
-                                        <input type="text"  name="sum" class="form-control" placeholder="Выводимая сумма" max="{{ $balance }}" required>
-                                        <input type="text"  name="login" class="form-control" placeholder="Номер карты" required>
+                                        <input type="text"  name="sum" class="form-control" placeholder="Выводимая сумма" id="sum"  max="{{ $balance }}" required onkeyup="myFunction()">
+                                        <input type="text"  name="login" class="form-control" placeholder="Номер телефона и карты Kaspi" required>
                                         <span class="input-group-btn">
                                             <button class="btn btn-info" type="submit">Вывести</button>
                                         </span>
@@ -58,3 +60,12 @@
         </div>
     </div>
 </div>
+
+<script>
+    function myFunction() {
+        var sum = document.getElementById("sum").value;
+        var x = {{ Hierarchy::getBenefitPercentage(Auth::user()->id) }}/100;
+        var total_sum = sum - (sum*x);
+        document.getElementById("demo").innerHTML = "Сумма после удержание налогов: " + total_sum + "$";
+    }
+</script>
