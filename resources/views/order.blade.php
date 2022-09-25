@@ -42,7 +42,7 @@
                                             <td>{{ $item->id }}</td>
                                             <td>{{ $item->user["name"] }}</td>
                                             <td>{{ $item->type }}</td>
-                                            <td><a href="/basket?id={{ $item->id }}" target="_blank">Посмотреть товары</a></td>
+                                            <td><a href="/basket?id={{ $item->basket_id }}" target="_blank">Посмотреть товары</a></td>
                                             <td>${{ $item->amount }}</td>
                                             <td class="actions">
                                                 <a href="/success-basket-status/{{ $item->basket_id }}" target="_blank" class="btn btn-success"><i class="mdi mdi-account-plus"></i></a>

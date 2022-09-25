@@ -28,23 +28,19 @@ class BasketController extends Controller
     {
         $orders = Order::where('user_id', Auth::user()->id)->where('type','shop')->whereNotIn('status',[1,6,4])->where('payment','manual')->orderBy('id','desc')->first();
 
-        if(is_null($orders) or $orders->status == 12) {
-            if(isset($request['id']))
-                $basket = Basket::where('id', $request['id'])->whereStatus(1)->first();
-            else
+        if(is_null($orders) or $orders->status == 12 or isset($request['id'])) {
+            if(isset($request['id'])){
+                $basket = Basket::where('id', $request['id'])->first();
+            }
+            else{
                 $basket = Basket::where('user_id', Auth::user()->id)->whereStatus(0)->first();
+            }
+
 
             if(is_null($basket))
                 return redirect('/main-store')->with('status', 'Ваша корзина пуста, сначала добавьте товары в корзину');
             $user_program = UserProgram::where('user_id',Auth::user()->id)->first();
 
-
-            /*$goods=[];
-            foreach($basket->basket_goods as $item){
-                array_push($goods,$item->product);
-            }*/
-            // $goods = $basket->basket_goods->product;
-            //dd($goods);
 
             $goods = DB::table('basket_good')
                 ->join('products','basket_good.good_id','=','products.id')
