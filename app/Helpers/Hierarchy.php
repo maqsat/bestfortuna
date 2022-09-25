@@ -241,7 +241,7 @@ class Hierarchy {
      ***************************
      */
 
-    //Кумулятивный бонус через крон
+    //Кумулятивный бонус//  через крон
     public function cumulativeCalculation()
     {
         $users = UserProgram::where('status_id','>=',2)->get();
@@ -282,10 +282,10 @@ class Hierarchy {
 
     }
 
-    //Мировой Бонус Директоров
+    //Мировой Бонус Директоров//  через крон
     public function cumulativeWorldBonusForDirectors()
     {
-        $percentage_for_directors = $this->pvCounterForWorldBonus()*0.015;
+        $percentage_for_directors = $this->pvCounterForWorldBonus(-1)*0.015;
         $directors_pv_sum = 0;
 
         $directors = UserProgram::where('status_id',5)->get();
@@ -316,10 +316,10 @@ class Hierarchy {
         }
     }
 
-    //Мировой Бонус Мастеров
+    //Мировой Бонус Мастеров//  через крон
     public function cumulativeWorldBonusForMasters()
     {
-        $percentage_for_masters = $this->pvCounterForWorldBonus()*0.045;
+        $percentage_for_masters = $this->pvCounterForWorldBonus(-1)*0.045;
         $masters_pv_sum = 0;
 
         $masters = UserProgram::whereIn('status_id',[6,7,8,9,10])->get();
@@ -346,7 +346,7 @@ class Hierarchy {
         }
     }
 
-    //Проверка и запись статусов активизации
+    //Проверка и запись статусов активизации//  через крон
     public function checkActivationStatus()
     {
         $users = UserProgram::all();
