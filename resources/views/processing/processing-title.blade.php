@@ -10,7 +10,8 @@
     Пассивный бонус
 @elseif($item->status == 'status_bonus')
     Мировой бонус
-
+@elseif($item->status == 'admin_add')
+    Добавление от админа
 
 
 @elseif($item->status == 'request')

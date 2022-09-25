@@ -316,10 +316,19 @@ class ProcessingController extends Controller
             'program_id' => 'required',
         ]);
 
-        if(Balance::getBalance(Auth::user()->id) < $request->sum) return redirect()->back()->with('status', 'У вас недостаточно средств!');
-        $pv = $request->sum/env('COURSE');
+        if(count(Processing::where('user_id', Auth::user()->id)->where('status','request')->get()) >= 1){
+            return redirect()->back()->with('status', 'У вас есть не обработанный  запрос , не можете отправить повторную заявку пока текущий запрос не обработается ');
+        }
 
-        Balance::changeBalance(Auth::user()->id,$request->sum,'request',0,$request->program_id,0,0,$pv,0,0,$request->login,'',$request->withdrawal_method);
+
+        if(Balance::getBalance(Auth::user()->id) < $request->sum) return redirect()->back()->with('status', 'У вас недостаточно средств!');
+
+        $benefit_percentage = Hierarchy::getBenefitPercentage(Auth::user()->id);
+
+        $total_sum = $request->sum - ($request->sum*($benefit_percentage/100));
+
+
+        Balance::changeBalance(Auth::user()->id,$request->sum,'request',Auth::user()->id,$request->program_id,Auth::user()->package_id,0,$request->sum,$total_sum,0,$request->login,'',$request->withdrawal_method);
 
 
         return redirect()->back()->with('status', 'Запрос успешно отправлен админу!');

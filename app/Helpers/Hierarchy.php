@@ -105,7 +105,7 @@ class Hierarchy {
         if($user_id == 1)  return true;
 
         $date = new \DateTime();
-        //$date->modify('-1 month');
+        $date->modify('-1 month');
 
         $activation_status = DB::table('activations')
             ->where('user_id',$user_id)
@@ -201,6 +201,40 @@ class Hierarchy {
 
     }
 
+    public function getBenefit($id)
+    {
+        if(is_null($id)){
+            $benefit = DB::table('benefits')->where('id',8)->first();
+        }
+        else{
+            $benefit = DB::table('benefits')->where('id',$id)->first();
+        }
+
+        return $benefit;
+    }
+
+    public function getBenefitPercentage($user_id)
+    {
+        $user = User::find($user_id);
+
+        if(is_null($user->benefit)){
+            $benefit = DB::table('benefits')->where('id',8)->first();
+
+        }
+        else{
+            $date1 = new \DateTime($user->benefit_time);
+            $date2 = new \DateTime();
+
+
+            if($date1 >= $date2)
+                $benefit = DB::table('benefits')->where('id',$user->benefit)->first();
+            else {
+                $benefit = DB::table('benefits')->where('id',8)->first();
+            }
+        }
+
+        return $benefit->pension_payments + $benefit->health_insurance + $benefit->ipn;
+    }
 
     /***************************
      *  Процессы
@@ -319,7 +353,7 @@ class Hierarchy {
 
         foreach ($users as $user){
             $date = new \DateTime();
-            //$date->modify('-1 month');
+            $date->modify('-1 month');
 
             $sum = $this->orderSumOfMonth($date,$user->id);
 

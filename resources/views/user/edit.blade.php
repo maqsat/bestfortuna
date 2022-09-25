@@ -156,6 +156,28 @@
                                 </div>
 
                                 <div class="form-group">
+                                    <label class="col-sm-12">{{ __('app.city') }}</label>
+                                    <div class="col-sm-12">
+                                        <select class="form-control form-control-line" name="benefit">
+                                            @foreach(DB::table('benefits')->orderby('id','desc')->get() as $item)
+                                                <option value="{{ $item->id }}"  @if(old('benefit',$user->benefit) == $item->id) selected @endif>{{ $item->title }}</option>
+                                            @endforeach
+                                        </select>
+                                    </div>
+                                </div>
+
+                                <div class="form-group">
+                                    <label class="col-md-12">Срок льготы</label>
+                                    <div class="col-md-12">
+                                        <input type="datetime-local" id="register_day" value="{{ date('Y-m-d\TH:i', strtotime(old('benefit_time',$user->benefit_time))) }}" name="benefit_time" class="form-control form-control-line">
+                                        @if ($errors->has('benefit_time'))
+                                            <span class="text-danger"><small>{{ $errors->first('benefit_time') }}</small></span>
+                                        @endif
+                                    </div>
+                                </div>
+
+
+                                <div class="form-group">
                                     <div class="col-sm-12">
                                         <button class="btn btn-success" type="submit">Update Profile</button>
                                     </div>
