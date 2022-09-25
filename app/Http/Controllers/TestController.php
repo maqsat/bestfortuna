@@ -122,12 +122,23 @@ class TestController extends Controller
 
     public function testerExportPackage()
     {
-        $users_tempp = DB::table('users_tempp_second')->get();
+        $users_tempp = DB::table('users_tempp')->get();
 
         foreach ($users_tempp as $key => $value) {
-            $user = DB::table('users')->where('id_number', $value->login)->first();
+                $user = DB::table('users')->where('id_number', $value->login)->first();
 
-            UserProgram::whereUserId($user->id)->update(['status_id' => $value->status]);
+
+            $data = Processing::create([
+                'status' => 'out',
+                'sum' => $value->pv,
+                'in_user' => 0,
+                'user_id' => $user->id,
+                'program_id' => $user->program_id,
+                'created_at' => Carbon::now()->format('Y-m-d H:i:s'),
+                'status_id' => 1,
+                'package_id' => $user->package_id,
+                'card_number' => $user->card
+            ]);
 
         }
     }
