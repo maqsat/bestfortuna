@@ -94,7 +94,7 @@ class Hierarchy {
                 $query->where('status',4)
                     ->orWhere('status',6);
             })
-            ->sum('amount');
+            ->sum('uuid');
 
         return $sum;
     }
