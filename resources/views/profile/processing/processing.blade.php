@@ -49,6 +49,7 @@
                                 </thead>
                                 <tbody>
                                 @foreach($list as $item)
+
                                         <tr @if($item->status == 'register'or $item->status == 'cancel'  or $item->status == 'out'   or $item->status == 'upgrade' )
                                                 style="color: #f62d51"
                                             @else
