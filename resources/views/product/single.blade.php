@@ -1,6 +1,6 @@
 @extends('layouts.profile')
 @push('styles')
-    <link rel="stylesheet" href="{{asset('css/smoothproducts.css')}}">
+    <link rel="stylesheet" href="{{asset('/css/smoothproducts.css')}}">
     <style>
         .product_title{
             font-size: 24px;
@@ -96,7 +96,7 @@
 
     <script src="/monster_admin/main/js/toastr.js"></script>
     <script src="/monster_admin/assets/plugins/toast-master/js/jquery.toast.js"></script>
-    <script type="text/javascript" src="{{asset('js/smoothproducts.min.js')}}"></script>
+    <script type="text/javascript" src="{{asset('/js/smoothproducts.min.js')}}"></script>
     <script type="text/javascript">
         /* wait for images to load */
         $(window).on('load', function(){$('.sp-wrap').smoothproducts();});

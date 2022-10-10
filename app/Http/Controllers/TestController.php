@@ -35,29 +35,12 @@ class TestController extends Controller
 
         foreach ($todos as $key => $value) {
             $user = DB::table('users')->where('id_number', $value->id_number)->first();
+            $user_program = UserProgram::where('user_id',$user->id)->first();
+            $status = Status::where('id', $user_program->status_id)->first();
 
+            if ($value->status != $status->title){
 
-            if (isset($value->activation)  && $value->activation == "Активация"){
-
-                echo $value->id_number." | ".$value->activation."<br>";
-
-                $date = new \DateTime();
-                $date->modify('-1 month');
-
-                DB::table('activations')->updateOrInsert(
-                    [
-                        'user_id' => $user->id,
-                        'month' => Carbon::parse($date)->month,
-                        'year' => Carbon::parse($date)->year,
-                    ],
-                    [
-                        'user_id' => $user->id,
-                        'month' => Carbon::parse($date)->month,
-                        'year' => Carbon::parse($date)->year,
-                        'sum' => 20,
-                        'status' => 1
-                    ]
-                );
+                echo $user->id." - ".$value->status." | ".$status->title."<br>";
 
             }
 

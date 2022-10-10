@@ -76,7 +76,11 @@ class StoreController extends Controller
                 return view('product.user-single',compact('product'));
             }
             else{
-                $orders = Order::where('user_id', Auth::user()->id)->where('type','shop')->where('payment','manual')->orderBy('id','desc')->first();
+                $orders = Order::where('user_id', Auth::user()->id)
+                    ->where('type','shop')
+                    ->where('payment','manual')
+                    ->where('status','!=','4')
+                    ->orderBy('id','desc')->first();
 
                 if(is_null($orders) or $orders->status == 12) {
                     $product = Product::find($id);
