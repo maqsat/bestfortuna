@@ -34,14 +34,16 @@ class TestController extends Controller
         $todos = json_decode($json);
 
         foreach ($todos as $key => $value) {
+            $user = DB::table('users')->where('id_number', $value->id_number)->first();
+
 
             if ($value->pv09 > 0){
+
                 echo $value->id_number." | ".$value->pv09."<br>";
 
-                $user = DB::table('users')->where('id_number', $value->id_number)->first();
-                //if(is_null($user)) dd($value);
 
-                Balance::changeBalance($user->id,$value->pv09,'admin_add',$user->id,1,1,0,$value->pv09);
+
+                Balance::changeBalance($user->id,$value->pv09,'out',$user->id,1,1,0,$value->pv09);
             }
 
         }
