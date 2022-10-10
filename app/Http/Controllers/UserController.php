@@ -608,12 +608,15 @@ class UserController extends Controller
             ->where('status',1)
             ->first();
 
+
         if(!is_null($order) and $order->status == 1) dd("Ссылка не активна");
 
         $order_second_click_check = Order::where( 'type','shop')
             ->where('basket_id',$basket_id)
+            ->where('payment','manual')
             ->where('status' ,4)
             ->first();
+
         if(!is_null($order_second_click_check) and $order_second_click_check->status == 4) dd("Ссылка не активна");
 
         Order::where( 'type','shop')

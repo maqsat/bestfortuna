@@ -23,7 +23,7 @@ class ProductController extends Controller
             abort('401');
         }
 
-        $list = Product::orderBy('created_at','desc')->paginate();
+        $list = Product::orderBy('created_at','desc')->paginate(30);
         return view('product.index', compact('list'));
     }
 
@@ -226,14 +226,14 @@ class ProductController extends Controller
             abort('401');
         }
 
-        $orders_query = Order::orderBy('updated_at' , 'desc')->where('type','shop')->where('status',11);
+        $orders_query = Order::orderBy('updated_at' , 'desc')->where('type','shop');
 
         if(isset($request->shop)) $orders_query = $orders_query->where('status',11);
         else $orders_query = $orders_query->where('status',4)->orWhere('status',6);
 
-        $orders = $orders_query->paginate(10);
+        $orders = $orders_query->paginate(30);
 
-        return view('order', compact('orders'));
+        return view('product.order', compact('orders'));
     }
 
     public function basket_items($basket_id){

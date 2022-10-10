@@ -39,6 +39,7 @@
                                         <th>Накопительный бонус</th>
                                         <th>Пакет</th>
                                         <th>Номер</th>
+                                        <th>Город</th>
                                         <th>Почта</th>
                                         <th>Дата регистрации</th>
                                     </tr>
@@ -60,6 +61,7 @@
                                             <td>{{ \App\Facades\Balance::getIncomeBalance($item->id) }}</td>
                                             <td>@if($item->package_id != 0)  {{ \App\Models\Package::find($item->package_id)->title }} @else Без пакета @endif</td>
                                             <td>{{ $item->number }}</td>
+                                            <td>{{ \App\Models\City::where('id', $item->city_id)->first()->title }}</td>
                                             <td>{{ $item->email }}</td>
                                             <td>{{ $item->created_at }}</td>
                                         </tr>

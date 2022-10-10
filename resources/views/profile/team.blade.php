@@ -78,6 +78,7 @@
                                         <th>Статус</th>
                                         <th>Пакет</th>
                                         <th>Номер</th>
+                                        <th>Город</th>
                                         <th>Почта</th>
                                         @if(Auth::user()->admin == 1)
                                         <th>Структура</th>
@@ -95,6 +96,7 @@
                                             <td class="txt-oflo">{{ \App\Models\Status::find($item->status_id)->title }}</td>
                                             <td class="txt-oflo">@if($item->package_id != 0)  {{ \App\Models\Package::find($item->package_id)->title }} @else Без пакета @endif</td>
                                             <td><span class="text-success">{{ \App\User::find($item->user_id)->number }}</span></td>
+                                            <td>{{ \App\Models\City::where('id', \App\User::find($item->user_id)->city_id)->first()->title }}</td>
                                             <td><span class="text-success">{{ \App\User::find($item->user_id)->email }}</span></td>
 
                                             @if(Auth::user()->admin == 1)

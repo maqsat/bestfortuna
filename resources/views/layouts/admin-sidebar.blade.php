@@ -114,6 +114,9 @@
                         @if(Gate::allows('admin_orders_access'))
                         <li><a href="/order?shop=1">Заказы</a></li>
                         @endif
+                        @if(Gate::allows('admin_orders_access'))
+                            <li><a href="/order?history=1">История</a></li>
+                        @endif
                     </ul>
                 </li>
                 @endif
