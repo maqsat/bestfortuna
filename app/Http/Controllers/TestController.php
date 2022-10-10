@@ -37,13 +37,28 @@ class TestController extends Controller
             $user = DB::table('users')->where('id_number', $value->id_number)->first();
 
 
-            if ($value->pv09 > 0){
+            if (isset($value->activation)  && $value->activation == "Активация"){
 
-                echo $value->id_number." | ".$value->pv09."<br>";
+                echo $value->id_number." | ".$value->activation."<br>";
 
+                $date = new \DateTime();
+                $date->modify('-1 month');
 
+                DB::table('activations')->updateOrInsert(
+                    [
+                        'user_id' => $user->id,
+                        'month' => Carbon::parse($date)->month,
+                        'year' => Carbon::parse($date)->year,
+                    ],
+                    [
+                        'user_id' => $user->id,
+                        'month' => Carbon::parse($date)->month,
+                        'year' => Carbon::parse($date)->year,
+                        'sum' => 20,
+                        'status' => 1
+                    ]
+                );
 
-                Balance::changeBalance($user->id,$value->pv09,'out',$user->id,1,1,0,$value->pv09);
             }
 
         }
