@@ -33,6 +33,7 @@
                                         <th>Тип</th>
                                         <th>Купленные товары</th>
                                         <th>Цена</th>
+                                        <th>Дата</th>
                                         <th>Статус оплаты</th>
                                     </tr>
                                     </thead>
@@ -44,6 +45,7 @@
                                             <td>{{ $item->type }}</td>
                                             <td><a href="/basket?id={{ $item->basket_id }}" target="_blank">Посмотреть товары</a></td>
                                             <td>${{ $item->amount }}</td>
+                                            <td>{{ $item->created_at }}</td>
                                             <td class="actions">
                                                 <a href="/success-basket-status/{{ $item->basket_id }}" target="_blank" class="btn btn-success"><i class="mdi mdi-account-plus"></i></a>
                                                 @if(!is_null($item) && $item->status == 11)
