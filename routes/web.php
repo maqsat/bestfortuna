@@ -23,8 +23,8 @@ Route::post('register-validate', 'UserController@registerValidate')->name('valid
 /*
 ************************ Website ***********************
  */
-Route::get('/', 'HomeController@index');
-//Route::get('/', 'WebController@welcome');
+//Route::get('/', 'HomeController@index');
+Route::get('/', 'WebController@welcome');
 Route::get('about', 'WebController@about');
 Route::get('products', 'WebController@products');
 Route::get('cert', 'WebController@cert');
@@ -110,7 +110,7 @@ Route::get('activation/{user_id}/without_bonus', 'UserController@activationWitho
 Route::get('deactivation/{user_id}', 'UserController@deactivation')->middleware('admin');
 Route::get('upgrade-activation/{order_id}', 'UserController@activationUpgrade')->middleware('admin');
 Route::get('upgrade-deactivation/{order_id}', 'UserController@deactivationUpgrade')->middleware('admin');
-Route::get('success-basket-status/{basket_id}', 'UserController@successBasket')->name('success-basket');
+Route::get('success-basket-status/{basket_id}/{order_id}', 'UserController@successBasket')->name('success-basket');
 Route::get('cancel-basket-status/{basket_id}', 'UserController@cancelBasket')->name('cancel-basket');
 Route::get('progress', 'AdminController@progress')->middleware("admin");
 Route::get('not_cash_bonuses', 'AdminController@notCashBonuses')->middleware("admin");
