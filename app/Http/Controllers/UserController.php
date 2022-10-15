@@ -600,10 +600,11 @@ class UserController extends Controller
 
     }
 
-    public function successBasket($basket_id)
+    public function successBasket($basket_id, $order_id)
     {
         $order = Order::where( 'type','shop')
             ->where('basket_id',$basket_id)
+            ->where('id',$order_id)
             ->where('payment','manual')
             ->where('status',1)
             ->first();
@@ -613,6 +614,7 @@ class UserController extends Controller
 
         $order_second_click_check = Order::where( 'type','shop')
             ->where('basket_id',$basket_id)
+            ->where('id',$order_id)
             ->where('payment','manual')
             ->where('status' ,4)
             ->first();
@@ -621,6 +623,7 @@ class UserController extends Controller
 
         Order::where( 'type','shop')
             ->where('basket_id',$basket_id)
+            ->where('id',$order_id)
             ->where('status' ,11)
             ->update(
                 [
@@ -677,7 +680,7 @@ class UserController extends Controller
         return "<h2>Нет достаточного количестов PV!</h2>";
     }
 
-    public function cancelBasket($basket_id)
+    public function cancelBasket($basket_id, $order_id)
     {
         if(!Gate::allows('admin_user_cancel_basket')) {
             abort('401');
@@ -685,6 +688,7 @@ class UserController extends Controller
 
         $order =  tap(Order::where( 'type','shop')
             ->where('basket_id',$basket_id)
+            ->where('id',$order_id)
             ->where('status' ,11)->first())
             ->update(
                 [
