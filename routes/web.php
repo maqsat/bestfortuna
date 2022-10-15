@@ -111,7 +111,7 @@ Route::get('deactivation/{user_id}', 'UserController@deactivation')->middleware(
 Route::get('upgrade-activation/{order_id}', 'UserController@activationUpgrade')->middleware('admin');
 Route::get('upgrade-deactivation/{order_id}', 'UserController@deactivationUpgrade')->middleware('admin');
 Route::get('success-basket-status/{basket_id}/{order_id}', 'UserController@successBasket')->name('success-basket');
-Route::get('cancel-basket-status/{basket_id}', 'UserController@cancelBasket')->name('cancel-basket');
+Route::get('cancel-basket-status/{basket_id}/{order_id}', 'UserController@cancelBasket')->name('cancel-basket');
 Route::get('progress', 'AdminController@progress')->middleware("admin");
 Route::get('not_cash_bonuses', 'AdminController@notCashBonuses')->middleware("admin");
 Route::get('not_cash_bonuses/{not_cash_bonuses_id}/{status}', 'AdminController@notCashBonusesAnswer')->middleware("admin");
