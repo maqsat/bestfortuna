@@ -610,7 +610,7 @@ class UserController extends Controller
             ->first();
 
 
-        if(!is_null($order) and $order->status == 1) dd("Ссылка не активна");
+        if(!is_null($order) and $order->status == 1) dd("Ссылка не активна 1");
 
         $order_second_click_check = Order::where( 'type','shop')
             ->where('basket_id',$basket_id)
@@ -619,7 +619,7 @@ class UserController extends Controller
             ->where('status' ,4)
             ->first();
 
-        if(!is_null($order_second_click_check) and $order_second_click_check->status == 4) dd("Ссылка не активна");
+        if(!is_null($order_second_click_check) and $order_second_click_check->status == 4) dd("Ссылка не активна 2");
 
         Order::where( 'type','shop')
             ->where('basket_id',$basket_id)
@@ -697,6 +697,7 @@ class UserController extends Controller
             );
 
         $user = User::find($order->user_id);
+        Basket::whereId($basket_id)->update(['status' => 1]);
 
         Notification::create([
             'user_id'   => Auth::user()->id,
