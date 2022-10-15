@@ -605,12 +605,16 @@ class HomeController extends Controller
 
         /* new*/
 
-        $data = [];
+        /*$data = [];
         $data['value'] = Auth::user()->name;
         $data['children'] = Hierarchy::getNewTree(Auth::user()->id);
         $data = json_encode($data);
+        return view('profile.hierarchy1', compact('data'));*/
 
-        return view('profile.hierarchy1', compact('data'));
+        $user = Auth::user();
+        $invitations = User::where('inviter_id',$user->id)->get();
+
+        return view('profile.hierarchy2', compact('user','invitations'));
     }
 
     public function hierarchyTree($id)

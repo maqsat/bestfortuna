@@ -64,6 +64,17 @@ class Hierarchy {
         return $list;
     }
 
+    //Количество в команде команды
+    public function inviterCount($user_id)
+    {
+        return User::where('inviter_id',$user_id)->count();
+    }
+
+    public function teamCount($user_id)
+    {
+        return UserProgram::where('inviter_list','like','%,'.$user_id.',%')->count();
+    }
+
     //Товароборот для мировго бонуса
     public function pvCounterForWorldBonus($date_status = 0)
     {
