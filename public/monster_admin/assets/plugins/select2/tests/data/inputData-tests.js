@@ -77,7 +77,7 @@ test('options can be unselected individually', function (assert) {
     ]
   });
   var $element = $('<input />');
-  $element.val('test,test2,test3');
+  $element.val('test,test2.blade.php,test3');
 
   var adapter = new InputAdapter($element, options);
 

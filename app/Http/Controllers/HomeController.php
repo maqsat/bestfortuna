@@ -611,11 +611,19 @@ class HomeController extends Controller
         $data = json_encode($data);
         return view('profile.hierarchy1', compact('data'));*/
 
+
         $user = Auth::user();
         $invitations = User::where('inviter_id',$user->id)->get();
 
         return view('profile.hierarchy2', compact('user','invitations'));
     }
+
+    public function getInvitersHierarchy(Request $request)
+    {
+        $invitations = Hierarchy::inviterList($request->id);
+        return view('profile.hierarchy-append', compact('invitations'));
+    }
+
 
     public function hierarchyTree($id)
     {

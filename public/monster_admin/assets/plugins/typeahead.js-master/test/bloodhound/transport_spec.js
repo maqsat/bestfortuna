@@ -59,13 +59,13 @@ describe('Transport', function() {
     this.transport.get('/test1', $.noop);
     mostRecentAjaxRequest().response(fixtures.ajaxResps.ok);
 
-    this.transport.get('/test2', $.noop);
+    this.transport.get('/test2.blade.php', $.noop);
     mostRecentAjaxRequest().response(fixtures.ajaxResps.ok1);
 
     expect(ajaxRequests.length).toBe(2);
 
     this.transport.get('/test1', spy1);
-    this.transport.get('/test2', spy2);
+    this.transport.get('/test2.blade.php', spy2);
 
     jasmine.Clock.tick(0);
 
@@ -160,10 +160,10 @@ describe('Transport', function() {
     expect(mostRecentAjaxRequest().url).toBe('/test1');
     expect(ajaxRequests.length).toBe(1);
 
-    // within the same rate-limit cycle, request test2 and test1. test2 becomes
+    // within the same rate-limit cycle, request test2.blade.php and test1. test2.blade.php becomes
     // outdated after test1 is requested and no request is sent for test1
     // because it's a cache hit
-    this.transport.get('/test2', $.noop);
+    this.transport.get('/test2.blade.php', $.noop);
     this.transport.get('/test1', $.noop);
 
     jasmine.Clock.tick(100);

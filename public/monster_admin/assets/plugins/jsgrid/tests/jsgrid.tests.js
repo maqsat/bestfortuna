@@ -757,7 +757,7 @@ $(function() {
         equal(grid._content.find("." + grid.oddRowClass).length, 2);
         equal(grid._content.find("." + grid.evenRowClass).length, 1);
         equal(grid._content.find(".test1").length, 1, "custom row class");
-        equal(grid._content.find(".test2").length, 1, "custom row class");
+        equal(grid._content.find(".test2.blade.php").length, 1, "custom row class");
         equal(grid._content.find(".test3").length, 1, "custom row class");
     });
 

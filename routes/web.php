@@ -37,6 +37,7 @@ Route::get('home', 'HomeController@index')->name('home')->middleware("auth");
 Route::get('invitations', 'HomeController@invitations')->name('invitations')->middleware("auth");
 Route::get('hierarchy', 'HomeController@hierarchy')->name('hierarchy')->middleware("auth");
 Route::get('hierarchy/{id}', 'HomeController@hierarchyTree')->name('hierarchyTree')->middleware("auth");
+Route::get('get_inviters_hierarchy', 'HomeController@getInvitersHierarchy')->name('hierarchy')->middleware("auth");
 Route::get('tree/{id}', 'HomeController@tree')->name('tree')->middleware("auth");
 Route::get('team', 'HomeController@team')->name('team')->middleware("auth");
 Route::get('user_processing', 'HomeController@processing')->name('processing')->middleware("auth");
