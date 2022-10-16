@@ -479,6 +479,45 @@ class Hierarchy {
     }
 
 
+    //Дерево Иерархия
+    public function getHierarchyTree($id)
+    {
+
+        $items = User::where('inviter_id',$id)->where('status',1)->get();
+        $render = '';
+
+        if(count($items) > 0){
+
+            $render = '<ul  class="">';
+            foreach ($items as $item) {
+                $render .= '<li>
+                        <a href="javascript:void(0);">
+                            <div class="member-view-box">
+                                <div class="member-image">
+                                    <img src="'.$item->photo.'" alt="" class="bg-orange">
+                                </div>
+                                <div class="member-details">
+                                    <h3>'.$item->name.'</h3>
+                                    <p><i>Мастер третьего класса</i></p>
+                                    <p>id: '.$item->id_number.' | Личники: '.\App\Facades\Hierarchy::inviterCount($item->id) .' | Все партнеры: '.\App\Facades\Hierarchy::teamCount($item->id) .'</p>
+                                </div>
+                            </div>
+                        </a>';
+
+                $innerItem = User::where('inviter_id',$id)->where('status',1)->get();
+                if (count($innerItem) > 0) {
+                    $render .= $this->getHierarchyTree($item->id);
+                }
+                $render .= '</li>';
+            }
+
+            $render .= '</ul>';
+        }
+
+        return $render;
+
+    }
+
 
     /*************************** Old METHODS from CORE ****************************/
 
