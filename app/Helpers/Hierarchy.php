@@ -488,7 +488,7 @@ class Hierarchy {
 
         if(count($items) > 0){
 
-            $render = '<ul  class="">';
+            $render = '<ul  class="" id="child'.$id.'">';
             foreach ($items as $item) {
                 $render .= '<li>
                         <a href="javascript:void(0);">
@@ -497,9 +497,9 @@ class Hierarchy {
                                     <img src="'.$item->photo.'" alt="" class="bg-orange">
                                 </div>
                                 <div class="member-details">
-                                    <h3>'.$item->name.'</h3>
-                                    <p><i>Мастер третьего класса</i></p>
-                                    <p>id: '.$item->id_number.' | Личники: '.\App\Facades\Hierarchy::inviterCount($item->id) .' | Все партнеры: '.\App\Facades\Hierarchy::teamCount($item->id) .'</p>
+                                    <h6>'.$item->name.'</h6>
+                                    <p>'.\App\Facades\Hierarchy::getStatusName($item->id).'</p>
+                                    <p>id: '.$item->id_number.' | <i class="mdi mdi-account-multiple-plus"></i> '.\App\Facades\Hierarchy::inviterCount($item->id) .' | <i class="mdi mdi-sitemap"></i> '.\App\Facades\Hierarchy::teamCount($item->id) .'</p>
                                 </div>
                             </div>
                         </a>';
@@ -518,6 +518,13 @@ class Hierarchy {
 
     }
 
+    public function getStatusName($id)
+    {
+        $user_program = UserProgram::where('user_id',$id)->first();
+        $status = Status::find($user_program->status_id);
+
+        return $status->title;
+    }
 
     /*************************** Old METHODS from CORE ****************************/
 

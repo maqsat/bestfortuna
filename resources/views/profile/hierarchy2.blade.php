@@ -1,16 +1,19 @@
-<!DOCTYPE html>
-<html lang="en" >
-<head>
-    <meta charset="UTF-8">
-    <title>User Tree View</title>
-    <link rel="stylesheet" href="/user-tree-view/dist/style.css">
 
-</head>
-<body>
+
+@extends('layouts.profile')
+
+@section('in_content')
+
+    <div class="page-wrapper">
+        <!-- ============================================================== -->
+        <!-- Container fluid  -->
+        <!-- ============================================================== -->
+        <div class="container-fluid">
+
 <!-- partial:index.partial.html -->
 <div class="body user-body user-scroll">
     <div class="user-tree">
-        <ul>
+        <ul class="parent-tree">
             <li>
                 <a href="javascript:void(0);">
                     <div class="member-view-box">
@@ -18,9 +21,9 @@
                             <img src="{{$user->photo}}" alt="" class="bg-red">
                         </div>
                         <div class="member-details">
-                            <h4>{{ $user->name }}</h4>
-                            <p><i>Мастер третьего класса</i></p>
-                            <p>id: {{ $user->id_number }} | Личники: {{ \App\Facades\Hierarchy::inviterCount($user->id) }} | Все партнеры: {{ \App\Facades\Hierarchy::teamCount($user->id) }}</p>
+                            <h6>{{ $user->name }}</h6>
+                            <p>{{ \App\Facades\Hierarchy::getStatusName($user->id) }}</p>
+                            <p>id: {{ $user->id_number }} | <i class="mdi mdi-account-multiple-plus"></i> {{ \App\Facades\Hierarchy::inviterCount($user->id) }} | <i class="mdi mdi-sitemap"></i> {{ \App\Facades\Hierarchy::teamCount($user->id) }}</p>
                         </div>
                     </div>
                 </a>
@@ -29,8 +32,23 @@
         </ul>
     </div>
 </div>
-<!-- partial -->
-<script src='https://code.jquery.com/jquery-3.4.1.min.js'></script>
-<script  src="/user-tree-view/dist/script.js"></script>
-</body>
-</html>
+        </div>
+    </div>
+
+@endsection
+
+
+
+@push('styles')
+    <link rel="stylesheet" href="/user-tree-view/dist/style.css">
+@endpush
+
+@push('scripts')
+    <!-- partial -->
+    <script src='https://code.jquery.com/jquery-3.4.1.min.js'></script>
+    <script  src="/user-tree-view/dist/script.js"></script>
+    <script>
+        $('#child'+{{$user->id}}).addClass('active');
+    </script>
+
+@endpush
