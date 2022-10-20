@@ -87,5 +87,8 @@ class UserUpgraded
         //Проверка и поднятие на следующий статус + ТО
         Hierarchy::setInvitersPV($inviter_list, $new_package, $id);
 
+        //Рассылка в телеграмм
+        Hierarchy::telegramSmsSender($event);
+
     }
 }

@@ -112,6 +112,9 @@ class UserActivated
         //Проверка и поднятие на следующий статус + ТО
         Hierarchy::setInvitersPV($inviter_list, $package, $id);
 
+        //Рассылка в телеграмм
+        Hierarchy::telegramSmsSender($event);
+
 
     }
 }

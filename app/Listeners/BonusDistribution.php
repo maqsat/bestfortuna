@@ -72,5 +72,8 @@ class BonusDistribution
                 Hierarchy::checkAndMoveNextStatus($item,$item_user_program);
             }
         }
+
+        //Рассылка в телеграмм
+        Hierarchy::telegramSmsSender($event);
     }
 }

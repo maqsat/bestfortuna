@@ -4,6 +4,7 @@ namespace App\Helpers;
 
 use App\Events\ShopTurnover;
 
+use App\Models\City;
 use DB;
 use Auth;
 use App\User;
@@ -129,21 +130,24 @@ class Hierarchy {
         else{
             $user_program = UserProgram::where('user_id',$user_id)->first();
 
-            if($user_program->status_id >= 3) return false;
-            else {
-                $user = User::find($user_id);
-                $activation_start_date = Balance::getActivationStartDate($user->created_at, $user_id);
-                $activation_start_date = Carbon::parse($activation_start_date);
-                $now = Carbon::parse($date);
+            if(!is_null($user_program)){
+                if($user_program->status_id >= 3) return false;
+                else {
+                    $user = User::find($user_id);
+                    $activation_start_date = Balance::getActivationStartDate($user->created_at, $user_id);
+                    $activation_start_date = Carbon::parse($activation_start_date);
+                    $now = Carbon::parse($date);
 
-                if($now->lte($activation_start_date)){ // less than or equals
-                    return true;
-                }
-                else{
-                    return false;
-                }
+                    if($now->lte($activation_start_date)){ // less than or equals
+                        return true;
+                    }
+                    else{
+                        return false;
+                    }
 
+                }
             }
+
         }
     }
 
@@ -525,6 +529,63 @@ class Hierarchy {
 
         return $status->title;
     }
+
+
+    public function telegramSmsSender($event)
+    {
+
+        if(isset($event->user)){
+            $package = Package::find($event->user->package_id);
+            $inviter = User::find($event->user->inviter_id);
+            $counter = UserProgram::count();
+            $city    = City::find($event->user->city_id);
+
+            $message = "АКТИВИРОВАН НОВЫЙ ПОЛЬЗОВАТЕЛЬ \n";
+            $message .= "Пакет: $package->title ($package->cost$)\n";
+            $message .= "Спонсор: ".$inviter->name." \n";
+            $message .= "Имя: ".$event->user->name." \n";
+            $message .= "Почта: ".$event->user->email." \n";
+            $message .= "Телефон: ".$event->user->number." \n";
+            $message .= "Город: ".$city->title." \n";
+            $message .= "Всего зарегистрировано: ".$counter." \n";
+            $message = urlencode($message);
+        }
+        elseif(isset($event->data)) {
+            $user_id = $event->data['user_id'];
+            $order_sum = $event->data['sum'];
+            $user = User::find($user_id);
+            $cost = $order_sum + $order_sum*0.05;
+
+            $message = "ПОКУПКА \n";
+            $message .= "Пользователь: $user->name ($user->id_number) \n";
+            $message .= "Сумма покупки: $cost$\n";
+
+            $message = urlencode($message);
+        }
+        else{
+
+            $id = $event->order->user_id;
+            $user = User::find($id);
+            $cost = $event->order->amount;
+            $new_package = Package::find($event->order->package_id);
+
+            $message = "АПГРЕЙД ПОЛЬЗОВАТЕЛЯ \n";
+            $message .= "Город: $user->name ($user->id_number) \n";
+            $message .= "Сумма апгрейда: $cost $\n";
+            $message .= "На пакет: $new_package->title $\n";
+
+            $message = urlencode($message);
+
+        }
+
+
+        $ch = curl_init("https://api.telegram.org/bot338084061:AAEf5s-TegdOIQB8Akx0yj82v18ZyJ07XwI/sendMessage?chat_id=-890158682&text=$message");
+        curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+        //---curl_setopt($ch, CURLOPT_POSTFIELDS, $post);
+        curl_exec($ch);
+        curl_close($ch);
+    }
+
 
     /*************************** Old METHODS from CORE ****************************/
 
