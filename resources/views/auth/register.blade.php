@@ -150,7 +150,7 @@
                                                     <div class="col-md-12">
                                                         <div class="checkbox checkbox-primary pull-left">
                                                             <input type="checkbox" id="terms" name="terms" class="required" checked>
-                                                            <label for="checkbox-signup">  Регистрируясь на сайте вы подтверждаете, что ознакомились с <a href=""  target="_blank">Договором</a> и <a href="" target="_blank">Презентацией</a>. </label>
+                                                            <label for="checkbox-signup">  Регистрируясь на сайте вы подтверждаете, что ознакомились с <a href="/bestfortune/offer-back.pdf"  target="_blank">Публичная оферта</a>. </label>
                                                             <div class="error-message"></div>
                                                         </div>
                                                     </div>
