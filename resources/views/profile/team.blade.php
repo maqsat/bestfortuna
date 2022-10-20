@@ -25,7 +25,7 @@
             <form method="get" class="form-horizontal user_create">
                 {{ csrf_field() }}
                 <div class="row">
-                    <div class="col-md-12">
+                    <div class="col-md-3">
 
                         @if(isset($_GET['upgrade']))
                             <input type="hidden" value="1" name="upgrade">
@@ -35,11 +35,12 @@
                             <input type="hidden" value="1" name="move">
                         @endif
 
-                        <label class="m-t-10">Дата регистрации:</label>
+                        <label class="m-t-10">Дата регистрации(до):</label>
                         <div class="input-group">
                             <input type="date" name="date" class="form-control form-control-line" >
                         </div>
-
+                    </div>
+                    <div class="col-md-3">
                         <label  class="m-t-10" for="position">Статус  фильтрации:</label>
                         <div class="input-group">
                             <select class="custom-select form-control required" id="status_id" name="status_id" required>
@@ -54,13 +55,23 @@
                                 @endforeach
                             </select>
                         </div>
-                            <hr>
-                            <span class="input-group-btn">
+                    </div>
+                    <div class="col-md-3">
+                        <label  class="m-t-10" for="position">Поиск по полям id, имя:</label>
+                        <div class="input-group">
+                            <input type="text" class="form-control" name="s" value="{{ old('s') }}">
+
+                        </div>
+                    </div>
+                    <div class="col-md-3">
+                            <span class="input-group-btn" style="margin-top: 35px;">
                                 <button class="btn btn-info" type="submit">Отправить</button>
                             </span>
                     </div>
                 </div>
             </form>
+
+            <hr>
 
             <div class="row">
                 <div class="col-12">

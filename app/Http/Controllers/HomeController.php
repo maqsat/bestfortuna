@@ -670,12 +670,20 @@ class HomeController extends Controller
         else{
             $list = UserProgram::where('inviter_list','like','%,'.Auth::user()->id.',%');
 
-            if (isset($request->status_id)){
-                $list = $list->where('status_id',$request->status_id);
+            if (isset($request->status_id ) &&  $request->status_id != 'Не указан'){
+
+                $list = $list->where('user_programs.status_id',$request->status_id);
             }
 
-            if (isset($request->date)){
-                $list = $list->where('created_at','<=',$request->date);
+            if (isset($request->date ) &&  !is_null($request->date)){
+                $list = $list->where('user_programs.created_at','<=',$request->date);
+            }
+
+            if (isset($request->s ) &&  !is_null($request->s)){
+                $list = $list->join('users','user_programs.user_id','=','users.id')
+                    ->where('users.id_number','like','%'.$request->s.'%')
+                    ->orWhere('users.name','like','%'.$request->s.'%')
+                    ->select(['user_programs.*']);
             }
 
             $list = $list->paginate(30);
