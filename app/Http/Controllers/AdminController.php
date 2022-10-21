@@ -243,4 +243,30 @@ class AdminController extends Controller
         $user_package = Package::find(Auth::user()->package_id);
         return  view('admin.packages', compact('package','user_package'));
     }
+
+    public function exchange()
+    {
+        $settings = DB::table('settings')->get();
+       return view('settings.exchange', compact('settings'));
+    }
+
+    public function exchangeEdit($id)
+    {
+        $settings_item = DB::table('settings')->where('id', $id)->first();
+        return view('settings.exchange-edit', compact('settings_item'));
+    }
+
+    public function exchangeUpdate(Request $request, $id)
+    {
+        $request->validate([
+            'value' => 'required', 'integer'
+        ]);
+
+
+        DB::table('settings')->where('id', $id)
+            ->update(['value' => $request->value]);
+
+        return redirect('/exchange');
+    }
+
 }

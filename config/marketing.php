@@ -1,5 +1,7 @@
 <?php
 
+//DB::table('settings')->where('constant', 'dollar_course')->first()
+
 return [
 
     'start_activation_calendar' =>  '01.01.2022',

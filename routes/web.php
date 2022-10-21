@@ -140,6 +140,11 @@ Route::get('admin/reviews/{id}/edit', 'AdminController@reviewEdit')->name('admin
 Route::get('admin/reviews/{id}/add', 'AdminController@reviewAdd')->name('admin_review_add')->middleware('admin');
 Route::get('admin/review/{id}/{status}', 'AdminController@reviewStatus')->name('admin_review_status')->middleware('admin');
 
+Route::get('exchange', 'AdminController@exchange')->middleware("admin");
+Route::get('settings/{id}/edit', 'AdminController@exchangeEdit')->middleware("admin");
+Route::put('settings-update/{id}', 'AdminController@exchangeUpdate')->middleware("admin");
+
+
 /*
 ************************ Resource ***********************
  */

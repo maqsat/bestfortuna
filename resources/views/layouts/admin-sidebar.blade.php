@@ -35,6 +35,7 @@
                 <li>
                     <a class="has-arrow" href="#" aria-expanded="false"><i class="mdi mdi-settings"></i><span class="hide-menu">Настройки</span></a>
                     <ul aria-expanded="false" class="collapse">
+                        <li><a href="/exchange">Курсы валют</a></li>
                         @if(Gate::allows('admin_reviews_access'))
                         <li><a href="{{ route('admin_reviews') }}">Отзывы</a></li>
                         @endif

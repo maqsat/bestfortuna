@@ -251,6 +251,16 @@ class Hierarchy {
         return $benefit->pension_payments + $benefit->health_insurance + $benefit->ipn;
     }
 
+
+    //Название статуса
+    public function getStatusName($id)
+    {
+        $user_program = UserProgram::where('user_id',$id)->first();
+        $status = Status::find($user_program->status_id);
+
+        return $status->title;
+    }
+
     /***************************
      *  Процессы
      ***************************
@@ -295,6 +305,13 @@ class Hierarchy {
 
         }
 
+        $message = "Зачислен ежемесячный Кумулятивный бонус";
+        $ch = curl_init("https://api.telegram.org/bot338084061:AAEf5s-TegdOIQB8Akx0yj82v18ZyJ07XwI/sendMessage?chat_id=-890158682&text=$message");
+        curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+        //---curl_setopt($ch, CURLOPT_POSTFIELDS, $post);
+        curl_exec($ch);
+        curl_close($ch);
+
     }
 
     //Мировой Бонус Директоров//  через крон
@@ -329,6 +346,13 @@ class Hierarchy {
                 }
             }
         }
+
+        $message = "Зачислен ежемесячный Мировой Бонус Директоров";
+        $ch = curl_init("https://api.telegram.org/bot338084061:AAEf5s-TegdOIQB8Akx0yj82v18ZyJ07XwI/sendMessage?chat_id=-890158682&text=$message");
+        curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+        //---curl_setopt($ch, CURLOPT_POSTFIELDS, $post);
+        curl_exec($ch);
+        curl_close($ch);
     }
 
     //Мировой Бонус Мастеров//  через крон
@@ -359,6 +383,13 @@ class Hierarchy {
                 Balance::changeBalance($master->user_id,   $sum, 'status_bonus', 1, 1, 1, $master->status_id, $point_cost,0,0);
             }
         }
+
+        $message = "Зачислен ежемесячный Мировой Бонус Мастеров";
+        $ch = curl_init("https://api.telegram.org/bot338084061:AAEf5s-TegdOIQB8Akx0yj82v18ZyJ07XwI/sendMessage?chat_id=-890158682&text=$message");
+        curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+        //---curl_setopt($ch, CURLOPT_POSTFIELDS, $post);
+        curl_exec($ch);
+        curl_close($ch);
     }
 
     //Проверка и запись статусов активизации//  через крон
@@ -390,6 +421,13 @@ class Hierarchy {
                 ]
             );
         }
+
+        $message = "Прошла ежемесячная Проверка и запись статусов активизации";
+        $ch = curl_init("https://api.telegram.org/bot338084061:AAEf5s-TegdOIQB8Akx0yj82v18ZyJ07XwI/sendMessage?chat_id=-890158682&text=$message");
+        curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+        //---curl_setopt($ch, CURLOPT_POSTFIELDS, $post);
+        curl_exec($ch);
+        curl_close($ch);
     }
 
     //Проверка и перевод статуса
@@ -482,7 +520,6 @@ class Hierarchy {
 
     }
 
-
     //Дерево Иерархия
     public function getHierarchyTree($id)
     {
@@ -522,15 +559,7 @@ class Hierarchy {
 
     }
 
-    public function getStatusName($id)
-    {
-        $user_program = UserProgram::where('user_id',$id)->first();
-        $status = Status::find($user_program->status_id);
-
-        return $status->title;
-    }
-
-
+    //Рассылка телегамрам
     public function telegramSmsSender($event)
     {
 
