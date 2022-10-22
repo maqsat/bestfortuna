@@ -1,11 +1,9 @@
 <?php
 
-//DB::table('settings')->where('constant', 'dollar_course')->first()
-
 return [
 
     'start_activation_calendar' =>  '01.01.2022',
-    'dollar_course' => '480',
+    'dollar_course' => '1000',
     'activation_sum' => '20',
     'tenge_symbol' => '₸',
     'dollar_symbol' => '$',

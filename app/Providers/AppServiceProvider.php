@@ -4,6 +4,7 @@ namespace App\Providers;
 
 use App\Models\UserProgram;
 use App\User;
+use DB;
 use App\Models\Program;
 use Illuminate\Support\ServiceProvider;
 use Illuminate\Support\Facades\Schema;
@@ -55,6 +56,11 @@ class AppServiceProvider extends ServiceProvider
             else return true;
 
         });
+
+
+        $value = DB::table('settings')->where('constant', 'dollar_course')->first()->value;
+
+        config()->set('marketing.dollar_course',$value);
     }
 
     /**

@@ -30,6 +30,7 @@ class TestController extends Controller
     public function tester()
     {
 
+        dd(config('marketing.dollar_course'));
         $json = File::get("users09.json");
         $todos = json_decode($json);
 
