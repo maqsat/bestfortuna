@@ -1,6 +1,6 @@
-<div class="row">
+<div class="row indicators">
     <!-- Column -->
-    <div class="col-lg-3 col-md-3">
+    <div class="col-lg-3 col-md-3 col-6">
         <div class="card">
             <div class="d-flex flex-row">
                 <div class="p-10 bg-success-custom">
@@ -12,7 +12,7 @@
             </div>
         </div>
     </div>
-    <div class="col-lg-3 col-md-3">
+    <div class="col-lg-3 col-md-3 col-6">
         <div class="card">
             <div class="d-flex flex-row">
                 <div class="p-10 bg-primary">
@@ -24,7 +24,7 @@
             </div>
         </div>
     </div>
-    <div class="col-lg-3 col-md-3">
+    <div class="col-lg-3 col-md-3 col-6">
         <div class="card">
             <div class="d-flex flex-row">
                 <div class="p-10 bg-success">
@@ -36,7 +36,7 @@
             </div>
         </div>
     </div>
-    <div class="col-lg-3 col-md-3">
+    <div class="col-lg-3 col-md-3 col-6">
         <div class="card">
             <div class="d-flex flex-row">
                 <div class="p-10 bg-inverse">

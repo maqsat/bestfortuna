@@ -21,7 +21,7 @@
             <!-- Start Page Content -->
             <!-- ============================================================== -->
 
-            <div class="row">
+            <div class="row indicators">
 
                 <div class="alert alert-success">
                     <h3 class="text-success"><i class="fa fa-check-circle"></i>  Статус стартового периода</h3>
@@ -50,7 +50,7 @@
 
 
                     @endphp
-                    <div class="col-md-6 col-lg-3 col-xlg-3">
+                    <div class="col-md-6 col-lg-3 col-xlg-3 col-6">
                         <div class="card card-inverse @if($activation >= 20) card-success @else @if($i+1 > date('n')) card-warning @else card-danger  @endif @endif">
                             <div class="box text-center">
                                 <h1 class="font-light text-white">{{ $activation }} BM</h1>

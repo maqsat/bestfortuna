@@ -263,11 +263,26 @@ input.error {
     }
 
     .light-logo {
-        width: 100px;
+        width: 150px;
+        margin-top: 18px;
+    }
+
+    .nav-link i{
+        font-size: 25px;
+        font-weight: 700;
+        color: #56cd63;
+    }
+
+    .nav-link{
+        padding-right: 22px;
     }
 
     .topbar {
         background: #ffffff;
+    }
+
+    .indicators .col-6{
+        padding: 2px;
     }
 
     .col-xlg-1, .col-xlg-10, .col-xlg-11, .col-xlg-12, .col-xlg-2, .col-xlg-3, .col-xlg-4, .col-xlg-5, .col-xlg-6, .col-xlg-7, .col-xlg-8, .col-xlg-9 {
@@ -282,4 +297,30 @@ input.error {
         padding-left: 0;
     }
 
+    h3 {
+        line-height: 22px;
+        font-size: 16px;
+    }
+
+    .input-group {
+        display: block;
+    }
+
+    .input-group .form-control {
+        width: 100%;
+        margin-bottom: 5px;
+    }
+
+    .p-20{
+        padding: 20px 0 !important;;
+    }
+
+    .out .nav {
+        display: inline-block;
+    }
+
+    .profile-tab li a.nav-link.active, .customtab li a.nav-link.active {
+        border-bottom: 2px solid #56cd63;
+        color: #5cb85b;
+    }
 }

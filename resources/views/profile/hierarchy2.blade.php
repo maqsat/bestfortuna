@@ -45,7 +45,7 @@
 
 @push('scripts')
     <!-- partial -->
-    <script src='https://code.jquery.com/jquery-3.4.1.min.js'></script>
+
     <script  src="/user-tree-view/dist/script.js"></script>
     <script>
         $('#child'+{{$user->id}}).addClass('active');

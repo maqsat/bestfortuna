@@ -123,9 +123,9 @@
                         </div>
                         <div class="card-block">
 
-                            <div class="row">
+                            <div class="row indicators">
                                 <!-- Column -->
-                                <div class="col-lg-3 col-xlg-3 col-md-3">
+                                <div class="col-lg-3 col-xlg-3 col-md-3 col-6">
                                     <div class="card card-inverse card-danger">
                                         <div class="box text-center">
                                             <h1 class="font-light text-white">{{ count($invite_list) }}</h1>
@@ -134,7 +134,7 @@
                                     </div>
                                 </div>
                                 <!-- Column -->
-                                <div class="col-lg-3 col-xlg-3 col-md-3">
+                                <div class="col-lg-3 col-xlg-3 col-md-3  col-6">
                                     <div class="card card-inverse card-warning">
                                         <div class="box text-center">
                                             <h1 class="font-light text-white">{{ $list }}</h1>
@@ -144,7 +144,7 @@
                                 </div>
 
                                 <!-- Column -->
-                                <div class="col-lg-3 col-xlg-3 col-md-3">
+                                <div class="col-lg-3 col-xlg-3 col-md-3 col-6">
                                     <div class="card card-inverse card-info">
                                         <div class="box bg-info text-center">
                                             <h1 class="font-light text-white">{{ $small_branch }}</h1>
@@ -153,7 +153,7 @@
                                     </div>
                                 </div>
                                 <!-- Column -->
-                                <div class="col-lg-3 col-xlg-3 col-md-3">
+                                <div class="col-lg-3 col-xlg-3 col-md-3 col-6">
                                     <div class="card card-primary card-inverse">
                                         <div class="box text-center">
                                             <h1 class="font-light text-white">0</h1>
@@ -175,7 +175,7 @@
                     <div class="card">
                         <div class="card-block">
                             <h3 class="card-title">Статус активизаций</h3>
-                            <div class="row">
+                            <div class="row indicators">
                                 <!-- Column -->
                                 @php
                                     $now = \Illuminate\Support\Carbon::now()
@@ -189,13 +189,13 @@
                                         </div>
                                     </div>
                                 @else
-                                    <div class="col-lg-3 col-xlg-3 col-md-3">
+                                    <div class="col-lg-3 col-xlg-3 col-md-3  col-6">
                                         <div class="box bg-info text-center">
                                             <h1 class="font-light text-white">{{ date('t')-date('d') }}</h1>
                                             <h6 class="text-white">осталось до окончание месяца(день)</h6>
                                         </div>
                                     </div>
-                                    <div class="col-lg-3 col-xlg-3 col-md-3">
+                                    <div class="col-lg-3 col-xlg-3 col-md-3  col-6">
                                         <div class="card card-primary card-inverse">
                                             <div class="box text-center">
                                                 <h1 class="font-light text-white">@if($activation >= 20) 0 @else {{ 20-$activation }} @endif</h1>
