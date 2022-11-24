@@ -95,6 +95,7 @@
                                         <th>Структура</th>
                                         @endif
                                         <th>Дат/рег</th>
+                                        <th>Действий</th>
                                     </tr>
                                     </thead>
                                     <tbody>
@@ -140,6 +141,13 @@
                                                     {{ date('d-m-Y', strtotime(\App\User::find($item->user_id)->created_at)) }}
                                                 @endif
 
+                                            </td>
+                                            <td>
+                                                @if($item->id%2 == 1)
+                                                    <a href="" class="btn  btn-xs btn-success"  title="Запретить активацию">Запретить активацию</a>
+                                                @else
+                                                    <a href="" class="btn  btn-xs btn-danger"  title="Запретить активацию">Разрешить активацию</a>
+                                                @endif
                                             </td>
                                         </tr>
                                     @endforeach

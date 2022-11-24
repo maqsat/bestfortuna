@@ -16,6 +16,67 @@ class WebController extends Controller
         return view('web.welcome');
     }
 
+    public function about()
+    {
+        return view('web.about');
+    }
+
+    public function documents()
+    {
+        return view('web.documents');
+    }
+
+    public function contacts()
+    {
+        return view('web.contacts');
+    }
+
+    public function webNews()
+    {
+        return view('web.news');
+    }
+
+    public function newsInner($id)
+    {
+        return view('web.news-inner');
+    }
+
+    public function marketing()
+    {
+        return view('web.marketing');
+    }
+
+    public function business()
+    {
+        return view('web.business');
+    }
+
+    public function benefits()
+    {
+        return view('web.benefits');
+    }
+
+    public function promotion()
+    {
+        return view('web.promotion');
+    }
+
+    public function rules()
+    {
+        return view('web.rules');
+    }
+
+
+
+    public function products()
+    {
+        return view('web.products');
+    }
+
+
+
+
+
     public function reviews()
     {
         $this->lang();
@@ -49,20 +110,8 @@ class WebController extends Controller
         return view('review.review', compact('review', 'user'));
     }
 
-    public function about()
-    {
-        return view('page.about');
-    }
 
-    public function products()
-    {
-        return view('page.products');
-    }
 
-    public function cert()
-    {
-        return view('page.cert');
-    }
 
     public function faq()
     {

@@ -26,8 +26,18 @@ Route::post('register-validate', 'UserController@registerValidate')->name('valid
 //Route::get('/', 'HomeController@index');
 Route::get('/', 'WebController@welcome');
 Route::get('about', 'WebController@about');
+Route::get('documents', 'WebController@documents');
+Route::get('contacts', 'WebController@contacts');
+Route::get('web-news', 'WebController@webNews');
+Route::get('web-news/{id}', 'WebController@newsInner');
+Route::get('marketing-plan', 'WebController@marketing');
+Route::get('business', 'WebController@business');
+Route::get('benefits', 'WebController@benefits');
+Route::get('promotion', 'WebController@promotion');
+Route::get('rules', 'WebController@rules');
 Route::get('products', 'WebController@products');
-Route::get('cert', 'WebController@cert');
+
+
 Route::get('faq', 'WebController@faq');
 
 /*
