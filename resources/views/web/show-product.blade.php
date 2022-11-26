@@ -18,7 +18,7 @@
                         {!! $product->description !!}
                     </div>
                     <div class="about-main-img">
-                        <img src="/{{ $product->image1 }}" alt="" class="">
+                        <img src="/{{ $product->image1 }}" alt="" class="" style="width: 370px;height: 323px;">
                     </div>
                 </div>
 
