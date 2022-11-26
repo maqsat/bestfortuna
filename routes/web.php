@@ -36,6 +36,7 @@ Route::get('benefits', 'WebController@benefits');
 Route::get('promotion', 'WebController@promotion');
 Route::get('rules', 'WebController@rules');
 Route::get('products', 'WebController@products');
+Route::get('web-product/{id}', 'WebController@webProduct');
 
 
 Route::get('faq', 'WebController@faq');

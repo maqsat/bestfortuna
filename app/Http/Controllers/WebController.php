@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Faq;
+use App\Models\Product;
 use App\Models\Review;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\App;
@@ -68,13 +69,23 @@ class WebController extends Controller
 
 
 
-    public function products()
+    public function products(Request $request)
     {
-        return view('web.products');
+        if(isset($request->tag_id)){
+            $tag_id = $request->tag_id;
+        }
+        else $tag_id = 1;
+
+        $products =  Product::where('category_id', $tag_id)->get();
+        return view('web.products', compact('products', 'tag_id'));
     }
 
 
-
+    public function webProduct($id)
+    {
+        $product = Product::find($id);
+        return view('web.show-product',compact('product'));
+    }
 
 
     public function reviews()

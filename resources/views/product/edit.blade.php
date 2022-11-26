@@ -69,9 +69,13 @@
                                     </div>
                                 </div>
                                 <div class="form-group">
-                                    <label class="col-md-12">Категория</label>
+                                    <label for="package_id"  class="col-md-12">Категория</label>
                                     <div class="col-md-12">
-                                        <input type="text" value="{{ old('category_id',$product->category_id) }}" name="category_id" class="form-control form-control-line">
+                                        <select class="custom-select form-control required" id="category_id" name="category_id">
+                                            @foreach(\App\Models\Tag::all() as $item)
+                                                <option value="1"  @if(old('gender',$item->id) == 1) selected @endif>{{ $item->tag_name }}</option>
+                                            @endforeach
+                                        </select>
                                         @if ($errors->has('category_id'))
                                             <span class="help-block"><small>{{ $errors->first('category_id') }}</small></span>
                                         @endif
