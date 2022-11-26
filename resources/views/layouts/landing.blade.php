@@ -30,7 +30,7 @@
                     </a>
                 </li>
                 <li class="header-dropdown nav-item dropdown">
-                    <a class="menu-list-link nav-link" href="#" id="navbarDarkDropdownMenuLink" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                    <a class="menu-list-link nav-link" href="#" id="navbarDarkDropdownMenuLink" role="button" >
                         О компании
                     </a>
                     <ul class="dropdown-menu dropdown-menu" aria-labelledby="navbarDarkDropdownMenuLink">
@@ -50,7 +50,7 @@
                     </ul> -->
                 </li>
                 <li class="nav-item dropdown">
-                    <a class="menu-list-link nav-link" href="#" id="navbarDarkDropdownMenuLink2" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                    <a class="menu-list-link nav-link" href="#" id="navbarDarkDropdownMenuLink2" role="button" >
                         Бизнес
                     </a>
                     <ul class="dropdown-menu dropdown-menu" aria-labelledby="navbarDarkDropdownMenuLink">

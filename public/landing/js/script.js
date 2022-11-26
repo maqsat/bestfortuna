@@ -93,9 +93,31 @@ var cofounderSwiper = new Swiper(".cofounderSwiper", {
 });
 
 var swiper1 = new Swiper(".mainSwiper", {
+  autoplay: {
+    delay: 5000
+  },
   navigation: {
     nextEl: ".swiper-button-next-1",
     prevEl: ".swiper-button-prev-1",
+  },
+  pagination: {
+    el: ".swiper-pagination-1",
+    clickable: true,
+  },
+  spaceBetween: 30,
+  loop: 1,
+  breakpoints: {
+
+    0: {
+      slidesPerView: 1,
+    },
+  },
+  autoHeight: true,
+});
+
+var swiper1 = new Swiper(".extraSwiper", {
+  autoplay: {
+    delay: 5000
   },
   pagination: {
     el: ".swiper-pagination-1",

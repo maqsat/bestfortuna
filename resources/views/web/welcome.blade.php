@@ -230,11 +230,19 @@
 </section>
 
 <section class="extra-section">
-    <div class="extra-section-container">
-        <img class="extra-big-photo" src="/landing/img/фото.png" alt="">
-        <div class="extra-logo">
-            <img src="/landing/img/icons/bigwhite.svg" alt="">
-            <a href="/register" class="extra-btn">Хочу в команду</a>
+    <div class="extra__swiper">
+        <div class="swiper extraSwiper">
+            <div class="swiper-wrapper">
+                <div class="extra-slide swiper-slide">
+                    <div class="extra-section-container">
+                        <img class="extra-big-photo" src="/landing/img/фото.png" alt="">
+                        <div class="extra-logo">
+                            <img src="/landing/img/icons/bigwhite.svg" alt="">
+                            <a href="/register" class="extra-btn">Хочу в команду</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
         </div>
     </div>
 </section>
