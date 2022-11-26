@@ -95,12 +95,12 @@
               <li><a href="start-business.html" class="menu-list-link text-medium1">Начать бизнес</a></li>
               <li><a href="#" class="menu-list-link text-medium1">Цели</a></li>
             </ul> -->
-            <a  href="login" class="btn-login-adap btn1">
+            <a  href="/login" class="btn-login-adap btn1">
                 Войти
                 <img src="/landing/img/icons/ic-login.svg" alt="">
             </a>
         </nav>
-        <a href="login" class="btn-login btn1">
+        <a href="/login" class="btn-login btn1">
             Войти
             <img src="/landing/img/icons/ic-login.svg" alt="">
         </a>

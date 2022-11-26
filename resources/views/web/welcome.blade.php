@@ -14,7 +14,7 @@
                                 <h1 class="main-title">препарат для восполнения кальция в организме</h1>
                                 <h2 class="main-subtitle subtitle2">Кальций играет основную роль в формировании скелета ребенка, а также минимизирует риск возникновения остеопороза.</h2>
                             </div>
-                            <button class="main-btn btn1">Узнать подробнее</button>
+                            <a href="/web-product/17" class="main-btn btn1">Узнать подробнее</a>
                         </div>
                     </div>
                 </div>
@@ -26,7 +26,7 @@
                                 <h1 class="main-title">Флора баланс</h1>
                                 <p class="main-subtitle subtitle2">Биологическое питание для матки, который запускает механизм самоочистки матки!</p>
                             </div>
-                            <button class="main-btn btn1">Узнать подробнее</button>
+                            <a href="/web-product/4" class="main-btn btn1">Узнать подробнее</a>
                         </div>
                     </div>
                 </div>
@@ -38,7 +38,7 @@
                                 <h1 class="main-title">Венера</h1>
                                 <p class="main-subtitle subtitle2">Один тюбик легкое решения Ваших гинекологических проблем!</p>
                             </div>
-                            <button class="main-btn btn1">Узнать подробнее</button>
+                            <a href="/web-product/3" class="main-btn btn1">Узнать подробнее</a>
                         </div>
                     </div>
                 </div>
@@ -56,25 +56,25 @@
             <h1 class="section-title title1">Наша продукция</h1>
         </div>
         <div class="section0-body section-body">
-            <a href="/products">
+            <a href="/products?tag_id=1">
                 <div class="section0-body-item text-medium1">
                     <p>Серия китайской медицины</p>
                     <img src="/landing/img/Froduct1.png" alt="">
                 </div>
             </a>
-            <a href="/products">
+            <a href="/products?tag_id=2">
                 <div class="section0-body-item text-medium1">
                     <p>Серия для женщин и мужчин</p>
                     <img src="/landing/img/Froduct2.png" alt="">
                 </div>
             </a>
-            <a href="/products">
+            <a href="/products?tag_id=3">
                 <div class="section0-body-item text-medium1">
                     <p>Продукция нанотехнологий</p>
                     <img src="/landing/img/Froduct3.png" alt="">
                 </div>
             </a>
-            <a href="/products">
+            <a href="/products?tag_id=4">
                 <div class="section0-body-item text-medium1">
                     <p>Наборы продукций</p>
                     <img src="/landing/img/Froduct4.png" alt="">
@@ -115,7 +115,7 @@
     <div class="container">
         <div class="section-header">
             <h1 class="section-title title1">Новости</h1>
-            <a href="/web-news/2" class="section2-other-news">
+            <a href="/web-news" class="section2-other-news">
                 Все новости
                 <img src="/landing/img/icons/Arrow.svg" alt="">
             </a>
@@ -273,7 +273,7 @@
             <div class="swiper ownersSwiper">
                 <div class="swiper-wrapper">
                     <div class="swiper-slide" >
-                        <a href="#" class="swiper-slide-block " >
+                        <a href="https://www.youtube.com/@bestfortune6034" class="swiper-slide-block " >
                             <div class="section4-img">
                                 <img src="/landing/img/video-min1.png" alt="">
                                 <svg class="section4-bg" width="73" height="26" viewBox="0 0 73 26" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -303,7 +303,7 @@
                         </a>
                     </div>
                     <div class="swiper-slide" >
-                        <a href="javascript:void()" data-video-id="AyoRM60AKds" class="swiper-slide-block js-video-button" >
+                        <a href="https://www.youtube.com/@bestfortune6034" data-video-id="AyoRM60AKds" class="swiper-slide-block js-video-button" >
                             <div class="section4-img">
                                 <img src="/landing/img/videomin2.png" alt="">
                                 <svg class="section4-bg" width="73" height="26" viewBox="0 0 73 26" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -333,7 +333,7 @@
                         </a>
                     </div>
                     <div class="swiper-slide" >
-                        <a href="javascript:void()" data-video-id="AyoRM60AKds" class="swiper-slide-block js-video-button" >
+                        <a href="https://www.youtube.com/@bestfortune6034" data-video-id="AyoRM60AKds" class="swiper-slide-block js-video-button" >
                             <div class="section4-img">
                                 <img src="/landing/img/minvideo3.png" alt="">
                                 <svg class="section4-bg" width="73" height="26" viewBox="0 0 73 26" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -363,7 +363,7 @@
                         </a>
                     </div>
                     <div class="swiper-slide" >
-                        <a href="javascript:void()" data-video-id="AyoRM60AKds" class="swiper-slide-block js-video-button" >
+                        <a href="https://www.youtube.com/@bestfortune6034" data-video-id="AyoRM60AKds" class="swiper-slide-block js-video-button" >
                             <div class="section4-img">
                                 <img src="/landing/img/minvideo4.png" alt="">
                                 <svg class="section4-bg" width="73" height="26" viewBox="0 0 73 26" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -393,7 +393,7 @@
                         </a>
                     </div>
                     <div class="swiper-slide" >
-                        <a href="javascript:void()" data-video-id="AyoRM60AKds" class="swiper-slide-block js-video-button" >
+                        <a href="https://www.youtube.com/@bestfortune6034" data-video-id="AyoRM60AKds" class="swiper-slide-block js-video-button" >
                             <div class="section4-img">
                                 <img src="/landing/img/video-min1.png" alt="">
                                 <svg class="section4-bg" width="73" height="26" viewBox="0 0 73 26" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -423,7 +423,7 @@
                         </a>
                     </div>
                     <div class="swiper-slide" >
-                        <a href="javascript:void()" data-video-id="AyoRM60AKds" class="swiper-slide-block js-video-button" >
+                        <a href="https://www.youtube.com/@bestfortune6034" data-video-id="AyoRM60AKds" class="swiper-slide-block js-video-button" >
                             <div class="section4-img">
                                 <img src="/landing/img/videomin2.png" alt="">
                                 <svg class="section4-bg" width="73" height="26" viewBox="0 0 73 26" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -453,7 +453,7 @@
                         </a>
                     </div>
                     <div class="swiper-slide" >
-                        <a href="javascript:void()" data-video-id="AyoRM60AKds" class="swiper-slide-block js-video-button" >
+                        <a href="https://www.youtube.com/@bestfortune6034" data-video-id="AyoRM60AKds" class="swiper-slide-block js-video-button" >
                             <div class="section4-img">
                                 <img src="/landing/img/minvideo3.png" alt="">
                                 <svg class="section4-bg" width="73" height="26" viewBox="0 0 73 26" fill="none" xmlns="http://www.w3.org/2000/svg">
