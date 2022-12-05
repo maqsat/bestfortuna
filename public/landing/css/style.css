@@ -538,7 +538,7 @@
 }
 
 .section1-img {
-  width: 350px;
+  width: 400px;
   position: relative;
   height: 450px;
 }
@@ -603,7 +603,7 @@
 
 @media screen and (max-width: 1055px) {
   .section1-img{
-    width: 300px;
+    width: 400px;
   }
 }
 
@@ -626,12 +626,12 @@
 
 @media (max-width: 550px) {
   .section1-img {
-    width: 300px;
+    width: 250px;
     height: 270px;
   }
   .section1-img1, .section1-img2 {
-    width: 200px;
-    height: 200px;
+    width: 100%;
+    height: 100%;
   }
   .img-section1-circle1 {
     width: 100px;
@@ -645,7 +645,7 @@
 
 @media screen and (max-width: 480px) {
   .section1-img{
-    width: 180px!important;
+    width: 250px!important;
   }
 }
 /* Section1 end */
@@ -882,6 +882,7 @@
 .extra-big-photo{
   width: 100%;
   object-fit: cover;
+  height: 100%;
 }
 
 .extra-btn{
