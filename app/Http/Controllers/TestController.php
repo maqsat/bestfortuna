@@ -30,23 +30,101 @@ class TestController extends Controller
     public function tester()
     {
 
-        dd(config('marketing.dollar_course'));
-        $json = File::get("users09.json");
+        Hierarchy::checkActivationStatus();
+
+
+    }
+
+    public function testerExport()
+    {
+        $json = File::get("users_new.json");
         $todos = json_decode($json);
 
-        foreach ($todos as $key => $value) {
-            $user = DB::table('users')->where('id_number', $value->id_number)->first();
-            $user_program = UserProgram::where('user_id',$user->id)->first();
-            $status = Status::where('id', $user_program->status_id)->first();
+        //check isset user
+        /*foreach ($todos as $key => $value) {
+            $isset_user = User::where('id_number',$value->login)->first();
+            if(is_null($isset_user)) dd($value);
+            else User::whereId($isset_user->id)->update(['type' => 1]);
+        }*/
 
-            if ($value->status != $status->title){
+        //contain status and change difference
+        /*foreach ($todos as $key => $value) {
+            $isset_user = User::where('id_number',$value->login)->first();
 
-                echo $user->id." - ".$value->status." | ".$status->title."<br>";
+            $inviter_program = UserProgram::where('user_id',$isset_user->id)->first();
+            $inviter_status = Status::find($inviter_program->status_id);
+
+            if($value->status != $inviter_status->title) {
+                echo $value->login." $value->status <- $inviter_status->title <br>";
+
+                $status = Status::where('title',$value->status)->first();
+
+                $inviter_program->status_id = $status->id;
+                $inviter_program->save();
 
             }
+        }*/
 
-        }
+        // check PV and set PV
+        /*foreach ($todos as $key => $value) {
 
+            // do table truncate
+            $isset_user = User::where('id_number',$value->login)->first();
+
+           Processing::create([
+                'status' => 'admin_add',
+                'sum' => $value->pv,
+                'in_user' => 0,
+                'user_id' => $isset_user->id,
+                'program_id' => $isset_user->program_id,
+                'created_at' => Carbon::now()->subMonth()->format('Y-m-d H:i:s'),
+                'status_id' => 1,
+                'package_id' => $isset_user->package_id,
+                'card_number' => $isset_user->card
+            ]);
+
+            Processing::create([
+                'status' => 'out',
+                'sum' => $value->pv,
+                'in_user' => 0,
+                'user_id' => $isset_user->id,
+                'program_id' => $isset_user->program_id,
+                'created_at' => Carbon::now()->subMonth()->format('Y-m-d H:i:s'),
+                'status_id' => 1,
+                'package_id' => $isset_user->package_id,
+                'card_number' => $isset_user->card
+            ]);
+        }*/
+
+        // check activation
+        /*foreach ($todos as $key => $value) {
+            $isset_user = User::where('id_number',$value->login)->first();
+
+
+            if(!Hierarchy::checkIsActive($isset_user->id) and isset($value->activation)) {
+                echo $key.") "; echo $value->login."<br>";
+
+                $date = new \DateTime();
+                $date->modify('-1 month');
+
+                DB::table('activations')->updateOrInsert(
+                    [
+                        'user_id' => $isset_user->id,
+                        'month' => Carbon::parse($date)->month,
+                        'year' => Carbon::parse($date)->year,
+                        'status' => 1
+                    ],
+                    [
+                        'user_id' => $isset_user->id,
+                        'month' => Carbon::parse($date)->month,
+                        'year' => Carbon::parse($date)->year,
+                        'sum' => 20,
+                        'status' => 1
+                    ]
+                );
+            }
+
+        }*/
 
     }
 
@@ -140,8 +218,7 @@ class TestController extends Controller
         $users_tempp = DB::table('users_tempp')->get();
 
         foreach ($users_tempp as $key => $value) {
-                $user = DB::table('users')->where('id_number', $value->login)->first();
-
+            $user = DB::table('users')->where('id_number', $value->login)->first();
 
             $data = Processing::create([
                 'status' => 'out',
@@ -159,33 +236,7 @@ class TestController extends Controller
     }
 
 
-    public function testerExport()
-    {
-        $json = File::get("users_new.json");
-        $todos = json_decode($json);
 
-        foreach ($todos as $key => $value) {
-
-            //if(is_null($value->status)) dd($value);
-
-            DB::table('users_tempp')->insert([
-                "login"         =>   $value->login,
-                "sponsor"       =>  $value->sponsor,
-                "created_at"    =>  $value->created_at,
-                "name"          =>  $value->name,
-                "office"        =>  $value->office,
-                "status"        =>  $value->status,
-                "pv"            =>  $value->pv,
-                //"pasport_number"=>  $value->pasport_number,
-                //"iin"           =>  $value->iin,
-                //"pasport_give"  =>  $value->pasport_give,
-                //"pensioner"     =>  $value->pensioner,
-                //"disabled"      =>  $value->disabled,
-                //"pp720"         =>  $value->pp720,
-                //"pp73"          =>  $value->pp73
-            ]);
-        }
-    }
 
     public function tester2()
     {

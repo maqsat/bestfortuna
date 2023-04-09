@@ -5,7 +5,7 @@
             <ul id="sidebarnav">
                 <li class="nav-small-cap">{{ __('app.menu') }}</li>
                 <!--Если юзер из магазина из сайта то ему показываем только магазин и корзину-->
-                @if(Auth::user()->type == 1)
+                @if(false) <!--Auth::user()->type == 1-->
                     <li>
                         <a href="/main-store" aria-expanded="false">
                             <i class="mdi mdi-cart"></i>

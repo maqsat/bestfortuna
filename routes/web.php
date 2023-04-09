@@ -183,7 +183,7 @@ Route::get('check_mentor', 'AutoActivationController@checkMentor');
  */
 Route::get('tester', 'TestController@tester');
 Route::get('setbots', 'TestController@setBotsExcel');
-Route::get('tester-export', 'TestController@setBotsExcel');
+Route::get('tester-export', 'TestController@testerExport');
 //Route::get('setbots', 'TestController@setBots');
 Route::get('auto-activation', 'TestController@testerActivation');
 
