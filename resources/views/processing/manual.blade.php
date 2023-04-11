@@ -44,7 +44,8 @@
                     <h4 class="card-title">Реквизиты и счета</h4>
                     <div class="ribbon-wrapper card">
                         <div class="ribbon ribbon-bookmark  ribbon-warning"> KASPI</div>
-                        <p class="ribbon-content"> <a href="https://pay.kaspi.kz/pay/moxjvehp" target="_blank"> Ссылка для оплаты через Kaspi Pay</a></p>
+                        <p class="ribbon-content"> <a href="https://pay.kaspi.kz/pay/moxjvehp" target="_blank"> Ссылка для оплаты через Kaspi Pay(кроме Атырау)</a></p>
+                        <p class="ribbon-content"> <a href="https://pay.kaspi.kz/pay/zilih4l6" target="_blank"> Ссылка для оплаты через Kaspi Pay(только Атырау)</a></p>
                         <p class="ribbon-content"> ТОО «Best Fortune»</p>
                         <p class="ribbon-content"> БИН </p>
                         <p class="ribbon-content"> Номер перевода </p>
