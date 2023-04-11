@@ -27,7 +27,7 @@ class StoreController extends Controller
 
         $orders = Order::where('user_id', Auth::user()->id)->where('type','shop')->where('payment','manual')->orderBy('id','desc')->first();
 
-        if($user->type==1){
+        if(false){//$user->type==1
             $list = Product::whereNull('is_client')->orderBy('created_at','desc')->paginate();
             $tag = Tag::all();
             if($request->has('tag')){

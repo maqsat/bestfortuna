@@ -14,11 +14,11 @@
         <!-- Start Page Content -->
         <!-- ============================================================== -->
 
-<!--        <div class="row">
+        <div class="row">
             <div class="col-md-6 mx-auto p-5">
-                Баланс повторной покупки - {{--{{ $balance }}--}}
+                Баланс повторной покупки - {{ $balance }}
             </div>
-        </div>-->
+        </div>
 
         @foreach($list->chunk(4) as $item)
             <div class="row">
