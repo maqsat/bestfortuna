@@ -17,6 +17,7 @@
         "kylekatarnls/laravel-carbon-2": "^1.0.0",
         "laravel/framework": "5.7.*",
         "laravel/tinker": "^1.0",
+        "maatwebsite/excel": "^3.1",
         "nesbot/carbon": "2.24.0 as 1.39.0",
         "tymon/jwt-auth": "^1.0",
         "yab/laravel-scout-mysql-driver": "^3.0"

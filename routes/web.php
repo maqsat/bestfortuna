@@ -70,9 +70,6 @@ Route::get('story-store', 'StoreController@story')->middleware("activation");
 Route::get('activation-calendar', 'StoreController@activationCalendar')->middleware("activation");
 Route::get('main-store', 'StoreController@store')->middleware("activation");
 
-
-
-
 /*
 ************************ Not Used ***********************
  */
@@ -99,10 +96,6 @@ Route::post('transfer', 'ProcessingController@transfer')->name('transfer');
 Route::get('transfer/{status}/{processing_id}', 'ProcessingController@transferAnswer');
 Route::post('/transfer', 'ProcessingController@transfer')->name('transfer');
 Route::get('/transfer/{status}/{processing_id}', 'ProcessingController@transferAnswer');
-
-
-
-
 
 
 /*
@@ -139,6 +132,7 @@ Route::get('user/{id}/processing','UserController@processing');
 Route::post('user/processing','UserController@processingStore');
 Route::get('user/{id}/add_bonus','UserController@addBonus')->middleware("admin");
 Route::post('user/{id}/add_bonus','UserController@addBonusUser')->middleware("admin");
+Route::get('user-export', 'UserController@export')->middleware("admin");
 Route::get('admin/notifications', 'AdminController@notifications')->name('admin_notifications')->middleware("admin");
 Route::get('order', 'ProductController@orders');
 Route::get('overview-money', 'ProcessingController@overview')->name('overview');

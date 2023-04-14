@@ -33,7 +33,8 @@ use App\Models\MobileApp\Course;
 use App\Models\MobileApp\CompletedCourse;
 use App\Events\Activation;
 use App\Events\Upgrade;
-
+use Excel;
+use App\Exports\UsersExport;
 
 use Illuminate\Http\Request;
 use JWTAuth;
@@ -1530,5 +1531,11 @@ class UserController extends Controller
         return response()->json($response, 201);
     }
     /*End new methods*/
+
+
+    public function export()
+    {
+        return Excel::download(new UsersExport, 'users.xlsx');
+    }
 
 }
