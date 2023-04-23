@@ -30,7 +30,18 @@ class TestController extends Controller
     public function tester()
     {
 
-        Hierarchy::checkActivationStatus();
+        $users = UserProgram::where('inviter_list','like','%,3,%')->get();
+
+        foreach ($users as $item){
+
+            $inviter_list2 = str_replace(',3,1,',',1,', $item->inviter_list);
+            echo $inviter_list2.'<='.$item->inviter_list."<br>";
+
+            $item->inviter_list = $inviter_list2;
+            $item->save();
+
+        }
+
 
 
     }
