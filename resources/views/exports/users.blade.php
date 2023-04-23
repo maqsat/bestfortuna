@@ -31,7 +31,7 @@
                 @if(\App\Facades\Hierarchy::checkIsActive($user->id)) Активация  @endif
             </td>
             <td>{{ \App\Facades\Balance::getIncomeBalance($user->id) }}</td>
-            <td>{{ \App\Facades\Hierarchy::pvCounterAll($user->id) }}</td>
+            <td>{{ \App\Facades\Balance::getBalance($user->id) }}</td>
         </tr>
 @endforeach
 </tbody>
