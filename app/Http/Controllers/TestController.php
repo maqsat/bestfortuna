@@ -6,6 +6,7 @@ namespace App\Http\Controllers;
 use App\Facades\Balance;
 use App\Facades\General;
 use App\Models\Counter;
+use App\Models\FortuneWheel;
 use App\Models\Order;
 use App\Models\UserProgram;
 use DB;
@@ -29,20 +30,26 @@ class TestController extends Controller
 
     public function tester()
     {
+        $user_id = 4582;
+        $date = new \DateTime();
+        //$date->modify('-1 month');
 
-        $users = UserProgram::where('inviter_list','like','%,3,%')->get();
+        $check_invite_count = User::where('inviter_id',$user_id)
+            ->whereBetween('created_at', [Carbon::parse($date)->startOfMonth(), Carbon::parse($date)->endOfMonth()])
+            ->count();
 
-        foreach ($users as $item){
+        $amount = Order::whereUserId($user_id)
+            ->whereBetween('created_at', [Carbon::parse($date)->startOfMonth(), Carbon::parse($date)->endOfMonth()])
+            ->sum('amount');
 
-            $inviter_list2 = str_replace(',3,1,',',1,', $item->inviter_list);
-            echo $inviter_list2.'<='.$item->inviter_list."<br>";
+        if($amount >= 800) $amount_count = 1;
+        elseif($amount >= 1400) $amount_count = 2;
+        elseif($amount >= 2000) $amount_count = 3;
+        else $amount_count = 0;
 
-            $item->inviter_list = $inviter_list2;
-            $item->save();
+        $attempt_count = $check_invite_count + $amount_count - FortuneWheel::whereUserId($user_id)->count();
 
-        }
-
-
+        dd($attempt_count);
 
     }
 
@@ -139,6 +146,24 @@ class TestController extends Controller
 
     }
 
+
+    public function termination()
+    {
+
+        $users = UserProgram::where('inviter_list','like','%,3,%')->get();
+
+        foreach ($users as $item){
+
+            $inviter_list2 = str_replace(',3,1,',',1,', $item->inviter_list);
+            echo $inviter_list2.'<='.$item->inviter_list."<br>";
+
+            $item->inviter_list = $inviter_list2;
+            $item->save();
+
+        }
+
+
+    }
 
 
     public function testerOld()

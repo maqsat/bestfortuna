@@ -59,6 +59,9 @@ Route::post('/request', 'ProcessingController@request')->name('request');
 Route::get('faq-profile','FaqController@index')->middleware("auth");
 Route::post('updateProfile', 'HomeController@updateProfile')->name('updateProfile');
 Route::post('updateAvatar', 'HomeController@updateAvatar')->name('updateAvatar');
+Route::get('fortune_wheel', 'HomeController@fortuneWheel')->name('fortune_wheel');
+Route::get('fortune_wheel_access/{user_id}', 'HomeController@fortuneWheelAccess')->name('fortune_wheel_access');
+Route::get('fortune_wheel_attempt/{user_id}/{success}', 'HomeController@fortuneWheelAttempt')->name('fortune_wheel_attempt');
 
 Route::get('marketing', 'HomeController@marketing')->name('marketing');
 

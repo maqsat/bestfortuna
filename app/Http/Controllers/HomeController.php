@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Comment;
+use App\Models\FortuneWheel;
 use App\Models\Office;
 use App\Models\Review;
 use DB;
@@ -806,6 +807,49 @@ class HomeController extends Controller
         $diff = Carbon::createFromFormat('Y-m-d H:i:s', $user_program->created_at)->diffInDays(Carbon::now());
 
         return view('profile.programs', compact('orders','packages','current_package','diff'));
+    }
+
+    public function fortuneWheel()
+    {
+        $list = FortuneWheel::all();
+        return view('profile.fortune_wheel', compact('list'));
+    }
+
+    public function fortuneWheelAccess($user_id)
+    {
+        $date = new \DateTime();
+        //$date->modify('-1 month');
+
+        $check_invite_count = User::where('inviter_id',$user_id)
+            ->whereBetween('created_at', [Carbon::parse($date)->startOfMonth(), Carbon::parse($date)->endOfMonth()])
+            ->count();
+
+        $amount = Order::whereUserId($user_id)
+            ->whereBetween('created_at', [Carbon::parse($date)->startOfMonth(), Carbon::parse($date)->endOfMonth()])
+            ->sum('amount');
+
+        if($amount >= 800) $amount_count = 1;
+        elseif($amount >= 1400) $amount_count = 2;
+        elseif($amount >= 2000) $amount_count = 3;
+        else $amount_count = 0;
+
+        $attempt_count = $check_invite_count + $amount_count - FortuneWheel::whereUserId($user_id)
+                ->whereBetween('created_at', [Carbon::parse($date)->startOfMonth(), Carbon::parse($date)->endOfMonth()])
+                ->count();
+
+        return $attempt_count;
+
+    }
+
+    public function fortuneWheelAttempt($user_id, $success)
+    {
+        if($success == 7) $success_result = 1;
+        else $success_result = 0;
+
+        FortuneWheel::create([
+            'user_id' => $user_id,
+            'success' => $success_result
+        ]);
     }
 
 }
