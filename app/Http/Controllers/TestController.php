@@ -30,26 +30,6 @@ class TestController extends Controller
 
     public function tester()
     {
-        $user_id = 4582;
-        $date = new \DateTime();
-        //$date->modify('-1 month');
-
-        $check_invite_count = User::where('inviter_id',$user_id)
-            ->whereBetween('created_at', [Carbon::parse($date)->startOfMonth(), Carbon::parse($date)->endOfMonth()])
-            ->count();
-
-        $amount = Order::whereUserId($user_id)
-            ->whereBetween('created_at', [Carbon::parse($date)->startOfMonth(), Carbon::parse($date)->endOfMonth()])
-            ->sum('amount');
-
-        if($amount >= 800) $amount_count = 1;
-        elseif($amount >= 1400) $amount_count = 2;
-        elseif($amount >= 2000) $amount_count = 3;
-        else $amount_count = 0;
-
-        $attempt_count = $check_invite_count + $amount_count - FortuneWheel::whereUserId($user_id)->count();
-
-        dd($attempt_count);
 
     }
 

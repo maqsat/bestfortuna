@@ -11,6 +11,7 @@
         <th>Статус</th>
         <th>Активация</th>
         <th>Накопительный PV</th>
+        <th>Товарооборот PV</th>
         <th>Месяц({{ \App\Facades\General::getMonthNameById($date->format('n')) }})</th>
     </tr>
     </thead>
@@ -31,6 +32,7 @@
                 @if(\App\Facades\Hierarchy::checkIsActive($user->id)) Активация  @endif
             </td>
             <td>{{ \App\Facades\Balance::getIncomeBalance($user->id) }}</td>
+            <td>{{ \App\Facades\Hierarchy::pvCounterAll($user->id) }}</td>
             <td>{{ \App\Facades\Balance::getBalance($user->id) }}</td>
         </tr>
 @endforeach
