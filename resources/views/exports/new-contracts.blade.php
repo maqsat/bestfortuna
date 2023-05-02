@@ -10,6 +10,7 @@ $date = new \DateTime();
         <th>Дата регистрации</th>
         <th>Регистрация</th>
         <th>Покупки</th>
+        <th>Склад</th>
         <th>Спонсор</th>
         <th>Статус</th>
         <th>Активация</th>
@@ -26,6 +27,14 @@ $date = new \DateTime();
             <td>{{ $user->created_at->format('Y-m-d') }}</td>
             <td>{{ \App\Models\Package::find($user->package_id)->cost }}</td>
             <td>{{ \App\Facades\Hierarchy::orderSumOfMonth($date,$user->id) }}</td>
+            <td>
+                @php $storage = \App\Models\Office::find($user->office_id); @endphp
+                @if(!is_null($storage))
+                    {{ $storage->title }}
+                @else
+                    Склад не определен
+                @endif
+            </td>
             <td>
                 @php $sponsor = \App\User::whereId($user->inviter_id)->first(); @endphp
                 @if(!is_null($sponsor)) {{ $sponsor->id_number }}@endif

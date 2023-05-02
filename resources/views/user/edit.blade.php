@@ -108,6 +108,17 @@
                                     </div>
                                 </div>
                                 <div class="form-group">
+                                    <label class="col-sm-12">Склад</label>
+                                    <div class="col-sm-12">
+                                        <select class="form-control form-control-line" name="office_id" >
+                                            <option value="">Выберите склад</option>
+                                            @foreach(\App\Models\Office::all() as $item)
+                                                <option value="{{ $item->id }}"  @if(old('office_id',$user->office_id) == $item->id) selected @endif>{{ $item->title }}</option>
+                                            @endforeach
+                                        </select>
+                                    </div>
+                                </div>
+                                <div class="form-group">
                                     <label class="col-md-12">{{ __('app.address') }}</label>
                                     <div class="col-md-12">
                                         <input type="text" value="{{ old('address',$user->address) }}" name="address" class="form-control form-control-line">
@@ -156,7 +167,7 @@
                                 </div>
 
                                 <div class="form-group">
-                                    <label class="col-sm-12">{{ __('app.city') }}</label>
+                                    <label class="col-sm-12">Льгота</label>
                                     <div class="col-sm-12">
                                         <select class="form-control form-control-line" name="benefit">
                                             @foreach(DB::table('benefits')->orderby('id','desc')->get() as $item)

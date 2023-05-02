@@ -324,6 +324,7 @@ class UserController extends Controller
             'created_at'    => $date,
             'benefit'       => $request->benefit,
             'benefit_time'       => $request->benefit_time,
+            'office_id'       => $request->office_id,
         ]);
 
         return redirect()->back()->with('status', 'Успешно изменено');
