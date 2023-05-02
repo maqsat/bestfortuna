@@ -27,7 +27,7 @@ use Illuminate\Support\Facades\Storage;
 class Hierarchy {
 
 //Carbon::parse('04/04/2023')
-//Carbon::parse('03/05/2023')
+//Carbon::parse('05/03/2023')
 
     public $sponsor_id;
 
@@ -47,7 +47,7 @@ class Hierarchy {
             $date->modify('-1 month');
         }
 
-        $pv_from_register  = Counter::where('user_id',$user_id)->whereBetween('created_at', [Carbon::parse('04/04/2023'), Carbon::parse('03/05/2023')])->sum('sum');
+        $pv_from_register  = Counter::where('user_id',$user_id)->whereBetween('created_at', [Carbon::parse('04/04/2023'), Carbon::parse('05/03/2023')])->sum('sum');
 
         $pv_from_own_shop = $this->orderSumOfMonth($date,$user_id);;
 
@@ -86,8 +86,8 @@ class Hierarchy {
             $date->modify('-1 month');
         }
 
-        $pv_from_register  = Counter::whereBetween('created_at', [Carbon::parse('04/04/2023'), Carbon::parse('03/05/2023')])->sum('sum');
-        $pv_from_own_shop = Order::whereBetween('created_at', [Carbon::parse('04/04/2023'), Carbon::parse('03/05/2023')])
+        $pv_from_register  = Counter::whereBetween('created_at', [Carbon::parse('04/04/2023'), Carbon::parse('05/03/2023')])->sum('sum');
+        $pv_from_own_shop = Order::whereBetween('created_at', [Carbon::parse('04/04/2023'), Carbon::parse('05/03/2023')])
             ->where('type','shop')
             ->where(function($query){
                 $query->where('status',4)
@@ -101,7 +101,7 @@ class Hierarchy {
     //Сумма заказов за месяц
     public function orderSumOfMonth($date,$user_id, $date_status = 0)
     {
-        $sum = Order::whereBetween('created_at', [Carbon::parse('04/04/2023'), Carbon::parse('03/05/2023')])
+        $sum = Order::whereBetween('created_at', [Carbon::parse('04/04/2023'), Carbon::parse('05/03/2023')])
             ->where('type','shop')
             ->where('user_id', $user_id)
             ->where(function($query){
@@ -291,7 +291,7 @@ class Hierarchy {
                         foreach ($level_users as $item_user){
                             $sums += Processing::whereUserId($item_user->user_id)
                                 ->where('status', 'turnover_bonus')
-                                ->whereBetween('created_at', [Carbon::parse('04/04/2023'), Carbon::parse('03/05/2023')])
+                                ->whereBetween('created_at', [Carbon::parse('04/04/2023'), Carbon::parse('05/03/2023')])
                                 ->sum('sum');
                         }
 

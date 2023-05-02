@@ -30,7 +30,17 @@ class TestController extends Controller
 
     public function tester()
     {
+        $date = new \DateTime();
+        $sum = Order::whereBetween('created_at', [Carbon::parse('04/04/2023'), Carbon::parse('05/03/2023')])
+            ->where('type','shop')
+            ->where('user_id', 464)
+            ->where(function($query){
+                $query->where('status',4)
+                    ->orWhere('status',6);
+            })
+            ->sum('uuid');
 
+        dd(Carbon::parse('05/03/2023'));
     }
 
     public function testerExport()

@@ -25,7 +25,7 @@
             <td>{{ $user->name }}</td>
             <td>{{ $user->created_at->format('Y-m-d') }}</td>
             <td>{{ \App\Models\Package::find($user->package_id)->cost }}</td>
-            <td>{{ \App\Facades\Hierarchy::orderSumOfMonth($date,Auth::user()->id) }}</td>
+            <td>{{ \App\Facades\Hierarchy::orderSumOfMonth($date,$user->id) }}</td>
             <td>
                 @php $sponsor = \App\User::whereId($user->inviter_id)->first(); @endphp
                 @if(!is_null($sponsor)) {{ $sponsor->id_number }}@endif
