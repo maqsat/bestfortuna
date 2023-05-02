@@ -12,7 +12,7 @@ class NewContractsExport implements FromView
     public function view(): View
     {
         return view('exports.new-contracts', [
-            'users' => User::whereBetween('created_at', [Carbon::parse('04/04/2023'), Carbon::parse('03/05/2023')])->get()
+            'users' => User::whereBetween('created_at', [Carbon::parse('04/04/2023'), Carbon::parse('05/03/2023')])->get()
         ]);
     }
 }
