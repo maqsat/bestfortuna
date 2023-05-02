@@ -136,6 +136,9 @@ Route::post('user/processing','UserController@processingStore');
 Route::get('user/{id}/add_bonus','UserController@addBonus')->middleware("admin");
 Route::post('user/{id}/add_bonus','UserController@addBonusUser')->middleware("admin");
 Route::get('user-export', 'UserController@export')->middleware("admin");
+Route::get('new-contracts', 'UserController@newContracts')->middleware("admin");
+
+
 Route::get('admin/notifications', 'AdminController@notifications')->name('admin_notifications')->middleware("admin");
 Route::get('order', 'ProductController@orders');
 Route::get('overview-money', 'ProcessingController@overview')->name('overview');

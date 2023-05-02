@@ -14,7 +14,8 @@
                     <h3 class="text-themecolor m-b-0 m-t-0">Пользователи</h3>
                 </div>
                 <div class="col-md-6 col-4 align-self-center">
-                    <a href="/user-export" class="btn pull-right hidden-sm-down btn-success"><i class="mdi mdi-plus-circle"></i> Экспорт</a>
+                    <a href="/user-export" class="btn pull-right hidden-sm-down btn-success"><i class="mdi mdi-plus-circle"></i> Ведомость</a>
+                    <a href="/new-contracts" class="btn pull-right hidden-sm-down btn-success"><i class="mdi mdi-plus-circle"></i> Новые партнеры</a>
                 </div>
             </div>
             <!-- ============================================================== -->

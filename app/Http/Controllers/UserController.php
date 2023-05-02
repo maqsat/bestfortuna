@@ -35,6 +35,8 @@ use App\Events\Activation;
 use App\Events\Upgrade;
 use Excel;
 use App\Exports\UsersExport;
+use App\Exports\NewContractsExport;
+use App\Exports\MonthOrdersExport;
 
 use Illuminate\Http\Request;
 use JWTAuth;
@@ -1536,6 +1538,16 @@ class UserController extends Controller
     public function export()
     {
         return Excel::download(new UsersExport, 'users.xlsx');
+    }
+
+    public function monthOrders()
+    {
+        return Excel::download(new MonthOrdersExport, 'month-orders.xlsx');
+    }
+
+    public function newContracts()
+    {
+        return Excel::download(new NewContractsExport, 'new-contracts.xlsx');
     }
 
 }
