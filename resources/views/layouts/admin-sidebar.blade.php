@@ -118,6 +118,9 @@
                         @if(Gate::allows('admin_orders_access'))
                             <li><a href="/order?history=1">История</a></li>
                         @endif
+                        @if(Gate::allows('admin_orders_access'))
+                            <li><a href="/activation_history">История активации</a></li>
+                        @endif
                     </ul>
                 </li>
                 @endif

@@ -49,19 +49,19 @@ class BonusDistribution
                     switch ($key) {
                         case 0:
                             $sum = $order_sum*4/100;
-                            Balance::changeBalance($item,   $sum, 'quickstart_bonus', $user_id, 1,$item_user_program->package_id, $item_user_program->status_id,$order_sum,0,$key+1);
+                            Balance::changeBalance($item,   $sum, 'turnover_bonus', $user_id, 1,$item_user_program->package_id, $item_user_program->status_id,$order_sum,0,$key+1);
                             break;
                         case 1:
                             $sum = $order_sum*3/100;
-                            Balance::changeBalance($item,   $sum, 'quickstart_bonus', $user_id, 1,$item_user_program->package_id, $item_user_program->status_id,$order_sum,0,$key+1);
+                            Balance::changeBalance($item,   $sum, 'turnover_bonus', $user_id, 1,$item_user_program->package_id, $item_user_program->status_id,$order_sum,0,$key+1);
                             break;
                         case 2:
                             $sum = $order_sum*2/100;
-                            Balance::changeBalance($item,   $sum, 'quickstart_bonus', $user_id, 1,$item_user_program->package_id, $item_user_program->status_id,$order_sum,0,$key+1);
+                            Balance::changeBalance($item,   $sum, 'turnover_bonus', $user_id, 1,$item_user_program->package_id, $item_user_program->status_id,$order_sum,0,$key+1);
                             break;
                         case 3:
                             $sum = $order_sum*1/100;
-                            Balance::changeBalance($item,   $sum, 'quickstart_bonus', $user_id, 1,$item_user_program->package_id, $item_user_program->status_id,$order_sum,0,$key+1);
+                            Balance::changeBalance($item,   $sum, 'turnover_bonus', $user_id, 1,$item_user_program->package_id, $item_user_program->status_id,$order_sum,0,$key+1);
                             break;
                     }
 

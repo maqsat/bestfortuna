@@ -443,6 +443,15 @@ class UserController extends Controller
 
         $user  = User::find($user_id);
 
+        Order::where( 'type','register')
+            ->where('user_id',$user_id)
+            ->where('status' ,11)
+            ->update(
+                [
+                    'status' => 12,
+                ]
+            );
+
         event(new Activation($user = $user));
 
         Notification::create([
@@ -701,7 +710,7 @@ class UserController extends Controller
             );
 
         $user = User::find($order->user_id);
-        Basket::whereId($basket_id)->update(['status' => 1]);
+        Basket::whereId($basket_id)->update(['status' => 0]);
 
         Notification::create([
             'user_id'   => Auth::user()->id,
@@ -1543,12 +1552,21 @@ class UserController extends Controller
 
     public function monthOrders()
     {
+        //return view('exports.month-orders');
         return Excel::download(new MonthOrdersExport, 'month-orders.xlsx');
     }
 
     public function newContracts()
     {
         return Excel::download(new NewContractsExport, 'new-contracts.xlsx');
+    }
+
+
+    public function activationHistory()
+    {
+        $activation = DB::table('activations')->where('month',4)->where('status',1)->get();
+
+        return view('basket.activation_history', compact('activation'));
     }
 
 }

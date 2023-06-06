@@ -49,13 +49,14 @@ class Hierarchy {
 
         $pv_from_register  = Counter::where('user_id',$user_id)->whereBetween('created_at', [Carbon::parse('04/04/2023'), Carbon::parse('05/03/2023')])->sum('sum');
 
-        $pv_from_own_shop = $this->orderSumOfMonth($date,$user_id);;
+        $pv_from_own_shop = $this->orderSumOfMonth($date,$user_id);
 
         $pv_from_inviters_shop = 0;
         $inviters_list = $this->inviterList($user_id);
         foreach ($inviters_list as $item){
             $pv_from_inviters_shop += $this->orderSumOfMonth($date,$item->user_id);
         }
+//dd($pv_from_register .' | '. $pv_from_own_shop .' | '. $pv_from_inviters_shop.' | '. ($pv_from_register + $pv_from_own_shop + $pv_from_inviters_shop));
 
         return $pv_from_register + $pv_from_own_shop + $pv_from_inviters_shop;
     }
@@ -110,6 +111,50 @@ class Hierarchy {
             })
             ->sum('uuid');
 
+
+       /*$sum += Order::join('users','orders.user_id','=','users.id')
+            ->whereBetween('orders.created_at', [Carbon::parse('04/04/2023'), Carbon::parse('06/07/2023')])
+            ->where('orders.type','register')
+            ->where('user_id', $user_id)
+            ->where(function($query){
+                $query->where('orders.status',12);
+            })
+            ->select('orders.*')
+            ->sum('uuid');//->get();//*/
+
+
+        $invites = User::whereBetween('created_at', [Carbon::parse('04/04/2023'), Carbon::parse('05/03/2023')])
+            ->where('inviter_id', $user_id)
+            ->get();
+        if(count($invites) > 0) {
+            foreach ($invites as $invite){
+
+                $sum += Package::find($invite->package_id)->cost;
+            }
+        }
+
+        return $sum;
+    }
+
+    public function totalOrderSumOfMonth()
+    {
+        $sum = Order::whereBetween('created_at', [Carbon::parse('04/04/2023'), Carbon::parse('05/03/2023')])
+            ->where('type','shop')
+            ->where(function($query){
+                $query->where('status',4)
+                    ->orWhere('status',6);
+            })
+            ->sum('uuid');
+
+        $invites = User::whereBetween('created_at', [Carbon::parse('04/04/2023'), Carbon::parse('05/03/2023')])
+            ->get();
+        if(count($invites) > 0) {
+            foreach ($invites as $invite){
+
+                $sum += Package::find($invite->package_id)->cost;
+            }
+        }
+
         return $sum;
     }
 
@@ -123,7 +168,7 @@ class Hierarchy {
 
         $activation_status = DB::table('activations')
             ->where('user_id',$user_id)
-            ->where('month',Carbon::parse($date)->month)
+            ->whereIn('month',[4,5])//Carbon::parse($date)->month
             ->where('year',Carbon::parse($date)->year)
             ->where('status',1)
             ->first();
@@ -282,7 +327,7 @@ class Hierarchy {
 
                 $item_status = Status::find($item->status_id);
 
-                if(\App\Facades\Hierarchy::pvCounterAll($item->id,-1) >= $item_status->matching_bonus*2){
+                if(Hierarchy::pvCounterAll($item->id,-1) >= $item_status->matching_bonus*2){
 
                     for ($i = 1; $i <= $item_status->depth_line; $i++){
                         $sums = 0;
@@ -394,6 +439,91 @@ class Hierarchy {
         curl_close($ch);
     }
 
+    //Структурный бонус
+    public function setStructureBonus($inviter_list,$package,$id,$program, $cost = 0)
+    {
+
+        foreach (Hierarchy::decompression($inviter_list,0,4) as $key => $item){
+            $item_user_program = UserProgram::where('user_id',$item)->first();
+            $item_status = Status::find($item_user_program->status_id);
+
+            if($cost == 0 ){
+                $sum = $package->pv;
+            }
+            else{
+                $sum = $cost;
+            }
+
+            switch ($key) {
+                case 0:
+                    Balance::changeBalance($item,   $sum*4/100, 'turnover_bonus', $id,     $program->id,$package->id,  $item_status->id,$package->pv,0,$key+1);
+                    break;
+                case 1:
+                    Balance::changeBalance($item,   $sum*3/100, 'turnover_bonus', $id,     $program->id,$package->id,  $item_status->id,$package->pv,0,$key+1);
+                    break;
+                case 2:
+                    Balance::changeBalance($item,   $sum*2/100, 'turnover_bonus', $id,     $program->id,$package->id,  $item_status->id,$package->pv,0,$key+1);
+                    break;
+                case 3:
+                    Balance::changeBalance($item,   $sum*1/100, 'turnover_bonus', $id,     $program->id,$package->id, $item_status->id,$package->pv,0,$key+1);
+                    break;
+            }
+        }
+
+    }
+
+    //Пассивный бонус
+    public function setPassiveBonus($inviter_list,$package,$id,$program, $cost = 0)
+    {
+
+        foreach (Hierarchy::decompression($inviter_list,0,4) as $key => $item){
+            $item_user_program = UserProgram::where('user_id',$item)->first();
+            $item_status = Status::find($item_user_program->status_id);
+
+            if($cost == 0 ){
+                $sum = $package->pv;
+            }
+            else{
+                $sum = $cost;
+            }
+
+            switch ($key) {
+                case 0:
+                    Balance::changeBalance($item,   $sum*4/100, 'quickstart_bonus', $id,     $program->id,$package->id,  $item_status->id,$package->pv,0,$key+1);
+                    break;
+                case 1:
+                    Balance::changeBalance($item,   $sum*3/100, 'quickstart_bonus', $id,     $program->id,$package->id,  $item_status->id,$package->pv,0,$key+1);
+                    break;
+                case 2:
+                    Balance::changeBalance($item,   $sum*2/100, 'quickstart_bonus', $id,     $program->id,$package->id,  $item_status->id,$package->pv,0,$key+1);
+                    break;
+                case 3:
+                    Balance::changeBalance($item,   $sum*1/100, 'quickstart_bonus', $id,     $program->id,$package->id, $item_status->id,$package->pv,0,$key+1);
+                    break;
+            }
+        }
+
+    }
+
+    //Реферальный бонус
+    public function setInviterBonus($inviter,$package,$id,$program,$inviter_status, $cost = 0)
+    {
+        if($this->checkIsActive($inviter->id)){
+
+            if($cost == 0 ){
+                $sum = $package->pv;
+            }
+            else{
+                $sum = $cost;
+            }
+
+            $inviter_package = Package::find($inviter->package_id);
+            Balance::changeBalance($inviter->id,    $sum*$inviter_package->invite_bonus/100, 'invite_bonus', $id,     $program->id,$package->id, $inviter_status->id,$package->pv,0);
+
+        }
+
+    }
+
     //Проверка и запись статусов активизации//  через крон
     public function checkActivationStatus()
     {
@@ -470,58 +600,6 @@ class Hierarchy {
         }
     }
 
-    //Структурный бонус
-    public function setStructureBonus($inviter_list,$package,$id,$program, $cost = 0)
-    {
-
-        foreach (Hierarchy::decompression($inviter_list,0,4) as $key => $item){
-            $item_user_program = UserProgram::where('user_id',$item)->first();
-            $item_status = Status::find($item_user_program->status_id);
-
-            if($cost == 0 ){
-                $sum = $package->pv;
-            }
-            else{
-                $sum = $cost;
-            }
-
-            switch ($key) {
-                case 0:
-                    Balance::changeBalance($item,   $sum*4/100, 'turnover_bonus', $id,     $program->id,$package->id,  $item_status->id,$package->pv,0,$key+1);
-                    break;
-                case 1:
-                    Balance::changeBalance($item,   $sum*3/100, 'turnover_bonus', $id,     $program->id,$package->id,  $item_status->id,$package->pv,0,$key+1);
-                    break;
-                case 2:
-                    Balance::changeBalance($item,   $sum*2/100, 'turnover_bonus', $id,     $program->id,$package->id,  $item_status->id,$package->pv,0,$key+1);
-                    break;
-                case 3:
-                    Balance::changeBalance($item,   $sum*1/100, 'turnover_bonus', $id,     $program->id,$package->id, $item_status->id,$package->pv,0,$key+1);
-                    break;
-            }
-        }
-
-    }
-
-    //Реферальный бонус
-    public function setInviterBonus($inviter,$package,$id,$program,$inviter_status, $cost = 0)
-    {
-        if($this->checkIsActive($inviter->id)){
-
-            if($cost == 0 ){
-                $sum = $package->pv;
-            }
-            else{
-                $sum = $cost;
-            }
-
-            $inviter_package = Package::find($inviter->package_id);
-            Balance::changeBalance($inviter->id,    $sum*$inviter_package->invite_bonus/100, 'invite_bonus', $id,     $program->id,$package->id, $inviter_status->id,$package->pv,0);
-
-        }
-
-    }
-
     //Дерево Иерархия
     public function getHierarchyTree($id)
     {
@@ -542,7 +620,7 @@ class Hierarchy {
                                 <div class="member-details">
                                     <h6>'.$item->name.'</h6>
                                     <p>'.\App\Facades\Hierarchy::getStatusName($item->id).'</p>
-                                    <p>id: '.$item->id_number.' | <i class="mdi mdi-account-multiple-plus"></i> '.\App\Facades\Hierarchy::inviterCount($item->id) .' | <i class="mdi mdi-sitemap"></i> '.\App\Facades\Hierarchy::teamCount($item->id) .'</p>
+                                    <p>id: '.$item->id_number.' | <i class="mdi mdi-account-multiple-plus"></i> '.\App\Facades\Hierarchy::inviterCount($item->id) .' | <i class="mdi mdi-sitemap"></i> '.\App\Facades\Hierarchy::teamCount($item->id).' | <i class="mdi mdi-coin"></i> '.\App\Facades\Hierarchy::pvCounterAll($item->id) .'</p>
                                 </div>
                             </div>
                         </a>';

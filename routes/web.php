@@ -137,7 +137,8 @@ Route::get('user/{id}/add_bonus','UserController@addBonus')->middleware("admin")
 Route::post('user/{id}/add_bonus','UserController@addBonusUser')->middleware("admin");
 Route::get('user-export', 'UserController@export')->middleware("admin");
 Route::get('new-contracts', 'UserController@newContracts')->middleware("admin");
-
+Route::get('monthly-report', 'UserController@monthOrders')->middleware("admin");
+Route::get('activation_history', 'UserController@activationHistory');
 
 Route::get('admin/notifications', 'AdminController@notifications')->name('admin_notifications')->middleware("admin");
 Route::get('order', 'ProductController@orders');

@@ -168,6 +168,12 @@ class Balance {
         return round($sum, 2);
     }
 
+    public function getUserBalanceByStatus($user,$status)
+    {
+        $sum = Processing::where('user_id', $user)->where('status', $status)->sum('sum');
+        return round($sum, 2);
+    }
+
     public function revitalizationBalance($user_id)
     {
         $sum1 = Processing::whereUserId($user_id)->whereIn('status', ['cashback'])->sum('sum');
