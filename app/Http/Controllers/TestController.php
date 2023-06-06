@@ -78,7 +78,7 @@ class TestController extends Controller
             if($max < $sum_pv) $max = $sum_pv;
         }
 
-        $pv_from_register  = Counter::where('user_id',$innerItem)->whereBetween('created_at', [Carbon::parse('04/04/2023'), Carbon::parse('05/03/2023')])->sum('sum');
+        $pv_from_register  = Counter::where('user_id',$innerItem)->whereBetween('created_at', [Carbon::parse('06/05/2023'), Carbon::parse('06/12/2023')])->sum('sum');
         //if($pv_from_register >= $item_status->matching_bonus) $is_cumulative++;
         //if($max < $pv_from_register) $max = $pv_from_register;
 
@@ -422,7 +422,7 @@ dd(Hierarchy::orderSumOfMonth($date,3119));*/
         foreach ($masters as $master){
             if(Hierarchy::checkIsActive($master->user_id)){
                 $balance =  Processing::whereIn('status', ['quickstart_bonus', 'invite_bonus', 'turnover_bonus', 'cashback', 'matching_bonus'])
-                    ->whereBetween('created_at', [Carbon::parse('04/04/2023'), Carbon::now()])
+                    ->whereBetween('created_at', [Carbon::parse('06/05/2023'), Carbon::now()])
                     ->where('user_id',$master->user_id)
                     ->orderby('id','asc')
                     ->sum('sum');
@@ -466,7 +466,7 @@ dd(Hierarchy::orderSumOfMonth($date,3119));*/
         foreach ($directors as $director){
             if(Hierarchy::checkIsActive($director->user_id)){
                 $balance =  Processing::whereIn('status', ['quickstart_bonus', 'invite_bonus', 'turnover_bonus', 'cashback', 'matching_bonus'])
-                    ->whereBetween('created_at', [Carbon::parse('04/04/2023'), Carbon::now()])
+                    ->whereBetween('created_at', [Carbon::parse('06/05/2023'), Carbon::now()])
                     ->where('user_id',$director->user_id)
                     ->orderby('id','asc')
                     ->sum('sum');
@@ -499,7 +499,7 @@ dd(Hierarchy::orderSumOfMonth($date,3119));*/
     {
         $list_percentage = array( 0 =>50,  1 =>20,  2 =>10,  3 =>5,  4 =>5 );
         $turnover_bonuses =  Processing::whereIn('status', ['cashback','quickstart_bonus', 'invite_bonus', 'turnover_bonus'])//
-        ->whereBetween('created_at', [Carbon::parse('04/04/2023'), Carbon::now()])
+        ->whereBetween('created_at', [Carbon::parse('06/05/2023'), Carbon::now()])
             ->orderby('id','asc')
             ->get();
 
@@ -571,7 +571,7 @@ dd(Hierarchy::orderSumOfMonth($date,3119));*/
 
     public function calculateStructureBonus()//1
     {
-        $users = User::where('created_at','>=', Carbon::parse('04/04/2023'))->where('status',1)->get();
+        $users = User::where('created_at','>=', Carbon::parse('06/05/2023'))->where('status',1)->get();
 
         foreach ($users as $item){
             $id = $item->id;
@@ -591,7 +591,7 @@ dd(Hierarchy::orderSumOfMonth($date,3119));*/
 
     public function calculateInviteBonus()//1
     {
-        $users = User::where('created_at','>=', Carbon::parse('04/04/2023'))->where('status',1)->get();
+        $users = User::where('created_at','>=', Carbon::parse('06/05/2023'))->where('status',1)->get();
 
         foreach ($users as $item){
             $id = $item->id;
@@ -611,7 +611,7 @@ dd(Hierarchy::orderSumOfMonth($date,3119));*/
     public function calculatePassiveAndCashbackBonus()//1
     {
 
-        $orders = Order::where('created_at','>=', Carbon::parse('04/04/2023'))->where('status',4)->get();
+        $orders = Order::where('created_at','>=', Carbon::parse('06/05/2023'))->where('status',4)->get();
 
         foreach ($orders as $item){
 
