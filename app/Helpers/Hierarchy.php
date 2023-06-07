@@ -168,7 +168,7 @@ class Hierarchy {
 
         $activation_status = DB::table('activations')
             ->where('user_id',$user_id)
-            ->whereIn('month',[4,5])//Carbon::parse($date)->month
+            ->whereIn('month',[5])//Carbon::parse($date)->month
             ->where('year',Carbon::parse($date)->year)
             ->where('status',1)
             ->first();
