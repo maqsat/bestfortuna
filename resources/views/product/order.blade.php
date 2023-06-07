@@ -41,7 +41,7 @@
                                     @foreach($orders as $item)
                                         <tr>
                                             <td>{{ $item->id }}</td>
-                                            <td>{{ $item->user["name"] }}</td>
+                                            <td>{{ $item->user["name"] }}<br><b>ID: {{ $item->user["id_number"] }}</b></td>
                                             <td>{{ $item->type }}</td>
                                             <td><a href="/basket?id={{ $item->basket_id }}" target="_blank">Посмотреть товары</a></td>
                                             <td>${{ $item->amount }}</td>

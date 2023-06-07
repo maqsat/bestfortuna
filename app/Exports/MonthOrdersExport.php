@@ -12,7 +12,7 @@ class MonthOrdersExport implements FromView
     public function view(): View
     {
         return view('exports.month-orders', [
-            'users' => User::whereBetween('created_at', [Carbon::parse('04/04/2023'), Carbon::parse('03/05/2023')])->get()
+            'users' => User::whereBetween('created_at', [Carbon::parse('06/05/2023'), Carbon::parse('06/12/2023')])->get()
         ]);
     }
 }
