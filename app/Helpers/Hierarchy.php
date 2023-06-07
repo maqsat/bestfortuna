@@ -180,8 +180,8 @@ class Hierarchy {
             if(!is_null($user_program)){
                 if($user_program->status_id >= 3) return false;
                 else {
-                    $user = User::find($user_id);
-                    $activation_start_date = Balance::getActivationStartDate($user->created_at, $user_id);
+                    $user_program = User::where('user_id',$user_id)->first();
+                    $activation_start_date = Balance::getActivationStartDate($user_program->created_at, $user_id);
                     $activation_start_date = Carbon::parse($activation_start_date);
                     $now = Carbon::parse($date);
 
