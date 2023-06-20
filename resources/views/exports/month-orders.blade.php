@@ -1,6 +1,6 @@
 @php
     $users = \App\User::join('activations', 'users.id', '=', 'activations.user_id')
-    ->where('activations.month',4)
+    ->where('activations.month',5)
     ->where('activations.status',1)
     ->get(['users.*']);
 
@@ -37,7 +37,7 @@
             $cashback = \App\Facades\Balance::getUserBalanceByStatus($item->id,'cashback');
             $status_bonus = \App\Facades\Balance::getUserBalanceByStatus($item->id,'status_bonus');
 
-            $total = $invite_bonus + $turnover_bonus +  $matching_bonus + $quickstart_bonus + $cashback;
+            $total = $invite_bonus + $turnover_bonus +  $matching_bonus + $quickstart_bonus + $cashback + $status_bonus;
         @endphp
 
         @if($total > 0)

@@ -508,19 +508,15 @@ class Hierarchy {
     //Реферальный бонус
     public function setInviterBonus($inviter,$package,$id,$program,$inviter_status, $cost = 0)
     {
-        if($this->checkIsActive($inviter->id)){
-
-            if($cost == 0 ){
-                $sum = $package->pv;
-            }
-            else{
-                $sum = $cost;
-            }
-
-            $inviter_package = Package::find($inviter->package_id);
-            Balance::changeBalance($inviter->id,    $sum*$inviter_package->invite_bonus/100, 'invite_bonus', $id,     $program->id,$package->id, $inviter_status->id,$package->pv,0);
-
+        if($cost == 0 ){
+            $sum = $package->pv;
         }
+        else{
+            $sum = $cost;
+        }
+
+        $inviter_package = Package::find($inviter->package_id);
+        Balance::changeBalance($inviter->id,    $sum*$inviter_package->invite_bonus/100, 'invite_bonus', $id,     $program->id,$package->id, $inviter_status->id,$package->pv,0);
 
     }
 
@@ -541,12 +537,12 @@ class Hierarchy {
             DB::table('activations')->updateOrInsert(
                 [
                     'user_id' => $user->id,
-                    'month' => Carbon::parse($date)->month,
+                    'month' => 5,//Carbon::parse($date)->month
                     'year' => Carbon::parse($date)->year,
                 ],
                 [
                     'user_id' => $user->id,
-                    'month' => Carbon::parse($date)->month,
+                    'month' => 5,//Carbon::parse($date)->month
                     'year' => Carbon::parse($date)->year,
                     'sum' => $sum,
                     'status' => $status
@@ -554,12 +550,12 @@ class Hierarchy {
             );
         }
 
-        $message = "Прошла ежемесячная Проверка и запись статусов активизации";
+        /*$message = "Прошла ежемесячная Проверка и запись статусов активизации";
         $ch = curl_init("https://api.telegram.org/bot338084061:AAEf5s-TegdOIQB8Akx0yj82v18ZyJ07XwI/sendMessage?chat_id=-890158682&text=$message");
         curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
         //---curl_setopt($ch, CURLOPT_POSTFIELDS, $post);
         curl_exec($ch);
-        curl_close($ch);
+        curl_close($ch);*/
     }
 
     //Проверка и перевод статуса

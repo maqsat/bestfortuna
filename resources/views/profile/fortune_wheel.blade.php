@@ -42,6 +42,7 @@
                             </tr>
                             </thead>
                             <tbody>
+
                             @foreach($list as $item)
 
                                 <tr @if($item->status == 1) style="color: #5cb85c" @else style="color: #f62d51" @endif>
@@ -256,7 +257,7 @@
                                 //populate question
                                 d3.select("#question h1")
                                     .text(data[picked].question);
-
+    console.log(data[picked].value);
                                 $.ajax({
                                     url: "/fortune_wheel_attempt/{{ \Illuminate\Support\Facades\Auth::user()->id }}/" + data[picked].value,
                                     type: 'GET',

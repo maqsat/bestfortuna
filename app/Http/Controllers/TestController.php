@@ -30,26 +30,12 @@ use phpDocumentor\Reflection\DocBlock\Description;
 class TestController extends Controller
 {
 
-    public function tester()
+    public function tester45()
     {
-        $users = UserProgram::where('inviter_list','like','%,52,%')->get();
-
-        foreach ($users as $item){
-            //dd($item);
-            echo $item->inviter_list.'<br>';
-            $pattern = '/,52/i';
-            echo preg_replace($pattern, '', $item->inviter_list).'<br>';
-            echo '===<br>';
-
-            UserProgram::where('id', $item->id)
-                ->update([
-                    'inviter_list' => preg_replace($pattern, '', $item->inviter_list)
-                ]);
-        }
+       return view('exports.month-orders');
     }
 
-
-    public function testerjkjk()
+    public function  testAndCheckCumulative()
     {
 
         echo '<br>';
@@ -408,7 +394,7 @@ dd(Hierarchy::orderSumOfMonth($date,3119));*/
 
     }
 
-    public function calculateWorldBonusForMasters()//
+    public function tester()//
     {
         $sum = Hierarchy::totalOrderSumOfMonth();
 
@@ -495,7 +481,7 @@ dd(Hierarchy::orderSumOfMonth($date,3119));*/
 
     }
 
-    public function tester45()//calculateCumulativeBonus
+    public function calculateCumulativeBonus()//
     {
         $list_percentage = array( 0 =>50,  1 =>20,  2 =>10,  3 =>5,  4 =>5 );
         $turnover_bonuses =  Processing::whereIn('status', ['cashback','quickstart_bonus', 'invite_bonus', 'turnover_bonus'])//
@@ -508,7 +494,8 @@ dd(Hierarchy::orderSumOfMonth($date,3119));*/
 
 
             //echo $k.')'.$user_program->user_id.'== dec'.implode(",", Hierarchy::decompression($user_program->inviter_list,1,5))."<br>";
-            foreach (Hierarchy::decompression($user_program->inviter_list,1,5) as $key => $innerItem){
+            $for_list = Hierarchy::decompression($user_program->inviter_list,1,5);
+            foreach ($for_list as $key => $innerItem){
 
                 //echo '>>>'.User::find($innerItem)->name.' ---'.$item->status.' =>';
                 $inner_user_program = UserProgram::where('user_id', $innerItem)->first();
@@ -569,7 +556,7 @@ dd(Hierarchy::orderSumOfMonth($date,3119));*/
         }
     }
 
-    public function calculateStructureBonus()//1
+    public function calculateStructureBonus()//
     {
         $users = User::where('created_at','>=', Carbon::parse('06/05/2023'))->where('status',1)->get();
 
@@ -589,34 +576,16 @@ dd(Hierarchy::orderSumOfMonth($date,3119));*/
 
     }
 
-    public function calculateInviteBonus()//1
-    {
-        $users = User::where('created_at','>=', Carbon::parse('06/05/2023'))->where('status',1)->get();
-
-        foreach ($users as $item){
-            $id = $item->id;
-            $inviter = User::find($item->inviter_id);
-            $package = Package::find($item->package_id);
-            $program = Program::find($item->program_id);
-            $inviter_program = UserProgram::where('user_id',$inviter->id)->first();
-            $inviter_status = Status::find($inviter_program->status_id);
-
-            Hierarchy::setInviterBonus($inviter,$package,$id,$program,$inviter_status);
-
-            echo $item->id."=>".$item->package_id."=>".$item->name."<br>";
-        }
-
-    }
-
-    public function calculatePassiveAndCashbackBonus()//1
+    public function calculatePassiveAndCashbackBonus()//
     {
 
-        $orders = Order::where('created_at','>=', Carbon::parse('06/05/2023'))->where('status',4)->get();
+        $orders = Order::where('created_at','>=', Carbon::parse('06/05/2023'))->where('type','!=','upgrade')->where('status',4)->get();
 
         foreach ($orders as $item){
 
             $basket  = Basket::find($item->basket_id);
 
+            if(is_null($basket)) dd($item);
             $user_program = UserProgram::where('user_id',$basket->user_id)->first();
 
             $order_pv = Order::join('baskets','baskets.id','=','orders.basket_id')
@@ -660,39 +629,35 @@ dd(Hierarchy::orderSumOfMonth($date,3119));*/
         }
     }
 
-
-
-
-    public function calculatePassiveBonus()//
+    public function calculateInviteBonus()//
     {
-        dd('Пассивный бонус уже сидить в Кашбеке');
-        $users = \App\User::join('activations', 'users.id', '=', 'activations.user_id')
-            ->where('activations.month',4)
-            ->where('activations.status',1)
-            ->where('activations.sum',20)
-            ->get(['activations.*']);
+        $users = User::where('created_at','>=', Carbon::parse('06/05/2023'))->where('status',1)->get();
 
         foreach ($users as $item){
+            $id = $item->id;
+            $inviter = User::find($item->inviter_id);
+            $package = Package::find($item->package_id);
+            $program = Program::find($item->program_id);
+            $inviter_program = UserProgram::where('user_id',$inviter->id)->first();
+            $inviter_status = Status::find($inviter_program->status_id);
 
-            $id = $item->user_id;
-            $inviter_list = Hierarchy::getInviterList( $item->user_id,'').',';
-            $user_program = UserProgram::where('user_id',$item->user_id)->first();
-            $package = Package::find($user_program->package_id);
-            $program = Program::find($user_program->program_id);
+            Hierarchy::setInviterBonus($inviter,$package,$id,$program,$inviter_status);
 
-            Hierarchy::setPassiveBonus($inviter_list,$package,$id,$program, 20);
-
-            echo $id."=>".$user_program->package_id."<br>";
+            echo $item->id."=>".$item->package_id."=>".$item->name."<br>";
         }
 
-
     }
+
+
+
+
+
 
     public function checkAndSetActivationSecond()//
     {
 
         $users = UserProgram::where('status_id','<',3)
-            ->whereBetween('created_at', [Carbon::parse('05/03/2023')->subMonth(7), Carbon::parse('05/03/2023')])
+            ->whereBetween('created_at', [Carbon::parse('06/01/2023')->subMonth(7), Carbon::parse('06/12/2023')])
             //->take(10)
             ->get();
 
@@ -701,7 +666,7 @@ dd(Hierarchy::orderSumOfMonth($date,3119));*/
 
             $activation_item = DB::table('activations')
                 ->where('user_id',$item->user_id)
-                ->where('month',4)
+                ->where('month',5)
                 ->update([
                     'status' => 1
                 ]);
@@ -713,66 +678,80 @@ dd(Hierarchy::orderSumOfMonth($date,3119));*/
     public function checkAndSetActivation()//
     {
         $list = [
-                32222,
-                78617,
-                415,
-                '28770A1',
-                29233,
-                55575,
-                71113,
-                81469,
-                81475,
-                81494,
-                81555,
-                100364,
-                100373,
-                15693,
-                33557,
-                48155,
-                52218,
-                52785,
-                76961,
-                78177,
-                78193,
-                78200,
-                85006,
-                85014,
-                85021,
-                85022,
-                85027,
-                85030,
-                85035,
-                85068,
-                90489,
-                105410,
-                224489,
-                100558,
-                102094,
-                102095,
-                102171,
-                102317,
-                104503,
-                104520,
-                104530,
-                106224,
-                106235,
-                106239,
-                106243,
-                106278,
-                106228,
-                101415,
-                102283,
-                102288,
-                102301,
-                102566,
-                1,
-                1,
-                5984,
-                8454,
-                9098,
-                9228,
-                100975,
-                2750,
+71779,
+1228,
+44554,
+55867,
+44594,
+77418,
+77295,
+54188,
+98900,
+1202,
+106029,
+17327,
+22237,
+35421,
+1471,
+1500,
+4141,
+87508,
+24364,
+51560,
+77308,
+84822,
+88417,
+84824,
+13934,
+29383,
+15693,
+33557,
+85006,
+90489,
+52785,
+78177,
+85014,
+52218,
+76961,
+85027,
+85021,
+85035,
+85022,
+224489,
+32222,
+78617,
+29233,
+55575,
+81475,
+81494,
+81469,
+100364,
+81555,
+96104,
+'4745A1',
+29071,
+29077,
+104503,
+104530,
+106224,
+102095,
+102094,
+106239,
+106278,
+106228,
+101415,
+102288,
+102283,
+102566,
+'43367A1',
+1,
+777,
+9098,
+'9228A1',
+9228,
+5984,
+9750,
+2750,
         ];
 
         /*$activation = DB::table('activations')->where('month',4)->where('status',1)->get();
@@ -791,13 +770,14 @@ dd(Hierarchy::orderSumOfMonth($date,3119));*/
 
         foreach ($list as $key => $item){
             $user = User::where('id_number',$item)->first();
-            $activation = DB::table('activations')->where('month',4)->where('user_id',$user->id)->first();
+            $activation = DB::table('activations')->where('month',5)->where('user_id',$user->id)->first();
             echo $key.') '.$user->id.":".$item."=>".$activation->status."<br>";
 
-            /*DB::table('activations')->where('user_id',$user->id)
+            DB::table('activations')->where('user_id',$user->id)
                 ->update([
-                    'sum' => 20
-                ]);*/
+                    'sum' => 20,
+                    'status' => 1
+                ]);
         }
 
 
@@ -896,6 +876,30 @@ dd(Hierarchy::orderSumOfMonth($date,3119));*/
 
     }
 
+    public function calculatePassiveBonus()//
+    {
+        dd('Пассивный бонус уже сидить в Кашбеке');
+        $users = \App\User::join('activations', 'users.id', '=', 'activations.user_id')
+            ->where('activations.month',4)
+            ->where('activations.status',1)
+            ->where('activations.sum',20)
+            ->get(['activations.*']);
+
+        foreach ($users as $item){
+
+            $id = $item->user_id;
+            $inviter_list = Hierarchy::getInviterList( $item->user_id,'').',';
+            $user_program = UserProgram::where('user_id',$item->user_id)->first();
+            $package = Package::find($user_program->package_id);
+            $program = Program::find($user_program->program_id);
+
+            Hierarchy::setPassiveBonus($inviter_list,$package,$id,$program, 20);
+
+            echo $id."=>".$user_program->package_id."<br>";
+        }
+
+
+    }
 
     public function termination()
     {
@@ -912,6 +916,20 @@ dd(Hierarchy::orderSumOfMonth($date,3119));*/
 
         }
 
+       /* $users = UserProgram::where('inviter_list','like','%,52,%')->get();
+
+        foreach ($users as $item){
+            //dd($item);
+            echo $item->inviter_list.'<br>';
+            $pattern = '/,52/i';
+            echo preg_replace($pattern, '', $item->inviter_list).'<br>';
+            echo '===<br>';
+
+            UserProgram::where('id', $item->id)
+                ->update([
+                    'inviter_list' => preg_replace($pattern, '', $item->inviter_list)
+                ]);
+        }*/
 
     }
 

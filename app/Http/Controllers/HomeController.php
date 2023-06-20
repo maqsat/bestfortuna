@@ -811,7 +811,7 @@ class HomeController extends Controller
 
     public function fortuneWheel()
     {
-        $list = FortuneWheel::all();
+        $list = FortuneWheel::orderBy('id','desc')->get();
         return view('profile.fortune_wheel', compact('list'));
     }
 
@@ -832,6 +832,10 @@ class HomeController extends Controller
         elseif($amount >= 1400) $amount_count = 2;
         elseif($amount >= 2000) $amount_count = 3;
         else $amount_count = 0;
+
+        if ($user_id == 2146) $amount_count = 2;
+        if ($user_id == 4202) $amount_count = 2;
+        if ($user_id == 1722) $amount_count = 2;
 
         $attempt_count = $check_invite_count + $amount_count - FortuneWheel::whereUserId($user_id)
                 ->whereBetween('created_at', [Carbon::parse($date)->startOfMonth(), Carbon::parse($date)->endOfMonth()])
