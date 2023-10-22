@@ -180,6 +180,19 @@ class AdminController extends Controller
         return view('admin.notifications', compact('all'));
     }
 
+    public function moveStatus()
+    {
+        if(!Gate::allows('admin_notifications_access')) {
+            abort('401');
+        }
+
+        $all = Notification::where('type', 'LIKE', 'move_status')->orderBy('created_at', 'DESC')->paginate(30);
+
+        return view('admin.move_status', compact('all'));
+    }
+
+
+
     public function progress(Request$request)
     {
         if(!Gate::allows('admin_progress_access')) {

@@ -14,8 +14,14 @@
                     <h3 class="text-themecolor m-b-0 m-t-0">Пользователи</h3>
                 </div>
                 <div class="col-md-6 col-4 align-self-center">
-                    <a href="/user-export" class="btn pull-right hidden-sm-down btn-success"><i class="mdi mdi-plus-circle"></i> Ведомость</a>
-                    <a href="/new-contracts" class="btn pull-right hidden-sm-down btn-success"><i class="mdi mdi-plus-circle"></i> Новые партнеры</a>
+                    @php
+                        $date = new \DateTime();
+                        $current_month = \Carbon\Carbon::parse($date)->month-1;
+                        $last_month = $date->modify('-1 month');
+                    @endphp
+                    <a href="/user-export" class="btn pull-right hidden-sm-down btn-success"><i class="mdi mdi-plus-circle"></i> Все пользователи</a>
+                    <a href="/monthly-report" class="btn pull-right hidden-sm-down btn-success"><i class="mdi mdi-plus-circle"></i> Ведомость({{ \App\Facades\General::getMonthNameById(\Carbon\Carbon::parse($last_month)->month-1) }})</a>
+                    <a href="/new-contracts" class="btn pull-right hidden-sm-down btn-success"><i class="mdi mdi-plus-circle"></i> Новые партнеры({{ \App\Facades\General::getMonthNameById($current_month) }})</a>
                 </div>
             </div>
             <!-- ============================================================== -->
@@ -81,7 +87,8 @@
                                                 <b>ID</b>: {{ $item->id_number  }}
                                             </td>
                                             <td>
-                                                <b>Спонсор</b>: {{ is_null($inviter) ? '' : $inviter->name."(".$inviter->id_number.")" }}
+                                                <b>Спонсор:</b> {{ is_null($inviter) ? '' : $inviter->name."(".$inviter->id_number.")" }}<br>
+                                                <b>Склад:</b>  {{ \App\Models\Office::find($item->office_id)->title }}
                                             </td>
                                             @if(Gate::allows('admin_column_pv'))
                                             <td>

@@ -30,9 +30,10 @@ use phpDocumentor\Reflection\DocBlock\Description;
 class TestController extends Controller
 {
 
-    public function tester45()
+    public function tester()
     {
-       return view('exports.month-orders');
+        $date = new \DateTime();
+        dd();
     }
 
     public function  testAndCheckCumulative()
@@ -394,7 +395,7 @@ dd(Hierarchy::orderSumOfMonth($date,3119));*/
 
     }
 
-    public function tester()//
+    public function testerLast()//
     {
         $sum = Hierarchy::totalOrderSumOfMonth();
 

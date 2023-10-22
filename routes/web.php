@@ -141,6 +141,8 @@ Route::get('monthly-report', 'UserController@monthOrders')->middleware("admin");
 Route::get('activation_history', 'UserController@activationHistory');
 
 Route::get('admin/notifications', 'AdminController@notifications')->name('admin_notifications')->middleware("admin");
+Route::get('admin/move-status', 'AdminController@moveStatus')->name('move_status')->middleware("admin");
+
 Route::get('order', 'ProductController@orders');
 Route::get('overview-money', 'ProcessingController@overview')->name('overview');
 Route::get('status-counts', 'ProcessingController@statusCounts')->name('counts');

@@ -116,7 +116,7 @@
                         <li><a href="/order?shop=1">Заказы</a></li>
                         @endif
                         @if(Gate::allows('admin_orders_access'))
-                            <li><a href="/order?history=1">История</a></li>
+                            <li><a href="/order?history=1">История продаж</a></li>
                         @endif
                         @if(Gate::allows('admin_orders_access'))
                             <li><a href="/activation_history">История активации</a></li>
@@ -164,6 +164,11 @@
                         @if(Gate::allows('admin_notifications_access'))
                         <li><a href="{{ route('admin_notifications') }}">Действия администраторов</a></li>
                         @endif
+                        @if(Gate::allows('admin_notifications_access'))
+                            <li><a href="/admin/move-status">Изменение статусов</a></li>
+                        @endif
+
+
                     </ul>
                 </li>
                 @endif

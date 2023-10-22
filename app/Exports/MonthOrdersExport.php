@@ -11,8 +11,11 @@ class MonthOrdersExport implements FromView
 {
     public function view(): View
     {
+        $date = new \DateTime();
+        $date->modify('-1 month');
+
         return view('exports.month-orders', [
-            'users' => User::whereBetween('created_at', [Carbon::parse('06/05/2023'), Carbon::parse('06/12/2023')])->get()
+            'users' => User::whereBetween('created_at', [Carbon::parse($date)->startOfMonth(), Carbon::parse($date)->endOfMonth()])->get()
         ]);
     }
 }

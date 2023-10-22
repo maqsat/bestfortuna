@@ -1,6 +1,10 @@
 @php
+
+    $date = new \DateTime();
+    $date->modify('-1 month');
+
     $users = \App\User::join('activations', 'users.id', '=', 'activations.user_id')
-    ->where('activations.month',5)
+    ->where('activations.month',\Carbon\Carbon::parse($date)->month)
     ->where('activations.status',1)
     ->get(['users.*']);
 
