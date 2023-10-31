@@ -47,16 +47,16 @@ class Hierarchy {
             $date->modify('-1 month');
         }
 
-        $pv_from_register  = Counter::where('user_id',$user_id)->whereBetween('created_at', [Carbon::parse('06/05/2023'), Carbon::parse('06/12/2023')])->sum('sum');
+        $pv_from_register  = Counter::where('user_id',$user_id)->whereBetween('created_at', [Carbon::parse($date)->startOfMonth(), Carbon::now()])->sum('sum');
 
-        $pv_from_own_shop = $this->orderSumOfMonth($date,$user_id);
+        $pv_from_own_shop = $this->orderSumOfMonth($date,$user_id,-1);
 
         $pv_from_inviters_shop = 0;
         $inviters_list = $this->inviterList($user_id);
         foreach ($inviters_list as $item){
-            $pv_from_inviters_shop += $this->orderSumOfMonth($date,$item->user_id);
+            $pv_from_inviters_shop += $this->orderSumOfMonth($date,$item->user_id,-1);
         }
-//dd($pv_from_register .' | '. $pv_from_own_shop .' | '. $pv_from_inviters_shop.' | '. ($pv_from_register + $pv_from_own_shop + $pv_from_inviters_shop));
+        //dd($pv_from_register .' | '. $pv_from_own_shop .' | '. $pv_from_inviters_shop.' | '. ($pv_from_register + $pv_from_own_shop + $pv_from_inviters_shop));
 
         return $pv_from_register + $pv_from_own_shop + $pv_from_inviters_shop;
     }
@@ -87,8 +87,8 @@ class Hierarchy {
             $date->modify('-1 month');
         }
 
-        $pv_from_register  = Counter::whereBetween('created_at', [Carbon::parse('06/05/2023'), Carbon::parse('06/12/2023')])->sum('sum');
-        $pv_from_own_shop = Order::whereBetween('created_at', [Carbon::parse('06/05/2023'), Carbon::parse('06/12/2023')])
+        $pv_from_register  = Counter::whereBetween('created_at', [Carbon::parse($date)->startOfMonth(), Carbon::now()])->sum('sum');
+        $pv_from_own_shop = Order::whereBetween('created_at', [Carbon::parse($date)->startOfMonth(), Carbon::now()])
             ->where('type','shop')
             ->where(function($query){
                 $query->where('status',4)
@@ -100,9 +100,10 @@ class Hierarchy {
     }
 
     //Сумма заказов за месяц
-    public function orderSumOfMonth($date,$user_id, $date_status = 0)
+    public function orderSumOfMonth($date,$user_id)
     {
-        $sum = Order::whereBetween('created_at', [Carbon::parse('06/05/2023'), Carbon::parse('06/12/2023')])
+
+        $sum = Order::whereBetween('created_at', [Carbon::parse($date)->startOfMonth(), Carbon::now()])
             ->where('type','shop')
             ->where('user_id', $user_id)
             ->where(function($query){
@@ -123,7 +124,7 @@ class Hierarchy {
             ->sum('uuid');//->get();//*/
 
 
-        $invites = User::whereBetween('created_at', [Carbon::parse('06/05/2023'), Carbon::parse('06/12/2023')])
+        $invites = User::whereBetween('created_at', [Carbon::parse($date)->startOfMonth(), Carbon::now()])
             ->where('inviter_id', $user_id)
             ->get();
         if(count($invites) > 0) {
@@ -136,9 +137,14 @@ class Hierarchy {
         return $sum;
     }
 
-    public function totalOrderSumOfMonth()
+    public function totalOrderSumOfMonth($date_status = 0)
     {
-        $sum = Order::whereBetween('created_at', [Carbon::parse('06/05/2023'), Carbon::parse('06/12/2023')])
+        $date = new \DateTime();
+        if($date_status == -1){
+            $date->modify('-1 month');
+        }
+
+        $sum = Order::whereBetween('created_at', [Carbon::parse($date)->startOfMonth(), Carbon::now()])
             ->where('type','shop')
             ->where(function($query){
                 $query->where('status',4)
@@ -146,7 +152,7 @@ class Hierarchy {
             })
             ->sum('uuid');
 
-        $invites = User::whereBetween('created_at', [Carbon::parse('06/05/2023'), Carbon::parse('06/12/2023')])
+        $invites = User::whereBetween('created_at', [Carbon::parse($date)->startOfMonth(), Carbon::now()])
             ->get();
         if(count($invites) > 0) {
             foreach ($invites as $invite){
@@ -316,64 +322,116 @@ class Hierarchy {
     //Кумулятивный бонус//  через крон
     public function cumulativeCalculation()
     {
-        $users = UserProgram::where('status_id','>=',2)->get();
-        $date = new \DateTime();
-        $date->modify('-1 month');
-        $list_percentage = array( 1 =>50,  2 =>20,  3 =>10,  4 =>5,  5 =>5 );
 
-        foreach ($users as $item){
+        $list_percentage = array( 0 =>50,  1 =>20,  2 =>10,  3 =>5,  4 =>5 );
+        $turnover_bonuses =  Processing::whereIn('status', ['cashback','quickstart_bonus', 'invite_bonus', 'turnover_bonus'])//
+        ->whereBetween('created_at', [Carbon::now()->startOfMonth()->subMonth(), Carbon::now()])
+            ->orderby('id','asc')
+            ->get();
 
-            if($this->checkIsActive($item->id)){
+        foreach ($turnover_bonuses as $k => $item){
+            $user_program = UserProgram::where('user_id', $item->user_id)->first();
 
-                $item_status = Status::find($item->status_id);
 
-                if(Hierarchy::pvCounterAll($item->id,-1) >= $item_status->matching_bonus*2){
+            //echo $k.')'.$user_program->user_id.'== dec'.implode(",", Hierarchy::decompression($user_program->inviter_list,1,5))."<br>";
+            $for_list = Hierarchy::decompression($user_program->inviter_list,1,5);
+            foreach ($for_list as $key => $innerItem){
 
-                    for ($i = 1; $i <= $item_status->depth_line; $i++){
-                        $sums = 0;
-                        $level_users = UserProgram::where('inviter_list','like','%,'.$item->id.',%')->whereLevel($item->level+$i)->get();
+                //echo '>>>'.User::find($innerItem)->name.' ---'.$item->status.' =>';
+                $inner_user_program = UserProgram::where('user_id', $innerItem)->first();
+                $item_status = Status::find($inner_user_program->status_id);
 
-                        foreach ($level_users as $item_user){
-                            $sums += Processing::whereUserId($item_user->user_id)
-                                ->where('status', 'turnover_bonus')
-                                ->whereBetween('created_at', [Carbon::parse('06/05/2023'), Carbon::parse('06/12/2023')])
-                                ->sum('sum');
+                if($item_status->id >= 3){
+
+                    if($item_status->depth_line >= ($key+1)){
+                        //echo 'ok --> '.$item_status->depth_line.">=".($key+1);
+
+                        $date = [];
+                        $is_cumulative_count = 0;
+                        $is_cumulative_status = 0;
+                        $sum_cumulative = 0;
+                        $max = 0;
+                        $invited_users = User::where('inviter_id', $innerItem)->get();
+                        foreach ($invited_users as $item_invited_users){
+                            $sum_pv = Hierarchy::pvCounterAll($item_invited_users->id,-1);
+                            if($sum_pv >= $item_status->matching_bonus) $is_cumulative_count++;
+
+                            if($max < $sum_pv) $max = $sum_pv;
+                            $sum_cumulative += $sum_pv;
+                        }
+                        $sum_own_pv = Hierarchy::orderSumOfMonth($date,$innerItem);
+                        if($sum_own_pv >= $item_status->matching_bonus) $is_cumulative_count++;
+                        if($max < $sum_own_pv) $max = $sum_own_pv;
+                        $sumOfsum = $sum_cumulative+$sum_own_pv;
+
+
+                        if($is_cumulative_count >= 2) $is_cumulative_status = 1;
+                        else {
+                            $sum_minus_max = $sumOfsum - $max;
+                            if($sum_minus_max >= $item_status->matching_bonus) $is_cumulative_status = 1;
+                            else $is_cumulative_status = 0;
                         }
 
-                        $sum = $sums*$list_percentage[$i]/100;
+                        $is_cumulative_status_after_check = 0;
+                        if($is_cumulative_status >= 2) $is_cumulative_status_after_check = 1;
+                        else {
+                            $total_pv = Hierarchy::pvCounterAll($innerItem,-1);
+                            $sum_minus_max = $total_pv - $max;
+                            if($sum_minus_max >= $item_status->matching_bonus) $is_cumulative_status_after_check = 1;
+                            else $is_cumulative_status_after_check = 0;
+                        }
 
-                        if($sum > 0)
-                            Balance::changeBalance($item->id,   $sum, 'matching_bonus', $item->id, $item->program_id,$item->package_id, $item->status_id, $sums,0,$i);
+                        if($is_cumulative_status_after_check == 1){
+                            $sum = $item->sum*$list_percentage[$key]/100;
 
+                            Balance::changeBalance($innerItem,   $sum, 'matching_bonus', $item->user_id, $user_program->program_id,$user_program->package_id, $user_program->status_id, $item->sum,0,($key+1));
+
+                        }
                     }
 
                 }
+                //echo "<br>";
             }
 
         }
 
+
         $message = "Зачислен ежемесячный Кумулятивный бонус";
+
         $ch = curl_init("https://api.telegram.org/bot338084061:AAEf5s-TegdOIQB8Akx0yj82v18ZyJ07XwI/sendMessage?chat_id=-890158682&text=$message");
         curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
         //---curl_setopt($ch, CURLOPT_POSTFIELDS, $post);
         curl_exec($ch);
         curl_close($ch);
 
+
     }
 
     //Мировой Бонус Директоров//  через крон
     public function cumulativeWorldBonusForDirectors()
     {
-        $percentage_for_directors = $this->pvCounterForWorldBonus(-1)*0.015;
+
+        $sum = Hierarchy::totalOrderSumOfMonth();
+
+        $percentage_for_directors = $sum*0.015;
         $directors_pv_sum = 0;
 
         $directors = UserProgram::where('status_id',5)->get();
+        $bonused_directors = [];
+
 
         //расчет общего количество балов
         foreach ($directors as $director){
-            if($this->checkIsActive($director->user_id)){
-                $balance = Balance::getIncomePrevMonthBalance($director->user_id);
+            if(Hierarchy::checkIsActive($director->user_id)){
+                $balance =  Processing::whereIn('status', ['quickstart_bonus', 'invite_bonus', 'turnover_bonus', 'cashback', 'matching_bonus'])
+                    ->whereBetween('created_at', [Carbon::now()->startOfMonth()->subMonth(), Carbon::now()])
+                    ->where('user_id',$director->user_id)
+                    ->orderby('id','asc')
+                    ->sum('sum');
+
                 if($balance >= 400){
+                    $bonused_directors[] = [ $director->user_id, $balance];
+                    echo User::find($director->user_id)->name."<br>";
                     $directors_pv_sum +=  $balance/100;
                 }
             }
@@ -384,15 +442,15 @@ class Hierarchy {
         $point_cost = $percentage_for_directors/$directors_pv_sum;
 
         //начисление бонуса
-        foreach ($directors as $director){
-            if($this->checkIsActive($director->user_id)){
-                $balance = Balance::getIncomePrevMonthBalance($director->user_id);
-                if($balance >= 400){
-                    $sum = $point_cost * $balance/100;
-                    Balance::changeBalance($director->user_id,   $sum, 'status_bonus', 1, 1, 1, 5, $point_cost,0,0);
-                }
-            }
+        foreach ($bonused_directors as $director){
+
+            $sum = $point_cost * $director[1]/100;
+            echo $sum."<br>";
+            Balance::changeBalance($director[0],   $sum, 'status_bonus', 1, 1, 1, 5, $point_cost,0,0);
+
+
         }
+
 
         $message = "Зачислен ежемесячный Мировой Бонус Директоров";
         $ch = curl_init("https://api.telegram.org/bot338084061:AAEf5s-TegdOIQB8Akx0yj82v18ZyJ07XwI/sendMessage?chat_id=-890158682&text=$message");
@@ -405,31 +463,47 @@ class Hierarchy {
     //Мировой Бонус Мастеров//  через крон
     public function cumulativeWorldBonusForMasters()
     {
-        $percentage_for_masters = $this->pvCounterForWorldBonus(-1)*0.045;
-        $masters_pv_sum = 0;
 
-        $masters = UserProgram::whereIn('status_id',[6,7,8,9,10])->get();
+        $sum = Hierarchy::totalOrderSumOfMonth();
+
+        $percentage_for_directors = $sum*0.045;
+        $directors_pv_sum = 0;
+
+        $directors = UserProgram::whereIn('status_id',[6,7,8,9,10])->get();
+        $bonused_directors = [];
+
 
         //расчет общего количество балов
-        foreach ($masters as $master){
-            $balance = Balance::getIncomePrevMonthBalance($master->user_id);
-            if($balance >= 400){//
+        foreach ($directors as $director){
+            if(Hierarchy::checkIsActive($director->user_id)){
+                $balance =  Processing::whereIn('status', ['quickstart_bonus', 'invite_bonus', 'turnover_bonus', 'cashback', 'matching_bonus'])
+                    ->whereBetween('created_at', [Carbon::now()->startOfMonth()->subMonth(), Carbon::now()])
+                    ->where('user_id',$director->user_id)
+                    ->orderby('id','asc')
+                    ->sum('sum');
 
-                $masters_pv_sum += $balance/100 + Status::find($master->status_id)->status_bonus;
+                if($balance >= 400){
+                    $bonused_directors[] = [ $director->user_id, $balance];
+                    echo User::find($director->user_id)->name."<br>";
+                    $directors_pv_sum +=  $balance/100;
+                }
             }
+
         }
 
         //цена одного бала
-        $point_cost = $percentage_for_masters/$masters_pv_sum;
+        $point_cost = $percentage_for_directors/$directors_pv_sum;
 
         //начисление бонуса
-        foreach ($masters as $master){
-            $balance = Balance::getIncomePrevMonthBalance($master->user_id);
-            if($balance >= 400){//
-                $sum = $point_cost * ($balance/100 + Status::find($master->status_id)->status_bonus);
-                Balance::changeBalance($master->user_id,   $sum, 'status_bonus', 1, 1, 1, $master->status_id, $point_cost,0,0);
-            }
+        foreach ($bonused_directors as $director){
+
+            $sum = $point_cost * $director[1]/100;
+            echo $sum."<br>";
+            Balance::changeBalance($director[0],   $sum, 'status_bonus', 1, 1, 1, 5, $point_cost,0,0);
+
+
         }
+
 
         $message = "Зачислен ежемесячный Мировой Бонус Мастеров";
         $ch = curl_init("https://api.telegram.org/bot338084061:AAEf5s-TegdOIQB8Akx0yj82v18ZyJ07XwI/sendMessage?chat_id=-890158682&text=$message");
@@ -537,12 +611,12 @@ class Hierarchy {
             DB::table('activations')->updateOrInsert(
                 [
                     'user_id' => $user->id,
-                    'month' => 5,//Carbon::parse($date)->month
+                    'month' => Carbon::parse($date)->month,
                     'year' => Carbon::parse($date)->year,
                 ],
                 [
                     'user_id' => $user->id,
-                    'month' => 5,//Carbon::parse($date)->month
+                    'month' => Carbon::parse($date)->month,
                     'year' => Carbon::parse($date)->year,
                     'sum' => $sum,
                     'status' => $status
@@ -550,12 +624,12 @@ class Hierarchy {
             );
         }
 
-        /*$message = "Прошла ежемесячная Проверка и запись статусов активизации";
+        $message = "Прошла ежемесячная Проверка и запись статусов активизации";
         $ch = curl_init("https://api.telegram.org/bot338084061:AAEf5s-TegdOIQB8Akx0yj82v18ZyJ07XwI/sendMessage?chat_id=-890158682&text=$message");
         curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
         //---curl_setopt($ch, CURLOPT_POSTFIELDS, $post);
         curl_exec($ch);
-        curl_close($ch);*/
+        curl_close($ch);
     }
 
     //Проверка и перевод статуса
@@ -683,6 +757,18 @@ class Hierarchy {
 
         }
 
+
+        $ch = curl_init("https://api.telegram.org/bot338084061:AAEf5s-TegdOIQB8Akx0yj82v18ZyJ07XwI/sendMessage?chat_id=-890158682&text=$message");
+        curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+        //---curl_setopt($ch, CURLOPT_POSTFIELDS, $post);
+        curl_exec($ch);
+        curl_close($ch);
+    }
+
+    public function telegramTestSend()
+    {
+
+        $message = "Тест крона \n";
 
         $ch = curl_init("https://api.telegram.org/bot338084061:AAEf5s-TegdOIQB8Akx0yj82v18ZyJ07XwI/sendMessage?chat_id=-890158682&text=$message");
         curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);

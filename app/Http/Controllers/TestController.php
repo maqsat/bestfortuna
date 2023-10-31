@@ -32,8 +32,14 @@ class TestController extends Controller
 
     public function tester()
     {
+        $date_status = 0;
         $date = new \DateTime();
-        dd();
+        if($date_status == -1){
+            $date->modify('-1 month');
+        }
+
+        dd(Carbon::parse('06/05/2023'));
+
     }
 
     public function  testAndCheckCumulative()
@@ -481,6 +487,11 @@ dd(Hierarchy::orderSumOfMonth($date,3119));*/
         }
 
     }
+
+
+
+
+
 
     public function calculateCumulativeBonus()//
     {

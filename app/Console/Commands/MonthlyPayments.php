@@ -48,6 +48,9 @@ class MonthlyPayments extends Command
         elseif($this->argument('bonus_id') == 3){
             Hierarchy::cumulativeWorldBonusForDirectors();
         }
+        elseif($this->argument('bonus_id') == 4){
+            Hierarchy::telegramTestSend();
+        }
         else{
             Hierarchy::cumulativeWorldBonusForMasters();
         }
