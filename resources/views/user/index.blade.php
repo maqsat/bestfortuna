@@ -78,6 +78,7 @@
                                             $package = \App\Models\Package::find($item->package_id);
                                             $user_program = \App\Models\UserProgram::where('user_id',$item->id)->first();
                                             $order = \App\Models\Order::where('user_id', $item->id)->where('type','register')->orderBy('id','desc')->first();
+                                            $office = \App\Models\Office::find($item->office_id);
                                         @endphp
 
                                         <tr>
@@ -88,7 +89,7 @@
                                             </td>
                                             <td>
                                                 <b>Спонсор:</b> {{ is_null($inviter) ? '' : $inviter->name."(".$inviter->id_number.")" }}<br>
-                                                <b>Склад:</b>  {{ \App\Models\Office::find($item->office_id)->title }}
+                                                <b>Склад:</b>  {{ is_null($office) ? '' : $office->title }}
                                             </td>
                                             @if(Gate::allows('admin_column_pv'))
                                             <td>
