@@ -769,6 +769,7 @@ class Hierarchy {
     {
 
         $message = "Тест крона \n";
+        echo $message;
 
         $ch = curl_init("https://api.telegram.org/bot338084061:AAEf5s-TegdOIQB8Akx0yj82v18ZyJ07XwI/sendMessage?chat_id=-890158682&text=$message");
         curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
