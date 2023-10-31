@@ -49,10 +49,10 @@ class MonthlyPayments extends Command
             Hierarchy::cumulativeWorldBonusForDirectors();
         }
         elseif($this->argument('bonus_id') == 4){
-            Hierarchy::telegramTestSend();
+            Hierarchy::cumulativeWorldBonusForMasters();
         }
         else{
-            Hierarchy::cumulativeWorldBonusForMasters();
+            Hierarchy::telegramTestSend();
         }
 
     }
