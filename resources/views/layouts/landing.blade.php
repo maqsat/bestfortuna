@@ -54,7 +54,7 @@
                         Бизнес
                     </a>
                     <ul class="dropdown-menu dropdown-menu" aria-labelledby="navbarDarkDropdownMenuLink">
-                        <li><a class="header-drp-item dropdown-item" href="/mp_compressed.pdf" target="_blank">Бизнес</a></li>
+                        <li><a class="header-drp-item dropdown-item" href="/mp_compressed.pdf" target="_blank">Бизнес с Best Fortune</a></li>
                         <li><a class="header-drp-item dropdown-item" href="/marketing-plan">Маркетинг-план</a></li>
                         <li><a class="header-drp-item dropdown-item" href="/benefits">Преимущества</a></li>
                         <li><a class="header-drp-item dropdown-item" href="/promotion">Награды от компании</a></li>
