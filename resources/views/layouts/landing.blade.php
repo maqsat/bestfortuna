@@ -54,11 +54,11 @@
                         Бизнес
                     </a>
                     <ul class="dropdown-menu dropdown-menu" aria-labelledby="navbarDarkDropdownMenuLink">
-                        <li><a class="header-drp-item dropdown-item" href="/business">Бизнес</a></li>
+                        <li><a class="header-drp-item dropdown-item" href="/mp_compressed.pdf" target="_blank">Бизнес</a></li>
                         <li><a class="header-drp-item dropdown-item" href="/marketing-plan">Маркетинг-план</a></li>
                         <li><a class="header-drp-item dropdown-item" href="/benefits">Преимущества</a></li>
-                        <li><a class="header-drp-item dropdown-item" href="/promotion">Промоушен</a></li>
-                        <li><a class="header-drp-item dropdown-item" href="/rules">Правила поведения</a></li>
+                        <li><a class="header-drp-item dropdown-item" href="/promotion">Награды от компании</a></li>
+                        <li><a class="header-drp-item dropdown-item" href="/rules">Этика компании</a></li>
                     </ul>
                 </li>
                 <li class="nav-item dropdown">

@@ -34,12 +34,12 @@
     <tbody>
     @foreach($users as $key => $item)
         @php
-            $invite_bonus = \App\Facades\Balance::getUserBalanceByStatus($item->id,'invite_bonus');
-            $turnover_bonus = \App\Facades\Balance::getUserBalanceByStatus($item->id,'turnover_bonus');
-            $matching_bonus = \App\Facades\Balance::getUserBalanceByStatus($item->id,'matching_bonus');
-            $quickstart_bonus= \App\Facades\Balance::getUserBalanceByStatus($item->id,'quickstart_bonus');
-            $cashback = \App\Facades\Balance::getUserBalanceByStatus($item->id,'cashback');
-            $status_bonus = \App\Facades\Balance::getUserBalanceByStatus($item->id,'status_bonus');
+            $invite_bonus = \App\Facades\Balance::getExportUserBalanceByStatus($item->id,'invite_bonus',$date);
+            $turnover_bonus = \App\Facades\Balance::getUserBalanceByStatus($item->id,'turnover_bonus',$date);
+            $matching_bonus = \App\Facades\Balance::getUserBalanceByStatus($item->id,'matching_bonus',$date);
+            $quickstart_bonus= \App\Facades\Balance::getUserBalanceByStatus($item->id,'quickstart_bonus',$date);
+            $cashback = \App\Facades\Balance::getUserBalanceByStatus($item->id,'cashback',$date);
+            $status_bonus = \App\Facades\Balance::getUserBalanceByStatus($item->id,'status_bonus',$date);
 
             $total = $invite_bonus + $turnover_bonus +  $matching_bonus + $quickstart_bonus + $cashback + $status_bonus;
         @endphp

@@ -59,11 +59,11 @@
                 <div class="page-body-container">
                     <div class="business-block">
                         <ul class="business-list">
-                            <a class="business-list-item  business-btn" href="/business">Бизнес</a>
+                            <a class="business-list-item  business-btn"  href="/mp_compressed.pdf" target="_blank">Бизнес</a>
                             <a class="business-list-item isActive business-btn" href="#">Преимущества</a>
                             <a class="business-list-item  business-btn" href="/marketing-plan">Маркет-план</a>
-                            <a class="business-list-item  business-btn" href="/promotion">Промоушен</a>
-                            <a class="business-list-item  business-btn" href="/rules">Правила поведения</a>
+                            <a class="business-list-item  business-btn" href="/promotion">Награды от компании</a>
+                            <a class="business-list-item  business-btn" href="/rules">Этика компании</a>
                         </ul>
                     </div>
                 </div>
@@ -76,11 +76,11 @@
             <div class="page-body-container">
                 <div class="business-block">
                     <ul class="business-list">
-                        <a class="business-list-item  business-btn" href="/business">Бизнес</a>
+                        <a class="business-list-item  business-btn"  href="/mp_compressed.pdf" target="_blank">Бизнес</a>
                         <a class="business-list-item isActive business-btn" href="#">Преимущества</a>
                         <a class="business-list-item  business-btn" href="/marketing-plan">Маркет-план</a>
-                        <a class="business-list-item  business-btn" href="/promotion">Промоушен</a>
-                        <a class="business-list-item  business-btn" href="/rules">Правила поведения</a>
+                        <a class="business-list-item  business-btn" href="/promotion">Награды от компании</a>
+                        <a class="business-list-item  business-btn" href="/rules">Этика компании</a>
                     </ul>
                 </div>
             </div>

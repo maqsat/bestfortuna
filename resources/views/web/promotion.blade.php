@@ -8,79 +8,81 @@
                 <ul class="page-path">
                     <li><a href="#" class="page-path-link">Главная</a></li>
                     <li><a href="#" class="page-path-link">Бизнес</a></li>
-                    <li><a href="#" class="page-path-link isActive">Промоушен</a></li>
+                    <li><a href="#" class="page-path-link isActive">Награды от компании</a></li>
                 </ul>
                 <div class="page-title">
-                    <h1>Промоушен</h1>
+                    <h1>Награды от компании</h1>
                 </div>
             </div>
             <div class="page-body">
                 <div class="page-body-container">
                     <div class="business-block">
-                        <h3>
-                            ПОЛУГОДОВОЙ ПЛАН ПРОДВИЖЕНИЯ
-                            КОМПАНИИ BEST FORTUNE  ПЕРИОД: <br> 202210-202303
-                        </h3>
-                        <p> Кольсайские озёра — система из трёх озёр в северном Тянь-Шане, в ущелье Кольсай, в перемычке, соединяющей хребты Кунгей-Алатау и Заилийский Алатау. Озёра расположены на территории Кегенского района Алматинской области Казахстана. </p>
-                        <p> Озёра называют «жемчужиной Северного Тянь-Шаня». Окружены озёра хвойным лесом из Тянь-Шаньской ели. Глубина озёр достигает 50 м. </p>
-                        <p><strong>Кольсайские озёра включают в себя 3 озера:</strong></p>
-                        <ul>
-                            <li>
-                                <p> Первое Кольсайское озеро или Верхний Кольсай — на высоте 2850 м.</p>
+                        <p style="line-height: 1.62; background-color: rgb(255, 255, 255); margin-top: 0pt; margin-bottom: 1pt;"><strong><span style="font-size: 11pt; font-family: Arial, sans-serif; color: rgb(0, 0, 0);">1) Награда &ldquo;Путёвка&rdquo;</span></strong></p>
+                        <ul style="margin-top: 0px; margin-bottom: 0px; padding-inline-start: 48px;">
+                            <li style="font-size: 11pt; font-family: Arial, sans-serif; color: rgb(0, 0, 0);">
+                                <p style="line-height: 1.62; background-color: rgb(255, 255, 255); margin-top: 0pt; margin-bottom: 0pt;"><span style="font-size: 11pt; background-color: rgb(255, 255, 255);">Партнер, независимо от статуса, сделавший личный товарооборот за период полугодия в размере 6000 ВМ, получит в подарок &laquo;Путешествие в Кольсай&raquo;!!!</span></p>
                             </li>
-                            <li>
-                                <p> Второе Кольсайское озеро (Мынжылгы) — находится на высоте 2252, самое большое из трёх озёр.</p>
+                            <li style="font-size: 11pt; font-family: Arial, sans-serif; color: rgb(0, 0, 0);">
+                                <p style="line-height: 1.62; background-color: rgb(255, 255, 255); margin-top: 0pt; margin-bottom: 0pt;"><span style="font-size: 11pt;">&nbsp;Партнер, не зависимо от статуса, личный ТО которого составит 12000BM в течение срока промоушена, Компания вознаградит Путевкой.</span></p>
                             </li>
-                            <li>
-                                <p> Третье озеро — находится на высоте 1818 м, его длина — 1 км, ширина 400 м, глубина 80 м.</p>
+                            <li style="font-size: 11pt; font-family: Arial, sans-serif; color: rgb(0, 0, 0);">
+                                <p style="line-height: 1.62; background-color: rgb(255, 255, 255); margin-top: 0pt; margin-bottom: 0pt;"><span style="font-size: 11pt;">Когда Партнёр достигнет уровня ДИРЕКТОР и личные ежемесячные продажи более 1000 BM за последние три месяца, то Компания вознаграждает его Путёвкой!</span></p>
+                            </li>
+                            <li style="font-size: 11pt; font-family: Arial, sans-serif; color: rgb(0, 0, 0);">
+                                <p style="line-height: 1.62; background-color: rgb(255, 255, 255); margin-top: 0pt; margin-bottom: 1pt;"><span style="font-size: 11pt;">Путёвка + 1500ВМ получит Партнёр достигнувший уровня МАСТЕР, выполнив следующие условия:</span></p>
                             </li>
                         </ul>
-                        <p><strong>В 11 км к востоку у села Саты находится живописное озеро Каинды.</strong></p>
-                        <p><strong> 1.   НАГРАДА «ПУТЕВКА В КОЛЬСАЙ » :</strong></p>
-                        <p>Партнер, независимо от статуса, сделавший личный товарооборот за период полугодия в размере 6000 ВМ, получит в подарок «Путешествие в Кольсай»!!!</p>
-                        <p>Партнер, не зависимо от статуса,  личный ТО которого составит  12000BM в течение срока промоушена, Компания вознаградит Путевкой.</p>
-                        <p>Когда Партнёр достигнет уровня ДИРЕКТОР  и личные ежемесячные продажи более 1000 BM за последние три месяца, то Компания вознаграждает  его  Путёвкой! </p>
-                        <p>Путёвка + 1500ВМ получит Партнёр достигнувший уровня МАСТЕР, выполнив следующие условия:</p>
-                        <p>1. Партнёр должен быть Клубодержателем.</p>
-                        <p>2. Ежемесячный  ТО  Клуба  должен  быть  более  5000 BM!</p>
-                        <p>Путёвка + 3000ВМ получит Партнёр достигнувший уровня МАСТЕР 1 КЛАССА,  выполнив следующие условия:</p>
-                        <p>1. Партнёр должен быть Клубодержателем  и иметь под собой  ДВА КЛУБА. </p>
-                        <p>2. Ежемесячный  ТО  ВМЕСТЕ  С  КЛУБАМИ  должен  быть более 12000 BM!</p>
-                        <p>2 Путёвки + 5000ВМ получит Партнёр достигнувший уровня МАСТЕР 2 КЛАССА,  выполнив следующие условия:</p>
-                        <p>1. Партнёр должен быть Клубодержателем  и иметь под собой  ЧЕТЫРЕ КЛУБА. </p>
-                        <p>2. Ежемесячный  ТО  ВМЕСТЕ  С  КЛУБАМИ  должен  быть более 24000 BM!</p>
-                        <p>АВТОМОБИЛЬ стоимостью 20000BM получит Партнёр достигнувший уровня МАСТЕР 3 КЛАССА,  выполнив следующие условия: </p>
-                        <p>1. Партнёр должен быть Клубодержателем  и иметь под собой  ШЕСТЬ  КЛУБОВ. </p>
-                        <p>2. Ежемесячный  ТО  ВМЕСТЕ  С  КЛУБАМИ  должен  быть более 50000 BM!</p>
-                        <p>КВАРТИРА стоимостью 100000 BM получит Партнёр достигнувший уровня ПРЕМЬЕР,  выполнив следующие условия:</p>
-                        <p>1. Партнёр должен быть Клубодержателем  и иметь под собой  ВОСЕМЬ  КЛУБОВ. </p>
-                        <p>2. Ежемесячный  ТО  ВМЕСТЕ  С  КЛУБАМИ  должен  быть более 100000 BM!</p>
-                        <p>D) Если в течении 6 месяцев, не зависимо от статуса,  личный ТО* партнёра составит  12000BM, также Компания вознаградит Путевкой.</p>
-                        <p><blockquote>ВНИМАНИЕ!  ВЫБИРЕТЕ ОДИН ИЗ НАИЛУЧШИХ ДЛЯ СЕБЯ ВАРИАНТОВ  ПОЛУЧЕНИЯ <br> ПУТЕВКИ. ПУТЕВКА НА ПУТЕВКУ НЕ НАКЛАДЫВАЕТСЯ!</blockquote></p>
-                        <p> <strong>3. ЕЖЕМЕСЯЧНЫЕ ЛОТЕРЕЯ. ПРИЗ 100 BM/ ЧЕЛ.: </strong></p>
-                        <p>При  личном ТО 800 BM в текущем месяце, есть возможность участвовать в лотерее. При каждом дополнительном ТО 600BM, еще одна дополнительная возможность для участия. Количество призов зависит от общего ТО компании.</p>
-                        <p>Каждый 10,000BM ТО  соответствует   1 призу.</p>
-                        <p>Например, в этом месяце общий ТО компании составляет 100000BM, значит,  призов  будет  10 по 100BM.</p>
-                        <p><strong>4. СПОНСОРСКАЯ  НАГРАДА. </strong></p>
-                        <p>Компания вознаграждает самых активных спонсоров. Спонсоров, которые обучают, мотивируют, проводят встречи, проявляют заботу о Клубе и Компании.</p>
-                        <p>Условие для получения награды: Спонсор, имеющий три клуба и более и  совокупный ТО которых за полугодие составил от 180000BM, получит от Компании вознаграждение ПУТЕВКА +1000BM</p>
-                        <p><strong>5. КЛУБНЫЕ НАГРАДЫ.</strong></p>
-                        <p>Клубная награда – это бонус за лучшие достижения Клубодержателя.</p>
-                        <p>Клуб имеющий ТО (товарооборот) в текущем месяце от  20000BM, получает вознаграждение 1% по результатам ТО  следующего месяца.</p>
-                        <p>Клуб может претендовать  на получение клубной награды при Годовом ТО  клуба  от 200000 ВМ. Вознаграждение составит 1% от годового товарооборота Клуба.</p>
-                        <p><strong> 6. Пожизненная награда</strong></p>
-                        <p>Имея в структуре 500 клубов, в том числе 10 клубов на первой линии, Вы получаете 0,5 % от годового товарооборота + путевки 2 раза в год.</p>
-                        <p>Личный ТО – это товарооборот, куда включены ваши личные  продажи и подписка новых партнеров на первую линию.</p>
+                        <p style="line-height: 1.62; background-color: rgb(255, 255, 255); margin-top: 0pt; margin-bottom: 0pt; padding-bottom: 1pt;"><span style="font-size: 11pt; font-family: Arial, sans-serif; color: rgb(0, 0, 0);">1. Партнёр должен быть Клубодержателем.</span></p>
+                        <p style="line-height: 1.62; background-color: rgb(255, 255, 255); margin-top: 0pt; margin-bottom: 1pt;"><span style="font-size: 11pt; font-family: Arial, sans-serif; color: rgb(0, 0, 0);">2. Ежемесячный ТО Клуба должен быть более 5000 BM!</span></p>
+                        <ul style="margin-top: 0px; margin-bottom: 0px; padding-inline-start: 48px;">
+                            <li style="font-size: 11pt; font-family: Arial, sans-serif; color: rgb(0, 0, 0);">
+                                <p style="line-height: 1.62; background-color: rgb(255, 255, 255); margin-top: 0pt; margin-bottom: 1pt;"><span style="font-size: 11pt;">Путёвка + 3000ВМ получит Партнёр достигнувший уровня МАСТЕР 1 КЛАССА, выполнив следующие условия:</span></p>
+                            </li>
+                        </ul>
+                        <p style="line-height: 1.62; background-color: rgb(255, 255, 255); margin-top: 0pt; margin-bottom: 0pt; padding-bottom: 1pt;"><span style="font-size: 11pt; font-family: Arial, sans-serif; color: rgb(0, 0, 0);">1. Партнёр должен быть Клубодержателем и иметь под собой ДВА КЛУБА.</span></p>
+                        <p style="line-height: 1.62; background-color: rgb(255, 255, 255); margin-top: 0pt; margin-bottom: 1pt;"><span style="font-size: 11pt; font-family: Arial, sans-serif; color: rgb(0, 0, 0);">2. Ежемесячный ТО ВМЕСТЕ С КЛУБАМИ должен быть более 12000 BM!</span></p>
+                        <ul style="margin-top: 0px; margin-bottom: 0px; padding-inline-start: 48px;">
+                            <li style="font-size: 11pt; font-family: Arial, sans-serif; color: rgb(0, 0, 0);">
+                                <p style="line-height: 1.62; background-color: rgb(255, 255, 255); margin-top: 0pt; margin-bottom: 1pt;"><span style="font-size: 11pt;">2 Путёвки + 5000ВМ получит Партнёр достигнувший уровня МАСТЕР 2 КЛАССА, выполнив следующие условия:</span></p>
+                            </li>
+                        </ul>
+                        <p style="line-height: 1.62; background-color: rgb(255, 255, 255); margin-top: 0pt; margin-bottom: 0pt; padding-bottom: 1pt;"><span style="font-size: 11pt; font-family: Arial, sans-serif; color: rgb(0, 0, 0);">1. Партнёр должен быть Клубодержателем и иметь под собой ЧЕТЫРЕ КЛУБА.</span></p>
+                        <p style="line-height: 1.62; background-color: rgb(255, 255, 255); margin-top: 0pt; margin-bottom: 0pt; padding-bottom: 1pt;"><span style="font-size: 11pt; font-family: Arial, sans-serif; color: rgb(0, 0, 0);">2. Ежемесячный ТО ВМЕСТЕ С КЛУБАМИ должен быть более 24000 BM!</span></p>
+                        <p style="line-height: 1.62; background-color: rgb(255, 255, 255); margin-top: 0pt; margin-bottom: 1pt;"><span style="font-size: 11pt; font-family: Arial, sans-serif; color: rgb(0, 0, 0);">D) Если в течении 6 месяцев, не зависимо от статуса, личный ТО* партнёра составит 12000BM, также Компания вознаградит Путевкой.</span></p>
+                        <p style="line-height: 1.62; margin-top: 0pt; margin-bottom: 1pt;"><em><span style="font-size: 11pt; font-family: Arial, sans-serif; color: rgb(33, 37, 41); background-color: rgb(255, 255, 255);">ВНИМАНИЕ! ВЫБИРЕТЕ ОДИН ИЗ НАИЛУЧШИХ ДЛЯ СЕБЯ ВАРИАНТОВ ПОЛУЧЕНИЯ</span></em></p>
+                        <p style="line-height: 1.62; margin-top: 0pt; margin-bottom: 1pt;"><em><span style="font-size: 11pt; font-family: Arial, sans-serif; color: rgb(33, 37, 41); background-color: rgb(255, 255, 255);">ПУТЕВКИ. ПУТЕВКА НА ПУТЕВКУ НЕ НАКЛАДЫВАЕТСЯ!</span></em></p>
+                        <p style="line-height: 1.62; background-color: rgb(255, 255, 255); margin-top: 0pt; margin-bottom: 1pt;"><strong><span style="font-size: 11pt; font-family: Arial, sans-serif; color: rgb(0, 0, 0);">2) Награда &ldquo;Автомобиль&rdquo;</span></strong></p>
+                        <ul style="margin-top: 0px; margin-bottom: 0px; padding-inline-start: 48px;">
+                            <li style="font-size: 11pt; font-family: Arial, sans-serif; color: rgb(0, 0, 0);">
+                                <p style="line-height: 1.62; background-color: rgb(255, 255, 255); margin-top: 0pt; margin-bottom: 1pt;"><span style="font-size: 11pt;">АВТОМОБИЛЬ стоимостью 20000BM получит Партнёр достигнувший уровня МАСТЕР 3 КЛАССА, выполнив следующие условия:</span></p>
+                            </li>
+                        </ul>
+                        <p style="line-height: 1.62; background-color: rgb(255, 255, 255); margin-top: 0pt; margin-bottom: 0pt; padding-bottom: 1pt;"><span style="font-size: 11pt; font-family: Arial, sans-serif; color: rgb(0, 0, 0);">1. Партнёр должен быть Клубодержателем и иметь под собой ШЕСТЬ КЛУБОВ.</span></p>
+                        <p style="line-height: 1.62; background-color: rgb(255, 255, 255); margin-top: 0pt; margin-bottom: 0pt; padding-bottom: 1pt;"><span style="font-size: 11pt; font-family: Arial, sans-serif; color: rgb(0, 0, 0);">2. Ежемесячный ТО ВМЕСТЕ С КЛУБАМИ должен быть более 50000 BM!</span></p>
+                        <p style="line-height: 1.62; background-color: rgb(255, 255, 255); margin-top: 0pt; margin-bottom: 0pt; padding-bottom: 1pt;"><strong><span style="font-size: 11pt; font-family: Arial, sans-serif; color: rgb(0, 0, 0);">3) Награда &ldquo;Квартира&rdquo;</span></strong></p>
+                        <p style="line-height: 1.62; background-color: rgb(255, 255, 255); margin-top: 0pt; margin-bottom: 0pt; padding-bottom: 1pt;"><span style="font-size: 11pt; font-family: Arial, sans-serif; color: rgb(0, 0, 0);">КВАРТИРА стоимостью 100000 BM получит Партнёр достигнувший уровня ПРЕМЬЕР, выполнив следующие условия:</span></p>
+                        <p style="line-height: 1.62; background-color: rgb(255, 255, 255); margin-top: 0pt; margin-bottom: 0pt; padding-bottom: 1pt;"><span style="font-size: 11pt; font-family: Arial, sans-serif; color: rgb(0, 0, 0);">1. Партнёр должен быть Клубодержателем и иметь под собой ВОСЕМЬ КЛУБОВ.</span></p>
+                        <p style="line-height: 1.62; background-color: rgb(255, 255, 255); margin-top: 0pt; margin-bottom: 0pt; padding-bottom: 1pt;"><span style="font-size: 11pt; font-family: Arial, sans-serif; color: rgb(0, 0, 0);">2. Ежемесячный ТО ВМЕСТЕ С КЛУБАМИ должен быть более 100000 BM!</span></p>
+                        <p style="line-height: 1.62; background-color: rgb(255, 255, 255); margin-top: 0pt; margin-bottom: 0pt; padding-bottom: 1pt;"><strong><span style="font-size: 11pt; font-family: Arial, sans-serif; color: rgb(0, 0, 0);">4) Спонсорская награда.</span></strong></p>
+                        <p style="line-height: 1.62; background-color: rgb(255, 255, 255); margin-top: 0pt; margin-bottom: 0pt; padding-bottom: 1pt;"><span style="font-size: 11pt; font-family: Arial, sans-serif; color: rgb(0, 0, 0);">Компания вознаграждает самых активных спонсоров. Спонсоров, которые обучают, мотивируют, проводят встречи, проявляют заботу о Клубе и Компании.</span></p>
+                        <p style="line-height: 1.62; background-color: rgb(255, 255, 255); margin-top: 0pt; margin-bottom: 0pt; padding-bottom: 1pt;"><span style="font-size: 11pt; font-family: Arial, sans-serif; color: rgb(0, 0, 0);">Условие для получения награды: Спонсор, имеющий три клуба и более и совокупный ТО которых за полугодие составил от 180000BM, получит от Компании вознаграждение ПУТЕВКА +1000BM</span></p>
+                        <p style="line-height: 1.62; background-color: rgb(255, 255, 255); margin-top: 0pt; margin-bottom: 0pt; padding-bottom: 1pt;"><strong><span style="font-size: 11pt; font-family: Arial, sans-serif; color: rgb(0, 0, 0);">5) Клубные награды.</span></strong></p>
+                        <p style="line-height: 1.62; background-color: rgb(255, 255, 255); margin-top: 0pt; margin-bottom: 0pt; padding-bottom: 1pt;"><span style="font-size: 11pt; font-family: Arial, sans-serif; color: rgb(0, 0, 0);">Клубная награда &ndash; это бонус за лучшие достижения Клубодержателя.</span></p>
+                        <p style="line-height: 1.62; background-color: rgb(255, 255, 255); margin-top: 0pt; margin-bottom: 0pt; padding-bottom: 1pt;"><span style="font-size: 11pt; font-family: Arial, sans-serif; color: rgb(0, 0, 0);">Клуб имеющий ТО (товарооборот) в текущем месяце от 20000BM, получает вознаграждение 1% по результатам ТО следующего месяца.</span></p>
+                        <p style="line-height: 1.62; background-color: rgb(255, 255, 255); margin-top: 0pt; margin-bottom: 0pt; padding-bottom: 1pt;"><span style="font-size: 11pt; font-family: Arial, sans-serif; color: rgb(0, 0, 0);">Клуб может претендовать на получение клубной награды при Годовом ТО клуба от 200000 ВМ. Вознаграждение составит 1% от годового товарооборота Клуба.</span></p>
+                        <p style="line-height: 1.62; background-color: rgb(255, 255, 255); margin-top: 0pt; margin-bottom: 0pt; padding-bottom: 1pt;"><strong><span style="font-size: 11pt; font-family: Arial, sans-serif; color: rgb(0, 0, 0);">6) Пожизненная награда</span></strong></p>
+                        <p style="line-height: 1.62; background-color: rgb(255, 255, 255); margin-top: 0pt; margin-bottom: 0pt; padding-bottom: 1pt;"><span style="font-size: 11pt; font-family: Arial, sans-serif; color: rgb(0, 0, 0);">Имея в структуре 500 клубов, в том числе 10 клубов на первой линии, Вы получаете 0,5 % от годового товарооборота + путевки 2 раза в год.</span></p>
+                        <p style="line-height: 1.62; background-color: rgb(255, 255, 255); margin-top: 0pt; margin-bottom: 1pt;"><span style="font-size: 11pt; font-family: Arial, sans-serif; color: rgb(0, 0, 0);">Личный ТО &ndash; это товарооборот, куда включены ваши личные продажи и подписка новых партнеров на первую линию.</span></p>
                     </div>
                 </div>
                 <div class="page-body-container">
                     <div class="market-block">
                         <ul class="business-list">
-                            <a class="business-list-item  business-btn" href="/business">Бизнес</a>
+                            <a class="business-list-item  business-btn"  href="/mp_compressed.pdf" target="_blank">Бизнес</a>
                             <a class="business-list-item  business-btn" href="/benefits">Преимущества</a>
                             <a class="business-list-item  business-btn" href="/marketing-plan">Маркет-план</a>
-                            <a class="business-list-item isActive business-btn" href="#">Промоушен</a>
-                            <a class="business-list-item  business-btn" href="/rules">Правила поведения</a>
+                            <a class="business-list-item isActive business-btn" href="#">Награды от компании</a>
+                            <a class="business-list-item  business-btn" href="/rules">Этика компании</a>
                         </ul>
                     </div>
                 </div>
@@ -93,11 +95,11 @@
             <div class="page-body-container">
                 <div class="business-block">
                     <ul class="business-list">
-                        <a class="business-list-item  business-btn" href="/business">Бизнес</a>
+                        <a class="business-list-item  business-btn"  href="/mp_compressed.pdf" target="_blank">Бизнес</a>
                         <a class="business-list-item  business-btn" href="/benefits">Преимущества</a>
                         <a class="business-list-item  business-btn" href="/marketing-plan">Маркет-план</a>
-                        <a class="business-list-item isActive business-btn" href="#">Промоушен</a>
-                        <a class="business-list-item  business-btn" href="/rules">Правила поведения</a>
+                        <a class="business-list-item isActive business-btn" href="#">Награды от компании</a>
+                        <a class="business-list-item  business-btn" href="/rules">Этика компании</a>
                     </ul>
                 </div>
             </div>

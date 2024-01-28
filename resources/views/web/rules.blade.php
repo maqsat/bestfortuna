@@ -8,19 +8,17 @@
                 <ul class="page-path">
                     <li><a href="#" class="page-path-link">Главная</a></li>
                     <li><a href="#" class="page-path-link">Бизнес</a></li>
-                    <li><a href="#" class="page-path-link isActive">Правила поведения</a></li>
+                    <li><a href="#" class="page-path-link isActive">Этика компании</a></li>
                 </ul>
                 <div class="page-title">
-                    <h1>Устав участников организации</h1>
+                    <h1>Этика компании</h1>
                 </div>
             </div>
             <div class="page-body">
                 <div class="page-body-container">
                     <div class="business-block">
                         <p>
-                            GLOBAL BEST FORTUNE INTERNATIONAL CO.,LIMITED (в дальнейшем именуемая “BEST FORTUNE”) - это организация, которая позволяет своим участникам (членам организации) стать здоровыми и процветающими, а также предоставляет богатую подборку справочных материалов о здоровье, внимательное обслуживание и профессиональные консультации по здоровью.
-                            В то же время согласно принципу “дарить здоровье многим людям” участники организации в течение долгого времени получают возможность пользоваться рядом дополнительных услуг, таких как участие в различных тематических мероприятиях, использование технологий “управления здоровьем”, получение различных оздоровительных услуг и приятных подарков, а также многое другое.
-                            Наша организация заботится о каждом своем участнике и открывает окно в успешную жизнь, полную здоровья и процветания!
+                            Best Fortune - это организация, которая позволяет своим участникам стать здоровыми и процветающими, а также предоставляет богатую подборку справочных материалов о здоровье, внимательное обслуживание и профессиональные консультации по здоровью. В то же время согласно принципу “Здоровье от природы в каждую семью!” участники организации в течение долгого времени получают возможность пользоваться рядом дополнительных услуг, таких как участие в различных тематических мероприятиях, использование технологий “управления здоровьем”, получение различных оздоровительных услуг и приятных подарков, а также многое другое. Наша организация заботится о каждом своем участнике и открывает окно в успешную жизнь, полную здоровья и процветания!
                         </p>
                         <p><strong> Глава 1. Общие положения</strong></p>
                         <p> Статья 1. Best Fortune – это способ здорового образа жизни, который также позволяет участнику организации получать различные товары для здоровья, это комплекс высококачественных услуг, предоставляющий неограниченные бизнес-возможности для получения высокой прибыли при минимальных рисках, это шанс для участников организации занять достойное место в жизни, получив здоровье и благополучие.</p>
@@ -93,11 +91,11 @@
                 <div class="page-body-container">
                     <div class="market-block">
                         <ul class="business-list">
-                            <a class="business-list-item  business-btn" href="/business">Бизнес</a>
+                            <a class="business-list-item  business-btn"  href="/mp_compressed.pdf" target="_blank">Бизнес</a>
                             <a class="business-list-item  business-btn" href="/benefits">Преимущества</a>
                             <a class="business-list-item  business-btn" href="/marketing-plan">Маркет-план</a>
-                            <a class="business-list-item  business-btn" href="/promotion">Промоушен</a>
-                            <a class="business-list-item  isActive business-btn" href="#">Правила поведения</a>
+                            <a class="business-list-item  business-btn" href="/promotion">Награды от компании</a>
+                            <a class="business-list-item  isActive business-btn" href="#">Этика компании</a>
                         </ul>
                     </div>
                 </div>
@@ -110,11 +108,11 @@
             <div class="page-body-container">
                 <div class="business-block">
                     <ul class="business-list">
-                        <a class="business-list-item  business-btn" href="/business">Бизнес</a>
+                        <a class="business-list-item  business-btn"  href="/mp_compressed.pdf" target="_blank">Бизнес</a>
                         <a class="business-list-item  business-btn" href="/benefits">Преимущества</a>
                         <a class="business-list-item  business-btn" href="/marketing-plan">Маркет-план</a>
-                        <a class="business-list-item  business-btn" href="/promotion">Промоушен</a>
-                        <a class="business-list-item  isActive business-btn" href="#">Правила поведения</a>
+                        <a class="business-list-item  business-btn" href="/promotion">Награды от компании</a>
+                        <a class="business-list-item  isActive business-btn" href="#">Этика компании</a>
                     </ul>
                 </div>
             </div>

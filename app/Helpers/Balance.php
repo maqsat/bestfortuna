@@ -208,6 +208,18 @@ class Balance {
         return $totalMonths;
     }
 
+    /*************************** Export METHODS ****************************/
+
+    public function getExportUserBalanceByStatus($user,$status,$date)
+    {
+        $sum = Processing::where('user_id', $user)
+            ->where('status', $status)
+            ->whereBetween('created_at', [Carbon::parse($date)->startOfMonth(), Carbon::now()])
+            ->sum('sum');
+        return round($sum, 2);
+    }
+
+
 
 
     /*************************** OLD METHODS ****************************/
