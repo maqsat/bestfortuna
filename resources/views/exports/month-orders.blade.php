@@ -10,6 +10,16 @@
 
     $users = \App\User::all();
 
+
+    $general_invite_bonus = 0;
+    $general_turnover_bonus = 0;
+     $general_matching_bonus = 0;
+     $general_quickstart_bonus = 0;
+     $general_cashback = 0;
+     $general_status_bonus = 0;
+     $general_orderSumOfMonth = 0;
+
+
 @endphp
 
 <table>
@@ -34,14 +44,28 @@
     <tbody>
     @foreach($users as $key => $item)
         @php
-            $invite_bonus = \App\Facades\Balance::getExportUserBalanceByStatus($item->id,'invite_bonus',$date);
-            $turnover_bonus = \App\Facades\Balance::getUserBalanceByStatus($item->id,'turnover_bonus',$date);
-            $matching_bonus = \App\Facades\Balance::getUserBalanceByStatus($item->id,'matching_bonus',$date);
-            $quickstart_bonus= \App\Facades\Balance::getUserBalanceByStatus($item->id,'quickstart_bonus',$date);
-            $cashback = \App\Facades\Balance::getUserBalanceByStatus($item->id,'cashback',$date);
-            $status_bonus = \App\Facades\Balance::getUserBalanceByStatus($item->id,'status_bonus',$date);
+            $invite_bonus = \App\Facades\Balance::getIncomePreviousMonthBalanceByStatus($item->id,'invite_bonus',$date);
+            $general_invite_bonus += $invite_bonus;
 
-            $total = $invite_bonus + $turnover_bonus +  $matching_bonus + $quickstart_bonus + $cashback + $status_bonus;
+            $turnover_bonus = \App\Facades\Balance::getIncomePreviousMonthBalanceByStatus($item->id,'turnover_bonus',$date);
+            $general_turnover_bonus += $turnover_bonus;
+
+            $matching_bonus = \App\Facades\Balance::getIncomePreviousMonthBalanceByStatus($item->id,'matching_bonus',$date);
+            $general_matching_bonus += $matching_bonus;
+
+            $quickstart_bonus= \App\Facades\Balance::getIncomePreviousMonthBalanceByStatus($item->id,'quickstart_bonus',$date);
+            $general_quickstart_bonus += $quickstart_bonus;
+
+            $cashback = \App\Facades\Balance::getIncomePreviousMonthBalanceByStatus($item->id,'cashback',$date);
+            $general_cashback += $cashback;
+
+            $status_bonus = \App\Facades\Balance::getIncomePreviousMonthBalanceByStatus($item->id,'status_bonus',$date);
+            $general_status_bonus += $status_bonus;
+
+            $orderSumOfMonth = \App\Facades\Hierarchy::orderSumOfMonth($date,$item->id,-1);
+            $general_orderSumOfMonth += $orderSumOfMonth;
+
+            $total = $invite_bonus + $turnover_bonus +  $matching_bonus + $quickstart_bonus + $cashback + $status_bonus+$orderSumOfMonth;
         @endphp
 
         @if($total > 0)
@@ -69,6 +93,7 @@
                 @if(\App\Facades\Hierarchy::checkIsActive($item->id)) Активация  @endif
             </td>
             <td>
+                {{ $orderSumOfMonth }}
             </td>
             <td>{{ $invite_bonus }}</td>
             <td>{{ $cashback }}</td>
@@ -80,4 +105,20 @@
         @endif
     @endforeach
     </tbody>
+    <tr>
+        <th></th>
+        <th></th>
+        <th></th>
+        <th></th>
+        <th></th>
+        <th></th>
+        <th></th>
+        <th>{{ $general_orderSumOfMonth }}</th>
+        <th>{{ $general_invite_bonus }}</th>
+        <th>{{ $general_cashback }}</th>
+        <th>{{ $general_turnover_bonus }}</th>
+        <th>{{ $general_quickstart_bonus }}</th>
+        <th>{{ $general_matching_bonus }}</th>
+        <th>{{ $general_status_bonus }}</th>
+    </tr>
 </table>

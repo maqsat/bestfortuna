@@ -32,17 +32,12 @@ class TestController extends Controller
 
     public function tester()
     {
-        $date_status = 0;
-        $date = new \DateTime();
-        if($date_status == -1){
-            $date->modify('-1 month');
-        }
 
-        dd(Carbon::parse('06/05/2023'));
+        Hierarchy::cumulativeCalculation();
 
     }
 
-    public function  testAndCheckCumulative()
+    public function testAndCheckCumulative()
     {
 
         echo '<br>';

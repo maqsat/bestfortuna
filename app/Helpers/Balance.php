@@ -78,6 +78,19 @@ class Balance {
         return round($sum, 2);
     }
 
+    public function getIncomePreviousMonthBalanceByStatus($user_id, $status,$date_status = 0)
+    {
+        $date = new \DateTime();
+
+        if ($status == 'invite_bonus')
+            $date->modify('-1 month');
+
+        $sum =  Processing::whereUserId($user_id)
+            ->where('status', $status)
+            ->whereBetween('created_at', [Carbon::parse($date)->startOfMonth(), Carbon::parse($date)->endOfMonth()])
+            ->sum('sum');
+        return round($sum, 2);
+    }
 
 
     public function getActivationStartDate($user_created_at, $user_id)

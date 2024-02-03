@@ -79,6 +79,7 @@ class Hierarchy {
         return UserProgram::where('inviter_list','like','%,'.$user_id.',%')->count();
     }
 
+
     //Товароборот для мировго бонуса
     public function pvCounterForWorldBonus($date_status = 0)
     {
@@ -100,8 +101,12 @@ class Hierarchy {
     }
 
     //Сумма заказов за месяц
-    public function orderSumOfMonth($date,$user_id)
+    public function orderSumOfMonth($date,$user_id, $date_status = 0)
     {
+        $date = new \DateTime();
+        if($date_status == -1){
+            $date->modify('-1 month');
+        }
 
         $sum = Order::whereBetween('created_at', [Carbon::parse($date)->startOfMonth(), Carbon::now()])
             ->where('type','shop')
@@ -144,7 +149,7 @@ class Hierarchy {
             $date->modify('-1 month');
         }
 
-        $sum = Order::whereBetween('created_at', [Carbon::parse($date)->startOfMonth(), Carbon::now()])
+        $sum = Order::whereBetween('created_at', [Carbon::parse($date)->startOfMonth()->subMonth(), Carbon::now()])
             ->where('type','shop')
             ->where(function($query){
                 $query->where('status',4)
@@ -152,7 +157,7 @@ class Hierarchy {
             })
             ->sum('uuid');
 
-        $invites = User::whereBetween('created_at', [Carbon::parse($date)->startOfMonth(), Carbon::now()])
+        $invites = User::whereBetween('created_at', [Carbon::parse($date)->startOfMonth()->subMonth(), Carbon::now()])
             ->get();
         if(count($invites) > 0) {
             foreach ($invites as $invite){
@@ -327,24 +332,25 @@ class Hierarchy {
         $turnover_bonuses =  Processing::whereIn('status', ['cashback','quickstart_bonus', 'invite_bonus', 'turnover_bonus'])//
         ->whereBetween('created_at', [Carbon::now()->startOfMonth()->subMonth(), Carbon::now()])
             ->orderby('id','asc')
+            ->take(10)
             ->get();
 
         foreach ($turnover_bonuses as $k => $item){
             $user_program = UserProgram::where('user_id', $item->user_id)->first();
 
 
-            //echo $k.')'.$user_program->user_id.'== dec'.implode(",", Hierarchy::decompression($user_program->inviter_list,1,5))."<br>";
+            echo $k.')'.$user_program->user_id.'== dec'.implode(",", Hierarchy::decompression($user_program->inviter_list,1,5))."<br>";
             $for_list = Hierarchy::decompression($user_program->inviter_list,1,5);
             foreach ($for_list as $key => $innerItem){
 
-                //echo '>>>'.User::find($innerItem)->name.' ---'.$item->status.' =>';
+                echo '>>>'.User::find($innerItem)->name.' ---'.$item->status.' =>';
                 $inner_user_program = UserProgram::where('user_id', $innerItem)->first();
                 $item_status = Status::find($inner_user_program->status_id);
 
                 if($item_status->id >= 3){
 
                     if($item_status->depth_line >= ($key+1)){
-                        //echo 'ok --> '.$item_status->depth_line.">=".($key+1);
+                        echo 'ok --> '.$item_status->depth_line.">=".($key+1);
 
                         $date = [];
                         $is_cumulative_count = 0;
@@ -384,7 +390,7 @@ class Hierarchy {
                         if($is_cumulative_status_after_check == 1){
                             $sum = $item->sum*$list_percentage[$key]/100;
 
-                            Balance::changeBalance($innerItem,   $sum, 'matching_bonus', $item->user_id, $user_program->program_id,$user_program->package_id, $user_program->status_id, $item->sum,0,($key+1));
+                            //Balance::changeBalance($innerItem,   $sum, 'matching_bonus', $item->user_id, $user_program->program_id,$user_program->package_id, $user_program->status_id, $item->sum,0,($key+1));
 
                         }
                     }
@@ -410,7 +416,6 @@ class Hierarchy {
     //Мировой Бонус Директоров//  через крон
     public function cumulativeWorldBonusForDirectors()
     {
-
         $sum = Hierarchy::totalOrderSumOfMonth();
 
         $percentage_for_directors = $sum*0.015;
@@ -424,10 +429,11 @@ class Hierarchy {
         foreach ($directors as $director){
             if(Hierarchy::checkIsActive($director->user_id)){
                 $balance =  Processing::whereIn('status', ['quickstart_bonus', 'invite_bonus', 'turnover_bonus', 'cashback', 'matching_bonus'])
-                    ->whereBetween('created_at', [Carbon::now()->startOfMonth()->subMonth(), Carbon::now()])
+                    ->whereBetween('created_at', [Carbon::now()->startOfMonth()->subMonth(), Carbon::now()->endOfMonth()])
                     ->where('user_id',$director->user_id)
                     ->orderby('id','asc')
                     ->sum('sum');
+                echo $balance."<br>";
 
                 if($balance >= 400){
                     $bonused_directors[] = [ $director->user_id, $balance];
@@ -439,7 +445,9 @@ class Hierarchy {
         }
 
         //цена одного бала
-        $point_cost = $percentage_for_directors/$directors_pv_sum;
+        if ($percentage_for_directors > 0 && $directors_pv_sum > 0)
+            $point_cost = $percentage_for_directors/$directors_pv_sum;
+        else $point_cost = 0;
 
         //начисление бонуса
         foreach ($bonused_directors as $director){
@@ -452,12 +460,12 @@ class Hierarchy {
         }
 
 
-        $message = "Зачислен ежемесячный Мировой Бонус Директоров";
+       /* $message = "Зачислен ежемесячный Мировой Бонус Директоров";
         $ch = curl_init("https://api.telegram.org/bot338084061:AAEf5s-TegdOIQB8Akx0yj82v18ZyJ07XwI/sendMessage?chat_id=-890158682&text=$message");
         curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
         //---curl_setopt($ch, CURLOPT_POSTFIELDS, $post);
         curl_exec($ch);
-        curl_close($ch);
+        curl_close($ch);*/
     }
 
     //Мировой Бонус Мастеров//  через крон
@@ -492,7 +500,9 @@ class Hierarchy {
         }
 
         //цена одного бала
-        $point_cost = $percentage_for_directors/$directors_pv_sum;
+        if ($percentage_for_directors > 0 && $directors_pv_sum > 0)
+            $point_cost = $percentage_for_directors/$directors_pv_sum;
+        else $point_cost = 0;
 
         //начисление бонуса
         foreach ($bonused_directors as $director){
