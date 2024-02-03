@@ -149,7 +149,7 @@ class Hierarchy {
             $date->modify('-1 month');
         }
 
-        $sum = Order::whereBetween('created_at', [Carbon::parse($date)->startOfMonth()->subMonth(), Carbon::now()])
+        $sum = Order::whereBetween('created_at', [Carbon::now()->subMonth()->startOfMonth(), Carbon::now()])
             ->where('type','shop')
             ->where(function($query){
                 $query->where('status',4)
@@ -157,7 +157,7 @@ class Hierarchy {
             })
             ->sum('uuid');
 
-        $invites = User::whereBetween('created_at', [Carbon::parse($date)->startOfMonth()->subMonth(), Carbon::now()])
+        $invites = User::whereBetween('created_at', [Carbon::now()->subMonth()->startOfMonth(), Carbon::now()])
             ->get();
         if(count($invites) > 0) {
             foreach ($invites as $invite){
@@ -330,27 +330,26 @@ class Hierarchy {
 
         $list_percentage = array( 0 =>50,  1 =>20,  2 =>10,  3 =>5,  4 =>5 );
         $turnover_bonuses =  Processing::whereIn('status', ['cashback','quickstart_bonus', 'invite_bonus', 'turnover_bonus'])//
-        ->whereBetween('created_at', [Carbon::now()->startOfMonth()->subMonth(), Carbon::now()])
+        ->whereBetween('created_at', [Carbon::now()->subMonth()->startOfMonth(), Carbon::now()])
             ->orderby('id','asc')
-            ->take(10)
             ->get();
 
         foreach ($turnover_bonuses as $k => $item){
             $user_program = UserProgram::where('user_id', $item->user_id)->first();
 
 
-            echo $k.')'.$user_program->user_id.'== dec'.implode(",", Hierarchy::decompression($user_program->inviter_list,1,5))."<br>";
+            //echo $k.')'.$user_program->user_id.'== dec'.implode(",", Hierarchy::decompression($user_program->inviter_list,1,5))."<br>";
             $for_list = Hierarchy::decompression($user_program->inviter_list,1,5);
             foreach ($for_list as $key => $innerItem){
 
-                echo '>>>'.User::find($innerItem)->name.' ---'.$item->status.' =>';
+                //echo '>>>'.User::find($innerItem)->name.' ---'.$item->status.' =>';
                 $inner_user_program = UserProgram::where('user_id', $innerItem)->first();
                 $item_status = Status::find($inner_user_program->status_id);
 
                 if($item_status->id >= 3){
 
                     if($item_status->depth_line >= ($key+1)){
-                        echo 'ok --> '.$item_status->depth_line.">=".($key+1);
+                        //echo 'ok --> '.$item_status->depth_line.">=".($key+1);
 
                         $date = [];
                         $is_cumulative_count = 0;
@@ -389,7 +388,7 @@ class Hierarchy {
 
                         if($is_cumulative_status_after_check == 1){
                             $sum = $item->sum*$list_percentage[$key]/100;
-
+                            echo $sum.'<br>';
                             //Balance::changeBalance($innerItem,   $sum, 'matching_bonus', $item->user_id, $user_program->program_id,$user_program->package_id, $user_program->status_id, $item->sum,0,($key+1));
 
                         }
@@ -402,13 +401,13 @@ class Hierarchy {
         }
 
 
-        $message = "Зачислен ежемесячный Кумулятивный бонус";
+       /* $message = "Зачислен ежемесячный Кумулятивный бонус";
 
         $ch = curl_init("https://api.telegram.org/bot338084061:AAEf5s-TegdOIQB8Akx0yj82v18ZyJ07XwI/sendMessage?chat_id=-890158682&text=$message");
         curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
         //---curl_setopt($ch, CURLOPT_POSTFIELDS, $post);
         curl_exec($ch);
-        curl_close($ch);
+        curl_close($ch);*/
 
 
     }

@@ -87,7 +87,7 @@ class Balance {
 
         $sum =  Processing::whereUserId($user_id)
             ->where('status', $status)
-            ->whereBetween('created_at', [Carbon::parse($date)->startOfMonth(), Carbon::parse($date)->endOfMonth()])
+            ->whereBetween('created_at', [Carbon::now()->startOfMonth()->subMonth()->addDays(1), Carbon::now()->subMonth()->endOfMonth()->addDays(1)])
             ->sum('sum');
         return round($sum, 2);
     }
