@@ -3,6 +3,7 @@
 namespace App\Console\Commands;
 
 use App\Facades\Hierarchy;
+use App\Facades\Report;
 use Illuminate\Console\Command;
 
 class MonthlyPayments extends Command
@@ -40,16 +41,22 @@ class MonthlyPayments extends Command
     {
 
         if($this->argument('bonus_id') == 1){
-            Hierarchy::cumulativeCalculation();
+            Report::cumulativeCalculation();
         }
         elseif($this->argument('bonus_id') == 2){
             Hierarchy::checkActivationStatus();
         }
         elseif($this->argument('bonus_id') == 3){
-            Hierarchy::cumulativeWorldBonusForDirectors();
+            Report::cumulativeWorldBonusForDirectors();
         }
         elseif($this->argument('bonus_id') == 4){
-            Hierarchy::cumulativeWorldBonusForMasters();
+            Report::cumulativeWorldBonusForMasters();
+        }
+        elseif($this->argument('bonus_id') == 5){
+            Report::setMonthlyOrderSum();
+        }
+        elseif($this->argument('bonus_id') == 6){
+            Report::setMonthlyСommandPv();
         }
         else{
             Hierarchy::telegramTestSend();

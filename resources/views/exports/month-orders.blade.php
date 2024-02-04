@@ -13,11 +13,11 @@
 
     $general_invite_bonus = 0;
     $general_turnover_bonus = 0;
-     $general_matching_bonus = 0;
-     $general_quickstart_bonus = 0;
-     $general_cashback = 0;
-     $general_status_bonus = 0;
-     $general_orderSumOfMonth = 0;
+    $general_matching_bonus = 0;
+    $general_quickstart_bonus = 0;
+    $general_cashback = 0;
+    $general_status_bonus = 0;
+    $general_orderSumOfMonth = 0;
 
 
 @endphp
@@ -44,25 +44,25 @@
     <tbody>
     @foreach($users as $key => $item)
         @php
-            $invite_bonus = \App\Facades\Balance::getIncomePreviousMonthBalanceByStatus($item->id,'invite_bonus',$date);
+            $invite_bonus = \App\Facades\Report::getIncomePreviousMonthBalanceByStatus($item->id,'invite_bonus');
             $general_invite_bonus += $invite_bonus;
 
-            $turnover_bonus = \App\Facades\Balance::getIncomePreviousMonthBalanceByStatus($item->id,'turnover_bonus',$date);
+            $turnover_bonus = \App\Facades\Report::getIncomePreviousMonthBalanceByStatus($item->id,'turnover_bonus');
             $general_turnover_bonus += $turnover_bonus;
 
-            $matching_bonus = \App\Facades\Balance::getIncomePreviousMonthBalanceByStatus($item->id,'matching_bonus',$date);
+            $matching_bonus = \App\Facades\Report::getIncomePreviousMonthBalanceByStatus($item->id,'matching_bonus');
             $general_matching_bonus += $matching_bonus;
 
-            $quickstart_bonus= \App\Facades\Balance::getIncomePreviousMonthBalanceByStatus($item->id,'quickstart_bonus',$date);
+            $quickstart_bonus= \App\Facades\Report::getIncomePreviousMonthBalanceByStatus($item->id,'quickstart_bonus');
             $general_quickstart_bonus += $quickstart_bonus;
 
-            $cashback = \App\Facades\Balance::getIncomePreviousMonthBalanceByStatus($item->id,'cashback',$date);
+            $cashback = \App\Facades\Report::getIncomePreviousMonthBalanceByStatus($item->id,'cashback');
             $general_cashback += $cashback;
 
-            $status_bonus = \App\Facades\Balance::getIncomePreviousMonthBalanceByStatus($item->id,'status_bonus',$date);
+            $status_bonus = \App\Facades\Report::getIncomePreviousMonthBalanceByStatus($item->id,'status_bonus');
             $general_status_bonus += $status_bonus;
 
-            $orderSumOfMonth = \App\Facades\Hierarchy::orderSumOfMonth($date,$item->id,-1);
+            $orderSumOfMonth = \App\Facades\Report::getOrderSumOfMonth($item->id);
             $general_orderSumOfMonth += $orderSumOfMonth;
 
             $total = $invite_bonus + $turnover_bonus +  $matching_bonus + $quickstart_bonus + $cashback + $status_bonus+$orderSumOfMonth;

@@ -8,10 +8,12 @@ use App\Facades\General;
 use App\Models\Basket;
 use App\Models\Counter;
 use App\Models\FortuneWheel;
+use App\Models\MonthlyOrderSum;
 use App\Models\Order;
 use App\Models\Program;
 use App\Models\UserProgram;
 use DB;
+use Cache;
 use File;
 use App\User;
 use Carbon\Carbon;
@@ -21,6 +23,7 @@ use App\Models\Processing;
 use App\Models\Status;
 use App\Models\Package;
 use App\Facades\Hierarchy;
+use App\Facades\Report;
 use App\Events\Activation;
 use App\Events\ShopTurnover;
 use Illuminate\Http\Request;
@@ -32,9 +35,22 @@ class TestController extends Controller
 
     public function tester()
     {
+        $start = microtime(true);
 
-        Hierarchy::cumulativeCalculation();
+        //Report::setMonthlyOrderSum();
+        //Report::setMonthlyСommandPv();
+        //echo Report::getMonthlyСommandPv(1);
 
+
+        // Do some super awesome, well optimised programmer code nonsense
+
+        // Grab the end time
+        $end = microtime(true);
+
+        // Subtract the start from the end
+        $elapsed = $end - $start;
+
+        echo "<br> Script executed in $elapsed seconds";
     }
 
     public function testAndCheckCumulative()

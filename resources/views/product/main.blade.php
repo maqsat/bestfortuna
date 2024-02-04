@@ -1,5 +1,12 @@
 @extends('layouts.profile')
 
+@php
+    $day = \Carbon\Carbon::now()->day;
+
+    if($day == 1) dd('Идет расчет ежемесячного бонуса, регистрация доступно с 2 го числа каждого месца');
+
+@endphp
+
 @section('in_content')
     <div class="page-wrapper">
         <!-- ============================================================== -->

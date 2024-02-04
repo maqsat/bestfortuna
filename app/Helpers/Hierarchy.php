@@ -118,17 +118,6 @@ class Hierarchy {
             ->sum('uuid');
 
 
-       /*$sum += Order::join('users','orders.user_id','=','users.id')
-            ->whereBetween('orders.created_at', [Carbon::parse('06/05/2023'), Carbon::parse('06/12/2023')])
-            ->where('orders.type','register')
-            ->where('user_id', $user_id)
-            ->where(function($query){
-                $query->where('orders.status',12);
-            })
-            ->select('orders.*')
-            ->sum('uuid');//->get();//*/
-
-
         $invites = User::whereBetween('created_at', [Carbon::parse($date)->startOfMonth(), Carbon::now()])
             ->where('inviter_id', $user_id)
             ->get();
@@ -324,14 +313,23 @@ class Hierarchy {
      ***************************
      */
 
-    //Кумулятивный бонус//  через крон
+    //Кумулятивный бонус//  через крон //
     public function cumulativeCalculation()
     {
 
+        // Grab the start time
+        $start = microtime(true);
+
+
+
+
+
         $list_percentage = array( 0 =>50,  1 =>20,  2 =>10,  3 =>5,  4 =>5 );
         $turnover_bonuses =  Processing::whereIn('status', ['cashback','quickstart_bonus', 'invite_bonus', 'turnover_bonus'])//
-        ->whereBetween('created_at', [Carbon::now()->subMonth()->startOfMonth(), Carbon::now()])
+            ->whereBetween('created_at', [Carbon::now()->startOfMonth()->subMonth()->addDays(1), Carbon::now()->subMonth()->endOfMonth()->addDays(1)])
             ->orderby('id','asc')
+            ->groupBy('user_id')
+            ->selectRaw('*, sum(sum) as sum')
             ->get();
 
         foreach ($turnover_bonuses as $k => $item){
@@ -399,6 +397,17 @@ class Hierarchy {
             }
 
         }
+
+// Do some super awesome, well optimised programmer code nonsense
+
+// Grab the end time
+        $end = microtime(true);
+
+// Subtract the start from the end
+        $elapsed = $end - $start;
+
+        echo "Script executed in $elapsed seconds";
+
 
 
        /* $message = "Зачислен ежемесячный Кумулятивный бонус";

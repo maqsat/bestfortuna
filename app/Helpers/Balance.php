@@ -36,6 +36,8 @@ class Balance {
                 'message' => $message,
                 'withdrawal_method' => $withdrawal_method,
                 'created_at' => Carbon::now()->format('Y-m-d H:i:s'),
+                //'created_at' => '2024-02-01 00:01:00',
+                //WHERE `status` LIKE 'matching_bonus' AND `created_at` >= '2024-02-01 00:01:00';
             ]
         );
         $processing->save();
@@ -54,7 +56,8 @@ class Balance {
                 'status_id' => $status_id,
                 'alias' => $alias,
                 'created_at' => Carbon::now()->format('Y-m-d H:i:s'),
-                //'created_at' => '2019-07-13 07:55:45',
+                //'created_at' => '2024-02-01 00:01:00',
+
             ]
         );
     }
@@ -63,32 +66,6 @@ class Balance {
     {
         $sum =  Processing::whereUserId($user_id)
             ->whereIn('status', ['invite_bonus','turnover_bonus', 'matching_bonus', 'cashback', 'quickstart_bonus', 'status_bonus', 'admin_add'])->sum('sum');
-        return round($sum, 2);
-    }
-
-    public function getIncomePrevMonthBalance($user_id)
-    {
-        $date = new \DateTime();
-        $date->modify('-1 month');
-
-        $sum =  Processing::whereUserId($user_id)
-            ->whereIn('status', ['invite_bonus','turnover_bonus', 'matching_bonus', 'cashback', 'quickstart_bonus', 'status_bonus', 'admin_add'])
-            ->whereBetween('created_at', [Carbon::parse($date)->startOfMonth(), Carbon::parse($date)->endOfMonth()])
-            ->sum('sum');
-        return round($sum, 2);
-    }
-
-    public function getIncomePreviousMonthBalanceByStatus($user_id, $status,$date_status = 0)
-    {
-        $date = new \DateTime();
-
-        if ($status == 'invite_bonus')
-            $date->modify('-1 month');
-
-        $sum =  Processing::whereUserId($user_id)
-            ->where('status', $status)
-            ->whereBetween('created_at', [Carbon::now()->startOfMonth()->subMonth()->addDays(1), Carbon::now()->subMonth()->endOfMonth()->addDays(1)])
-            ->sum('sum');
         return round($sum, 2);
     }
 
