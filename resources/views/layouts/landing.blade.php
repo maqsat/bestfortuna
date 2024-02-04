@@ -55,7 +55,6 @@
                     </a>
                     <ul class="dropdown-menu dropdown-menu" aria-labelledby="navbarDarkDropdownMenuLink">
                         <li><a class="header-drp-item dropdown-item" href="/mp_compressed.pdf" target="_blank">Бизнес с Best Fortune</a></li>
-                        <li><a class="header-drp-item dropdown-item" href="/marketing-plan">Маркетинг-план</a></li>
                         <li><a class="header-drp-item dropdown-item" href="/benefits">Преимущества</a></li>
                         <li><a class="header-drp-item dropdown-item" href="/promotion">Награды от компании</a></li>
                         <li><a class="header-drp-item dropdown-item" href="/rules">Этика компании</a></li>
@@ -138,7 +137,7 @@
                         </li>
                         <li>
                             <div class="menu-list-item">
-                                <a href="/marketing-plan" class="menu-list-link text-medium1">Маркетинг-план</a>
+                                <a href="/mp_compressed.pdf" target="_blank" class="menu-list-link text-medium1">Бизнес с Best Fortune</a>
                             </div>
                         </li>
                         <li>
