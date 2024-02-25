@@ -43,7 +43,7 @@ class Report {
 
 
             //echo $k.')'.$user_program->user_id.'== dec'.implode(",", Hierarchy::decompression($user_program->inviter_list,1,5))."<br>";
-            $for_list = $this->decompression($user_program->inviter_list,1,5);
+            $for_list = $this->decompressionForCumulative($user_program->inviter_list,1,5);
             foreach ($for_list as $key => $innerItem){
 
                 //echo '>>>'.User::find($innerItem)->name.' ---'.$item->status.' =>';
@@ -369,7 +369,42 @@ class Report {
         return $list;
     }
 
-    //Декомпрессия
+
+    //Декомпрессия для кумулятива
+    public function decompressionForCumulative($list, $check_inviter, $length)
+    {
+        $list = explode(",", trim($list,','));
+        $new_list = [];
+
+        foreach ($list as $key => $item)
+        {
+
+            if( $key === 0 && $check_inviter === 0 )   continue;
+            else{
+
+                if($this->checkIsActive($item)){
+
+                    $item_user_program = UserProgram::where('user_id', $item)->first();
+                    $item_status = Status::find($item_user_program->status_id);
+                    $command_pv = $this->getMonthlyСommandPv($item);
+
+                    if($command_pv >= $item_status->matching_bonus){
+                        $new_list[] = $item;
+                    }
+
+                }
+
+                if(count($new_list) == $length) break;
+            }
+
+        }
+
+        return $new_list;
+
+    }
+
+
+    //Декомпрессия для структуры
     public function decompression($list, $check_inviter, $length)
     {
         $list = explode(",", trim($list,','));

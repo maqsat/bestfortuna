@@ -35,12 +35,53 @@ class TestController extends Controller
 
     public function tester()
     {
+        $user_program = UserProgram::where('user_id', 304)->first();
+
+        foreach (Hierarchy::decompression($user_program->inviter_list,1,4) as $item){
+            echo User::find($item)->id_number.",";
+        }
+    }
+
+    public function tester2()
+    {
         $start = microtime(true);
 
         //Report::setMonthlyOrderSum();
         //Report::setMonthlyСommandPv();
         //echo Report::getMonthlyСommandPv(1);
 
+        $turnover_bonuses =  Processing::whereIn('status', ['cashback','quickstart_bonus', 'invite_bonus', 'turnover_bonus'])//
+        ->whereBetween('created_at', [Carbon::now()->startOfMonth()->subMonth()->addDays(1), Carbon::now()->subMonth()->endOfMonth()->addDays(1)])
+            ->orderby('user_id','asc')
+            ->groupBy('user_id')
+            ->selectRaw('*, sum(sum) as sum')
+            ->get();
+
+        foreach ($turnover_bonuses as $k => $item) {
+            $user_program = UserProgram::where('user_id', $item->user_id)->first();
+
+
+            //echo $k.')'.$user_program->user_id.'== dec'.implode(",", Hierarchy::decompression($user_program->inviter_list,1,5))."<br>";
+            //$for_list = $this->decompression($user_program->inviter_list, 1, 5);
+
+
+            echo $k.') '.User::find($user_program->user_id)->id_number;
+
+            echo '<br> Декомпрессия для структуры =>';
+
+            foreach (Report::decompression($user_program->inviter_list, 1, 5) as $item){
+                echo User::find($item)->id_number.",";
+            }
+
+            echo '<br> Декомпрессия для кумулятива =>';
+            foreach (Report::decompressionForCumulative($user_program->inviter_list,1,5) as $item){
+                echo User::find($item)->id_number.",";
+            }
+
+            echo '<br> ';
+
+
+        }
 
         // Do some super awesome, well optimised programmer code nonsense
 
