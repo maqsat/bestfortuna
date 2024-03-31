@@ -402,11 +402,15 @@ class Report {
 
                     $item_user_program = UserProgram::where('user_id', $item)->first();
                     $item_status = Status::find($item_user_program->status_id);
-                    $command_pv = $this->getMonthlyСommandPv($item);
 
-                    if($command_pv >= $item_status->matching_bonus){
-                        $new_list[] = $item;
+                    if($item_user_program->status_id >= 3){
+                        $command_pv = $this->getMonthlyСommandPv($item);
+
+                        if($command_pv >= $item_status->matching_bonus){
+                            $new_list[] = $item;
+                        }
                     }
+
 
                 }
 
