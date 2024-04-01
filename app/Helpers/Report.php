@@ -225,9 +225,15 @@ class Report {
     //Получание сумма заказов одного партенра за месяц
     public function getMonthlyСommandPv($user_id)
     {
-        $cache_name = 'MonthlyСommandPv_'.$user_id;
-        $value = Cache::remember($cache_name, 60, function ()  use ($user_id) {
-            $sum = MonthlyData::where('user_id',$user_id)->first();
+        $month = Carbon::now()->subMonth()->startOfMonth()->month;
+        $year  = Carbon::now()->subMonth()->startOfMonth()->year;
+
+        $cache_name = 'MonthlyСommandPv_'.$user_id.$month.$year;
+        $value = Cache::remember($cache_name, 60, function ()  use ($user_id,$month,$year) {
+            $sum = MonthlyData::where('user_id',$user_id)
+                ->where('month',$month)
+                ->where('year',$year)
+                ->first();
             if(is_null($sum)) return 0;
             else return $sum->comand_pv;
         });
@@ -289,9 +295,15 @@ class Report {
     //Получание сумма заказов одного партенра за месяц
     public function getOrderSumOfMonth($user_id)
     {
-        $cache_name = 'MonthlyOrderSum_'.$user_id;
-        $value = Cache::remember($cache_name, 60, function ()  use ($user_id) {
-            $sum = MonthlyData::where('user_id',$user_id)->first();
+        $month = Carbon::now()->subMonth()->startOfMonth()->month;
+        $year  = Carbon::now()->subMonth()->startOfMonth()->year;
+
+        $cache_name = 'MonthlyOrderSum_'.$user_id.$month.$year;
+        $value = Cache::remember($cache_name, 60, function ()  use ($user_id,$month,$year) {
+            $sum = MonthlyData::where('user_id',$user_id)
+                ->where('month',$month)
+                ->where('year',$year)
+                ->first();
 
             if(is_null($sum)) return 0;
             else return $sum->order_sum;
