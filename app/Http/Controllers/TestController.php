@@ -36,7 +36,7 @@ class TestController extends Controller
     public function tester()
     {
 
-        Hierarchy::checkActivationStatus();
+
     }
 
     public function tester2()
@@ -692,7 +692,7 @@ dd(Hierarchy::orderSumOfMonth($date,3119));*/
 
     public function calculateInviteBonus()//
     {
-        $users = User::where('created_at','>=', Carbon::parse('06/05/2023'))->where('status',1)->get();
+        $users = User::whereBetween('created_at',[Carbon::now()->subDays(10), Carbon::now()->subMonth()->endOfMonth()])->where('status',1)->get();
 
         foreach ($users as $item){
             $id = $item->id;
@@ -701,8 +701,11 @@ dd(Hierarchy::orderSumOfMonth($date,3119));*/
             $program = Program::find($item->program_id);
             $inviter_program = UserProgram::where('user_id',$inviter->id)->first();
             $inviter_status = Status::find($inviter_program->status_id);
+            $inviter_list = Hierarchy::getInviterList($id,'').',';
 
-            Hierarchy::setInviterBonus($inviter,$package,$id,$program,$inviter_status);
+
+            //Hierarchy::setInviterBonus($inviter,$package,$id,$program,$inviter_status);
+            Hierarchy::setStructureBonus($inviter_list,$package,$id,$program);
 
             echo $item->id."=>".$item->package_id."=>".$item->name."<br>";
         }

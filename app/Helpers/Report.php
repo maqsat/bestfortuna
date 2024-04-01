@@ -163,12 +163,16 @@ class Report {
                     ->orderby('id','asc')
                     ->sum('sum');
 
-                echo  User::find($director->user_id)->name.'->'.$balance."<br>";
+                $director_status = Status::find($director->status_id);
+
+                echo  User::find($director->user_id)->name.'->'.$balance.'->Статус'.$director_status->title.'->добавленые баллы:'.$director_status->status_bonus."<br>";
 
                 if($balance >= 400){
-                    $bonused_directors[] = [ $director->user_id, $balance];
+
+
+                    $bonused_directors[] = [ $director->user_id, $balance, $director_status->status_bonus];
                     //echo User::find($director->user_id)->name."<br>";
-                    $directors_pv_sum +=  $balance/100;
+                    $directors_pv_sum +=  $balance/100 + $director_status->status_bonus;
                 }
             }
 
@@ -179,13 +183,16 @@ class Report {
             $point_cost = $percentage_for_directors/$directors_pv_sum;
         else $point_cost = 0;
 
+        echo "<br>общая сумма бонуса =>".$percentage_for_directors."<br>";
+        echo "цена одного бала =>".$point_cost."<br><br>";
+
         //начисление бонуса
         foreach ($bonused_directors as $director){
+            $director_status = Status::find($director[0]);
 
-            $sum = $point_cost * $director[1]/100;
+            $sum = $point_cost * (($director[1]/100)   + $director[2] );
             echo $sum."<br>";
             Balance::changeBalance($director[0],   $sum, 'status_bonus', 1, 1, 1, 5, $point_cost,0,0);
-
 
         }
 
@@ -316,26 +323,23 @@ class Report {
     //Пишет в базу сумму заказов для расчета кумулятивного бонуса -------> крон
     public function setMonthlyOrderSum()
     {
-        $turnover_bonuses =  Processing::whereIn('status', ['cashback','quickstart_bonus', 'invite_bonus', 'turnover_bonus'])//
-        ->whereBetween('created_at', [Carbon::now()->startOfMonth()->subMonth()->addDays(1), Carbon::now()->subMonth()->endOfMonth()->addDays(1)])
-            ->orderby('user_id','asc')
-            ->groupBy('user_id')
-            ->selectRaw('*, sum(sum) as sum')
-            ->get();
 
-        foreach ($turnover_bonuses as $k => $item){
+        $users = User::where('status',1)->get();
+
+
+        foreach ($users as $k => $item){
 
             DB::table('monthly_datas')->updateOrInsert(
                 [
-                    'user_id' => $item->user_id,
+                    'user_id' => $item->id,
                     'month' => Carbon::now()->subMonth()->startOfMonth()->month,
                     'year' => Carbon::now()->subMonth()->startOfMonth()->year,
                 ],
                 [
-                    'user_id' =>  $item->user_id,
+                    'user_id' =>  $item->id,
                     'month' => Carbon::now()->subMonth()->startOfMonth()->month,
                     'year' => Carbon::now()->subMonth()->startOfMonth()->year,
-                    'order_sum' => $this->calculateOrderSumOfMonth($item->user_id),
+                    'order_sum' => $this->calculateOrderSumOfMonth($item->id),
                 ]
             );
         }
