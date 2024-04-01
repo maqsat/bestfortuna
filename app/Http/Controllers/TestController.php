@@ -35,11 +35,8 @@ class TestController extends Controller
 
     public function tester()
     {
-        $user_program = UserProgram::where('user_id', 304)->first();
 
-        foreach (Hierarchy::decompression($user_program->inviter_list,1,4) as $item){
-            echo User::find($item)->id_number.",";
-        }
+        Hierarchy::checkActivationStatus();
     }
 
     public function tester2()
@@ -643,7 +640,7 @@ dd(Hierarchy::orderSumOfMonth($date,3119));*/
     public function calculatePassiveAndCashbackBonus()//
     {
 
-        $orders = Order::where('created_at','>=', Carbon::parse('06/05/2023'))->where('type','!=','upgrade')->where('status',4)->get();
+        $orders = Order::whereBetween('created_at',[Carbon::now()->subDays(10), Carbon::now()->subMonth()->endOfMonth()] )->where('type','!=','upgrade')->where('status',4)->get();
 
         foreach ($orders as $item){
 

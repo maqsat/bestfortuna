@@ -108,7 +108,7 @@ class Hierarchy {
             $date->modify('-1 month');
         }
 
-        $sum = Order::whereBetween('created_at', [Carbon::parse($date)->startOfMonth(), Carbon::now()])
+        $sum = Order::whereBetween('created_at', [Carbon::parse($date)->startOfMonth(), Carbon::parse($date)->endOfMonth()])
             ->where('type','shop')
             ->where('user_id', $user_id)
             ->where(function($query){
@@ -118,7 +118,7 @@ class Hierarchy {
             ->sum('uuid');
 
 
-        $invites = User::whereBetween('created_at', [Carbon::parse($date)->startOfMonth(), Carbon::now()])
+        $invites = User::whereBetween('created_at', [Carbon::parse($date)->startOfMonth(), Carbon::parse($date)->endOfMonth()])
             ->where('inviter_id', $user_id)
             ->get();
         if(count($invites) > 0) {
@@ -617,11 +617,12 @@ class Hierarchy {
     {
         $users = UserProgram::all();
 
-        foreach ($users as $user){
-            $date = new \DateTime();
-            $date->modify('-1 month');
+        $date = new \DateTime();
+        $date->modify('-1 month');
 
-            $sum = $this->orderSumOfMonth($date,$user->id);
+        foreach ($users as $user){
+
+            $sum = $this->orderSumOfMonth($date,$user->id,-1);
 
             if($sum >= 20) $status = 1;
             else  $status = 0;
