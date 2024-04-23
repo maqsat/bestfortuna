@@ -7,6 +7,18 @@
         <div class="swiper mainSwiper">
             <div class="swiper-wrapper">
                 <div class="slide slide1 swiper-slide">
+                    <img class="slide-img" src="/landing/banner/banner1.jpeg" alt="">
+                    <div class="container">
+                        <div class="main-block">
+                            <div class="main-titles">
+                                <h1 class="main-title" style="color: white">Уникальная запатентованная формула</h1>
+                                <h2 class="main-subtitle subtitle2"  style="color: white"></h2>
+                            </div>
+                            <a href="/landing/banner/aion.pdf" class="main-btn btn1" target="_blank">Узнать подробнее</a>
+                        </div>
+                    </div>
+                </div>
+                <div class="slide slide1 swiper-slide">
                     <img class="slide-img" src="/landing/img/1 экран.png" alt="">
                     <div class="container">
                         <div class="main-block">
