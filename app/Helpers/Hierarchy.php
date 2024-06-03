@@ -163,13 +163,10 @@ class Hierarchy {
     {
         if($user_id == 1)  return true;
 
-        $date = new \DateTime();
-        $date->modify('-1 month');
-
         $activation_status = DB::table('activations')
             ->where('user_id',$user_id)
-            ->whereIn('month',[Carbon::parse($date)->month])//
-            ->where('year',Carbon::parse($date)->year)
+            ->whereIn('month',[Carbon::now()->startOfMonth()->subMonth()->month])//
+            ->where('year',Carbon::now()->startOfMonth()->subMonth()->year)
             ->where('status',1)
             ->first();
 
@@ -183,7 +180,7 @@ class Hierarchy {
 
                     $activation_start_date = Balance::getActivationStartDate($user_program->created_at, $user_id);
                     $activation_start_date = Carbon::parse($activation_start_date);
-                    $now = Carbon::parse($date);
+                    $now = Carbon::now();
 
                     if($now->lte($activation_start_date)){ // less than or equals
                         return true;

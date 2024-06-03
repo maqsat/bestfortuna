@@ -36,6 +36,127 @@ class TestController extends Controller
     public function tester()
     {
 
+    }
+
+    public function testerSomeTest()
+    {
+        $orders = [
+'1',
+'1228',
+'1234',
+'4141',
+'5984',
+'9098',
+'9228',
+'9750',
+'13934',
+'15693',
+'18080',
+'29077',
+'29233',
+'29383',
+'32222',
+'33557',
+'35415',
+'44554',
+'44600',
+'45455',
+'52218',
+'55575',
+'55867',
+'71125',
+'71779',
+'71885',
+'74041',
+'76961',
+'76997',
+'77308',
+'78177',
+'78189',
+'78617',
+'79332',
+'81469',
+'81475',
+'81494',
+'81507',
+'81570',
+'84822',
+'85001',
+'85006',
+'85014',
+'85022',
+'85027',
+'85029',
+'85035',
+'85048',
+'85067',
+'85068',
+'85069',
+'85075',
+'85082',
+'87508',
+'87676',
+'89822',
+'89825',
+'90441',
+'90478',
+'90489',
+'92444',
+'92453',
+'94412',
+'96104',
+'97701',
+'97753',
+'100351',
+'100354',
+'100364',
+'100374',
+'100386',
+'100398',
+'100452',
+'103331',
+'103400',
+'105100',
+'106030',
+'106330',
+'106353',
+'234543',
+'234602',
+'234640',
+'234672',
+'234694',
+'234703',
+'244724',
+'244726',
+'244729',
+'244730',
+'244731',
+'4745A1',
+'81220A1',
+'9228A1',
+        ];
+
+
+        foreach ($orders as $decompression_key => $decompression_item) {
+
+            $entered_user = User::where('id_number', $decompression_item)->first();
+            $user_program = UserProgram::where('user_id', $entered_user->id)->first();
+
+            //echo $decompression_item.'<br>';
+
+            $checked_str = $entered_user->id_number;
+            foreach (Hierarchy::decompression($user_program->inviter_list,1,100) as $key => $innerItem){
+                $checked_str .= ",".User::find($innerItem)->id_number;
+            }
+            //echo $checked_str;
+
+            if($decompression_item != $checked_str )
+            {
+                echo "<br>$decompression_key)=================<br>";
+                echo $decompression_item.'<br>';
+                echo $checked_str;
+            }
+        }
 
     }
 
@@ -493,6 +614,12 @@ dd(Hierarchy::orderSumOfMonth($date,3119));*/
 
     }
 
+
+
+
+
+
+
     public function calculateWorldBonusForDirectors()//
     {
         $sum = Hierarchy::totalOrderSumOfMonth();
@@ -536,10 +663,6 @@ dd(Hierarchy::orderSumOfMonth($date,3119));*/
         }
 
     }
-
-
-
-
 
 
     public function calculateCumulativeBonus()//
@@ -669,7 +792,7 @@ dd(Hierarchy::orderSumOfMonth($date,3119));*/
                 ->where('status' ,4)
                 ->first();
 
-            Balance::changeBalance($basket->user_id,$order->uuid*0.2,'cashback',$basket->user_id,1,$user_program->package_id,$user_program->status_id,$sum_pv);
+            //Balance::changeBalance($basket->user_id,$order->uuid*0.2,'cashback',$basket->user_id,1,$user_program->package_id,$user_program->status_id,$sum_pv);
 
             if($order->uuid > 0) {
                 $data = [];
@@ -692,7 +815,9 @@ dd(Hierarchy::orderSumOfMonth($date,3119));*/
 
     public function calculateInviteBonus()//
     {
+
         $users = User::whereBetween('created_at',[Carbon::now()->subDays(10), Carbon::now()->subMonth()->endOfMonth()])->where('status',1)->get();
+
 
         foreach ($users as $item){
             $id = $item->id;

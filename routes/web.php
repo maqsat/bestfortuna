@@ -184,7 +184,7 @@ Route::get('check_mentor', 'AutoActivationController@checkMentor');
 /*
 ************************ Test Elements ***********************
  */
-Route::get('tester', 'TestController@calculatePassiveAndCashbackBonus');//calculatePassiveAndCashbackBonus //calculateInviteBonus
+Route::get('tester', 'TestController@tester');//calculatePassiveAndCashbackBonus //calculateInviteBonus
 Route::get('setbots', 'TestController@setBotsExcel');
 Route::get('tester-export', 'TestController@testerExport');
 

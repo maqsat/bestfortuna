@@ -77,6 +77,7 @@ class WebController extends Controller
         else $tag_id = 1;
 
         $products =  Product::where('category_id', $tag_id)->get();
+
         return view('web.products', compact('products', 'tag_id'));
     }
 
