@@ -180,7 +180,7 @@ class Hierarchy {
 
                     $activation_start_date = Balance::getActivationStartDate($user_program->created_at, $user_id);
                     $activation_start_date = Carbon::parse($activation_start_date);
-                    $now = Carbon::now();
+                    $now = Carbon::now()->subMonth();
 
                     if($now->lte($activation_start_date)){ // less than or equals
                         return true;

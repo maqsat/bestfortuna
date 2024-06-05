@@ -97,7 +97,7 @@ class Report {
 
         //расчет общего количество балов
         foreach ($directors as $director){
-            if(Hierarchy::checkIsActive($director->user_id)){
+            if($this->checkIsActiveForCumulativeAndWorld($director->user_id)){
                 echo  User::find($director->user_id)->name."<br>";
 
                 $balance =  Processing::whereIn('status', ['quickstart_bonus', 'invite_bonus', 'turnover_bonus', 'cashback', 'matching_bonus'])
@@ -155,7 +155,7 @@ class Report {
 
         //расчет общего количество балов
         foreach ($directors as $director){
-            if(Hierarchy::checkIsActive($director->user_id)){
+            if($this->checkIsActiveForCumulativeAndWorld($director->user_id)){
 
                 $balance =  Processing::whereIn('status', ['quickstart_bonus', 'invite_bonus', 'turnover_bonus', 'cashback', 'matching_bonus'])
                     ->whereBetween('created_at', [Carbon::now()->startOfMonth()->subMonth()->addDays(1), Carbon::now()->subMonth()->endOfMonth()->addDays(1)])
@@ -391,18 +391,13 @@ class Report {
     {
         $list = explode(",", trim($list,','));
         $new_list = [];
-
         foreach ($list as $key => $item)
         {
-
             if( $key === 0 && $check_inviter === 0 )   continue;
             else{
-
-                if($this->checkIsActive($item)){
-
+                if($this->checkIsActiveForCumulativeAndWorld($item)){
                     $item_user_program = UserProgram::where('user_id', $item)->first();
                     $item_status = Status::find($item_user_program->status_id);
-
                     if($item_user_program->status_id >= 3){
                         $command_pv = $this->getMonthlyСommandPv($item);
 
@@ -410,17 +405,11 @@ class Report {
                             $new_list[] = $item;
                         }
                     }
-
-
                 }
-
                 if(count($new_list) == $length) break;
             }
-
         }
-
         return $new_list;
-
     }
 
 
@@ -450,19 +439,17 @@ class Report {
     }
 
     //Проверка активен ли пользователь
-    public function checkIsActive($user_id)
+    public function checkIsActiveForCumulativeAndWorld($user_id)
     {
         if($user_id == 1)  return true;
 
-        $date = new \DateTime();
-        $date->modify('-1 month');
-
         $activation_status = DB::table('activations')
             ->where('user_id',$user_id)
-            ->whereIn('month',[Carbon::parse($date)->month])//
-            ->where('year',Carbon::parse($date)->year)
+            ->whereIn('month',[Carbon::now()->startOfMonth()->subMonths(2)->month])//
+            ->where('year',Carbon::now()->startOfMonth()->subMonths(2)->year)
             ->where('status',1)
             ->first();
+
 
         if(!is_null($activation_status)) return true;
         else{
@@ -474,7 +461,7 @@ class Report {
 
                     $activation_start_date = Balance::getActivationStartDate($user_program->created_at, $user_id);
                     $activation_start_date = Carbon::parse($activation_start_date);
-                    $now = Carbon::parse($date);
+                    $now = Carbon::now()->subMonth();
 
                     if($now->lte($activation_start_date)){ // less than or equals
                         return true;
