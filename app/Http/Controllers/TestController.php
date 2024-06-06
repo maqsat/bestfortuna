@@ -35,7 +35,7 @@ class TestController extends Controller
 
     public function tester()
     {
-
+        dd(Carbon::now());
     }
 
     public function testerSomeTest()
