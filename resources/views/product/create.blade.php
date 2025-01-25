@@ -163,7 +163,7 @@
 @endif
 
 
-<script src="https://cloud.tinymce.com/stable/tinymce.min.js?apiKey=5y85yv1z81uofzj5d6j38pqqxzrxddxqym36d3n7kv5c5ejy"></script>
+<script src="https://cloud.tinymce.com/stable/tinymce.min.js?apiKey=a6txrnf7w8lngod9y6h9re9rgci4wru8tikmhe0aiy1c7ztg"></script>
 
 <script>
     tinymce.init({
