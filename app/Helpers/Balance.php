@@ -5,6 +5,7 @@ namespace App\Helpers;
 use App\Models\Counter;
 use App\Models\Log;
 use App\Models\Notification;
+use App\Models\Package;
 use App\Models\UserProgram;
 use App\User;
 use App\Models\UserSubscriber;
@@ -41,8 +42,36 @@ class Balance {
             ]
         );
         $processing->save();
+
+
+        if ($status == 'turnover_bonus' or $status == 'matching_bonus'){
+            $this->leaderBonus($user_id,$sum,$pv);
+        }
+
+
         return $processing->id;
     }
+
+    public function leaderBonus($user_id,$sum,$pv)
+    {
+        $user_program = UserProgram::where('user_id',$user_id)->first();
+
+        if (!is_null($user_program) && $user_program->package_id == 2){
+            if ($user_program->status_id >= 7){
+                $this->changeBalance($user_program->user_id,   $sum*20/100, 'quickstart_bonus', $user_id, $user_program->program_id,$user_program->package_id,$user_program->id,$pv,0,0);
+            }
+            elseif($user_program->status_id >= 6){
+                $this->changeBalance($user_program->user_id,   $sum*20/100, 'quickstart_bonus', $user_id, $user_program->program_id,$user_program->package_id,$user_program->id,$pv,0,0);
+            }
+            elseif($user_program->status_id >= 5){
+                $this->changeBalance($user_program->user_id,   $sum*15/100, 'quickstart_bonus', $user_id, $user_program->program_id,$user_program->package_id,$user_program->id,$pv,0,0);
+            }
+            elseif($user_program->status_id >= 4){
+                $this->changeBalance($user_program->user_id,   $sum*10/100, 'quickstart_bonus', $user_id, $user_program->program_id,$user_program->package_id,$user_program->id,$pv,0,0);
+            }
+        }
+    }
+
 
     public function setQV($user_id,$sum,$in_user,$package_id,$position,$status_id, $alias = null)
     {
@@ -65,7 +94,7 @@ class Balance {
     public function getIncomeBalance($user_id)
     {
         $sum =  Processing::whereUserId($user_id)
-            ->whereIn('status', ['invite_bonus','turnover_bonus', 'matching_bonus', 'cashback', 'quickstart_bonus', 'status_bonus', 'admin_add'])->sum('sum');
+            ->whereIn('status', ['turnover_bonus', 'matching_bonus','quickstart_bonus', 'status_bonus', 'admin_add'])->sum('sum');
         return round($sum, 2);
     }
 
@@ -216,7 +245,7 @@ class Balance {
 
     public function getBalanceAllUsers()
     {
-        $sum = Processing::whereIn('status', ['admin_add', 'turnover_bonus', 'status_bonus', 'invite_bonus','quickstart_bonus','matching_bonus'])->sum('sum') - Processing::whereStatus('out')->sum('sum');
+        $sum = Processing::whereIn('status', ['admin_add', 'turnover_bonus', 'status_bonus', 'invite_bonus','quickstart_bonus','matching_bonus','travel_bonus'])->sum('sum') - Processing::whereStatus('out')->sum('sum');
         return round($sum, 2);
     }
 

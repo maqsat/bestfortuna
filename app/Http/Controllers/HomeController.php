@@ -57,6 +57,8 @@ class HomeController extends Controller
             $pv_counter_all = Hierarchy::pvCounterAll($user->id);
             $pv_accumulative=  Balance::getIncomeBalance($user->id);
             $status = Status::find($user_program->status_id);
+
+
             $next_status = Status::find($status->order+1);
             if(!is_null($next_status)){
                 $percentage = $pv_accumulative*100/$next_status->pv;

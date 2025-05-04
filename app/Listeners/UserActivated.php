@@ -104,7 +104,7 @@ class UserActivated
 
 
         //Реферальный бонус
-        Hierarchy::setInviterBonus($inviter,$package,$id,$program,$inviter_status);
+        //Hierarchy::setInviterBonus($inviter,$package,$id,$program,$inviter_status);
 
         //Структурный бонус
         Hierarchy::setStructureBonus($inviter_list,$package,$id,$program);

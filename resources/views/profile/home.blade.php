@@ -6,10 +6,6 @@
         <!-- Container fluid  -->
         <!-- ============================================================== -->
         <div class="container-fluid">
-            <div class="alert alert-danger">
-                <button type="button" class="close" data-dismiss="alert" aria-label="Close"> <span aria-hidden="true">&times;</span> </button>
-                <h3 class="text-danger"><i class="fa fa-check-circle"></i> На сайте ведутся технические работы</h3>
-            </div>
 
                 @if(!is_null($move_status))
                     <div class="alert alert-success">
@@ -156,7 +152,7 @@
                                 <div class="col-lg-3 col-xlg-3 col-md-3 col-6">
                                     <div class="card card-primary card-inverse">
                                         <div class="box text-center">
-                                            <h1 class="font-light text-white">0</h1>
+                                            <h1 class="font-light text-white">{{ $activation }}</h1>
                                             <h6 class="text-white">Товарооборот личного закупа(BM)</h6>
                                         </div>
                                     </div>
@@ -170,7 +166,7 @@
             </div>
 
             <!-- Row -->
-            <div class="row">
+            <div class="row" style="display: none">
                 <div class="col-lg-12 col-xlg-12 col-md-12">
                     <div class="card">
                         <div class="card-block">

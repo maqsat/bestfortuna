@@ -7,7 +7,7 @@
 @elseif($item->status == 'cashback')
     Бонус от Личного закупа
 @elseif($item->status == 'quickstart_bonus')
-    Пассивный бонус
+    Лидерский бонус
 @elseif($item->status == 'status_bonus')
     Мировой бонус
 @elseif($item->status == 'admin_add')

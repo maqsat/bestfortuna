@@ -1,6 +1,7 @@
 @extends('layouts.profile')
 
 @section('in_content')
+    {{ dd('Апгрейд отключен') }}
     <div class="page-wrapper">
         <!-- ============================================================== -->
         <!-- Container fluid  -->

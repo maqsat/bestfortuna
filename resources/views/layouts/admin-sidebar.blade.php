@@ -101,6 +101,8 @@
                             @if(Gate::allows('admin_processing_status_request'))
                             <li><a href="/processing?status=request">Запросы на вывод(Ручная)</a></li>
                             @endif
+                            <li><a href="/gift-goods">Товар в подарок</a></li>
+                            <li><a href="/gift-travel">Тур в подарок</a></li>
                         @endif
                     </ul>
                 </li>
@@ -117,9 +119,6 @@
                         @endif
                         @if(Gate::allows('admin_orders_access'))
                             <li><a href="/order?history=1">История продаж</a></li>
-                        @endif
-                        @if(Gate::allows('admin_orders_access'))
-                            <li><a href="/activation_history">История активации</a></li>
                         @endif
                     </ul>
                 </li>

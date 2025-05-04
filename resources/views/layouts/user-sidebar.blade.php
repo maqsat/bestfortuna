@@ -32,9 +32,9 @@
                             <!--<li><a href="/team?upgrade=1">Апгрейд команды</a></li>
                             <li><a href="/team?move=1">Прогресс команды</a></li>
                             <li><a href="/team?own=1">Моя команда(без перелива)</a></li>-->
-                            @if(Gate::allows('admin_user_create'))
+                            {{--@if(Gate::allows('admin_user_create'))
                                 <li><a href="{{ route('partner_create') }}">{{ __('app.add_partner') }}</a></li>
-                            @endif
+                            @endif--}}
                         </ul>
                     </li>
                     <li>
@@ -45,7 +45,7 @@
                         <ul aria-expanded="false" class="collapse">
                             <li><a href="/user_processing">{{ __('app.processing') }}</a></li>
                             <li><a href="/user_processing?weeks=1">Еженедельная  выплата</a></li>
-                            <li><a href="/fortune_wheel">Выиграи 100$</a></li>
+                            <!--<li><a href="/fortune_wheel">Выиграи 100$</a></li>-->
                             {{--<li><a href="/rang-history">История ранга</a></li>--}}
                         </ul>
                     </li>
@@ -59,7 +59,7 @@
                             {{--<li><a href="/userorders">Мои заказы</a></li>--}}
                             <li><a href="/basket">Корзина</a></li>
                             <li><a href="/story-store">Покупки</a></li>
-                            <li><a href="/activation-calendar">Календарь активизации</a></li>
+                            <!--<li><a href="/activation-calendar">Календарь активизации</a></li>-->
                         </ul>
                     </li>
                     <li>

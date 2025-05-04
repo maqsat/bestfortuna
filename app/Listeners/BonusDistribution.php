@@ -37,31 +37,41 @@ class BonusDistribution
 
 
         $user_program = UserProgram::where('user_id',$user_id)->first();
+        $list = ','.$user_id.','.$user_program->inviter_list;
 
-        foreach (Hierarchy::decompression($user_program->inviter_list,1,4) as $key => $item){
+        foreach (Hierarchy::decompression($list,0,5) as $key => $item){
 
             $item_user_program = UserProgram::where('user_id',$item)->first();
 
             if(!is_null($item_user_program) ){
                 //Пассивный бонус
-                if($key < 4){
+                if($key < 5){
 
                     switch ($key) {
                         case 0:
-                            $sum = $order_sum*4/100;
+                            $sum = $order_sum*20/100;
                             Balance::changeBalance($item,   $sum, 'turnover_bonus', $user_id, 1,$item_user_program->package_id, $item_user_program->status_id,$order_sum,0,$key+1);
+                            Hierarchy::newMatchingBonus($item,$sum,$key);
                             break;
                         case 1:
-                            $sum = $order_sum*3/100;
+                            $sum = $order_sum*4/100;
                             Balance::changeBalance($item,   $sum, 'turnover_bonus', $user_id, 1,$item_user_program->package_id, $item_user_program->status_id,$order_sum,0,$key+1);
+                            //Hierarchy::newMatchingBonus($item,$sum,$key);
                             break;
                         case 2:
-                            $sum = $order_sum*2/100;
+                            $sum = $order_sum*3/100;
                             Balance::changeBalance($item,   $sum, 'turnover_bonus', $user_id, 1,$item_user_program->package_id, $item_user_program->status_id,$order_sum,0,$key+1);
+                            //Hierarchy::newMatchingBonus($item,$sum,$key);
                             break;
                         case 3:
+                            $sum = $order_sum*2/100;
+                            Balance::changeBalance($item,   $sum, 'turnover_bonus', $user_id, 1,$item_user_program->package_id, $item_user_program->status_id,$order_sum,0,$key+1);
+                            //Hierarchy::newMatchingBonus($item,$sum,$key);
+                            break;
+                        case 4:
                             $sum = $order_sum*1/100;
                             Balance::changeBalance($item,   $sum, 'turnover_bonus', $user_id, 1,$item_user_program->package_id, $item_user_program->status_id,$order_sum,0,$key+1);
+                            //Hierarchy::newMatchingBonus($item,$sum,$key);
                             break;
                     }
 

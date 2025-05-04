@@ -56,7 +56,7 @@
                                         <th>Логин</th>
                                         <th>Спонсор</th>
                                         @if(Gate::allows('admin_column_pv'))
-                                        <th>PV</th>
+                                        <th>BM</th>
                                         @endif
                                         <th>Акт/ия</th>
                                         <th>Статус</th>
@@ -94,7 +94,8 @@
                                             @if(Gate::allows('admin_column_pv'))
                                             <td>
                                                 @if($item->status == 1)
-                                                    {{ Hierarchy::pvCounterAll($item->id) }}
+                                                    <b>Товарооборот:</b> {{ Hierarchy::pvCounterAll($item->id) }}<br>
+                                                    <b>Накопительный:</b> {{ \App\Facades\Balance::getIncomeBalance($item->id) }}
                                                 @endif
                                             </td>
                                             @endif

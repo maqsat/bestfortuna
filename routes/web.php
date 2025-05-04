@@ -147,6 +147,9 @@ Route::get('order', 'ProductController@orders');
 Route::get('overview-money', 'ProcessingController@overview')->name('overview');
 Route::get('status-counts', 'ProcessingController@statusCounts')->name('counts');
 Route::get('status-money', 'ProcessingController@status')->name('status');
+Route::get('gift-goods', 'ProcessingController@giftGoods')->name('giftGoods');
+Route::get('gift-travel', 'ProcessingController@giftTravel')->name('giftTravel');
+
 Route::get('admin/reviews', 'AdminController@reviews')->name('admin_reviews')->middleware('admin');
 Route::get('admin/comments', 'AdminController@comments')->name('admin_comments')->middleware('admin');
 Route::get('admin/comment/{id}/{status}', 'AdminController@commentStatus')->name('admin_comment_status')->middleware('admin');
@@ -184,7 +187,7 @@ Route::get('check_mentor', 'AutoActivationController@checkMentor');
 /*
 ************************ Test Elements ***********************
  */
-Route::get('tester', 'TestController@tester');//calculatePassiveAndCashbackBonus //calculateInviteBonus
+Route::get('tester', 'TestController@tester');
 Route::get('setbots', 'TestController@setBotsExcel');
 Route::get('tester-export', 'TestController@testerExport');
 

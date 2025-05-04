@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+
 use DB;
 use Auth;
 use App\User;
@@ -9,6 +10,7 @@ use Carbon\Carbon;
 use App\Models\Processing;
 use App\Models\UserProgram;
 use App\Models\Status;
+use App\Models\Order;
 use App\Models\Basket;
 use App\Facades\Balance;
 use App\Facades\Hierarchy;
@@ -298,7 +300,8 @@ class ProcessingController extends Controller
         $upgrade = Processing::where('status', 'upgrade')->sum('sum');
         $commission = Balance::getBalanceAllUsers();
         $out = Balance::getBalanceOutAllUsers();
-        $shop = Processing::where('status', 'shop')->sum('sum');
+        $shop = Order::where('type', 'shop')->where('status',4)->sum('amount');
+
 
         return view('processing.overview',compact('register','commission','out','shop', 'upgrade'));
     }
@@ -338,4 +341,21 @@ class ProcessingController extends Controller
     {
         return view('processing.counts');
     }
+
+    public function giftGoods()
+    {
+        $list = UserProgram::all();
+
+        return view('processing.gift-goods', compact('list'));
+
+    }
+
+    public function giftTravel()
+    {
+        $list = UserProgram::all();
+
+        return view('processing.gift-travel', compact('list'));
+    }
+
+
 }

@@ -6,79 +6,88 @@
         <!-- Container fluid  -->
         <!-- ============================================================== -->
         <div class="container-fluid">
-
             <!-- ============================================================== -->
             <!-- Bread crumb and right sidebar toggle -->
             <!-- ============================================================== -->
             <div class="row page-titles">
                 <div class="col-md-6 col-8 align-self-center">
-                    <h3 class="text-themecolor m-b-0 m-t-0">Комиссионные по статусам</h3>
+                    <h3 class="text-themecolor m-b-0 m-t-0">Тур в подарок</h3>
                 </div>
                 <div class="col-md-6 col-4 align-self-center">
                 </div>
             </div>
             <!-- ============================================================== -->
             <!-- End Bread crumb and right sidebar toggle -->
+            <!-- ============================================================== -->
+            <!-- ============================================================== -->
+            <!-- Start Page Content -->
+            <!-- ============================================================== -->
+
 
             <div class="row">
-                <div class="col-lg-12">
+                <div class="col-12">
                     <div class="card">
                         <div class="card-block">
                             <div class="table-responsive">
-                                <table id="demo-foo-addrow" class="display nowrap table table-hover" data-page-size="10">
+                                <table id="demo-foo-addrow" class="table table-hover no-wrap contact-list" data-page-size="10">
                                     <thead>
                                     <tr>
                                         <th>ID #</th>
-                                        <th>Статус</th>
-                                        <th>Сумма</th>
-                                        <th>Действие</th>
+                                        <th>ФИО</th>
+                                        <th>Пакет</th>
+                                        <th>PV</th>
+                                        <th>Товар на сумму</th>
                                     </tr>
                                     </thead>
                                     <tbody>
-                                    <tr>
-                                        <td>1</td>
-                                        <td>Структурный бонус</td>
-                                        <td>{{ number_format(round(\App\Facades\Balance::getBalanceByStatus('turnover_bonus')), 0, '', ' ')  }}$</td>
-                                        <td><a href="">Подробнее</a></td>
-                                    </tr>
-                                    <tr>
-                                        <td>2</td>
-                                        <td>Матчинг бонус(Кумулятив)</td>
-                                        <td>{{ number_format(round(\App\Facades\Balance::getBalanceByStatus('matching_bonus')), 0, '', ' ')  }}$</td>
-                                        <td><a href="">Подробнее</a></td>
-                                    </tr>
-                                    <tr>
-                                        <td>1</td>
-                                        <td>Лидерский бонус</td>
-                                        <td>{{ number_format(round(\App\Facades\Balance::getBalanceByStatus('quickstart_bonus')), 0, '', ' ')  }}$</td>
-                                        <td><a href="">Подробнее</a></td>
-                                    </tr>
-                                    <tr>
-                                        <td>5</td>
-                                        <td>Тревел бонус</td>
-                                        <td>{{ number_format(round(\App\Facades\Balance::getBalanceByStatus('travel_bonus')), 0, '', ' ')  }}$</td>
-                                        <td><a href="">Подробнее</a></td>
-                                    </tr>
+                                    @foreach($list as $key => $item)
+                                        @php $pv_all = Balance::getIncomeBalance($item->user_id) @endphp
+
+                                        @if($pv_all >= 4000 && $item->package_id == 2)
+                                            <tr>
+                                                <td class="text-center">{{ $key+1 }}</td>
+                                                <td>
+                                                    {{ \App\User::find($item->user_id)->name }}
+                                                </td>
+                                                <td>
+                                                    {{ \App\Models\Package::where('id',$item->package_id)->first()->title }}
+                                                </td>
+                                                <td>
+                                                    {{ $pv_all }}
+                                                </td>
+                                                <td>
+                                                    @if($pv_all >= 4000 )
+                                                        Тур за 800$
+                                                    @endif
+                                                </td>
+                                            </tr>
+                                        @endif
+                                    @endforeach
                                     </tbody>
                                 </table>
                             </div>
+
                         </div>
                     </div>
                 </div>
             </div>
+            <!-- ============================================================== -->
+            <!-- End PAge Content -->
+            <!-- ============================================================== -->
         </div>
         <!-- ============================================================== -->
         <!-- End Container fluid  -->
         <!-- ============================================================== -->
         <!-- ============================================================== -->
-    @include('layouts.footer')
-    <!-- ============================================================== -->
+        @include('layouts.footer')
+        <!-- ============================================================== -->
     </div>
 @endsection
 
 @section('body-class')
     fix-header card-no-border fix-sidebar
 @endsection
+
 
 @push('styles')
     <style>
@@ -110,3 +119,4 @@
         @endforeach
     @endif
 @endpush
+
