@@ -41,10 +41,10 @@ class MonthlyPayments extends Command
     {
 
         if($this->argument('bonus_id') == 1){
-            Report::cumulativeCalculation();
+            Report::setMonthlyOrderSum();
         }
         elseif($this->argument('bonus_id') == 2){
-            Hierarchy::checkActivationStatus();
+            Report::setMonthlyСommandPv();
         }
         elseif($this->argument('bonus_id') == 3){
             Report::cumulativeWorldBonusForDirectors();
@@ -53,10 +53,10 @@ class MonthlyPayments extends Command
             Report::cumulativeWorldBonusForMasters();
         }
         elseif($this->argument('bonus_id') == 5){
-            Report::setMonthlyOrderSum();
+            Report::cumulativeCalculation();
         }
         elseif($this->argument('bonus_id') == 6){
-            Report::setMonthlyСommandPv();
+            Hierarchy::checkActivationStatus();
         }
         else{
             Hierarchy::telegramTestSend();

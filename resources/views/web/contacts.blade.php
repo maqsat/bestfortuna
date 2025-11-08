@@ -16,8 +16,6 @@
                 <div class="contacts-block business-block">
                     <span class="contacts-mintext section2-block-mintext">Адрес в г. Астана: </span>
                     <p class="contacts-text">КУБРИНА 20/1.ВП6</p>
-                    <span class="contacts-mintext section2-block-mintext">Адрес в г Гонконге:  </span>
-                    <p class="contacts-text">UNIT 04,7F BRIGHT WAY TOWER NO.33 MONG KOK RD</p>
                     <span class="contacts-mintext section2-block-mintext">Номер телефона :  </span>
                     <p class="contacts-text">+ 7 701 530 98 71</p>
                     <span class="contacts-mintext section2-block-mintext">Электронная почта:  </span>

@@ -37,7 +37,7 @@ class BonusDistribution
 
 
         $user_program = UserProgram::where('user_id',$user_id)->first();
-        $list = ','.$user_id.','.$user_program->inviter_list;
+        $list = ','.$user_id.$user_program->inviter_list;
 
         foreach (Hierarchy::decompression($list,0,5) as $key => $item){
 

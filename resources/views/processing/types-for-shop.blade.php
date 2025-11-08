@@ -25,8 +25,8 @@
                                     </div>
                                     <!-- Card -->
                                 </div>
-<!--                                <div class="col-lg-2 col-md-6  img-responsive">
-                                    &lt;!&ndash; Card &ndash;&gt;
+                               <div class="col-lg-2 col-md-6  img-responsive">
+                                   <!-- Card -->
                                     <div class="card">
                                         <img class="card-img-top img-responsive" src="/nrg/paypost.png" alt="Card image cap">
                                         <div class="card-block">
@@ -35,8 +35,8 @@
                                             <a href="/pay-prepare?type=paypost&@if(!is_null($basket))basket={{ $basket->id }}@endif" class="btn btn-success m-t-10">Оплатить ${{ $all_cost }}</a>
                                         </div>
                                     </div>
-                                    &lt;!&ndash; Card &ndash;&gt;
-                                </div>-->
+                                   <!-- Card -->
+                                </div>
 
 
                             </div>
