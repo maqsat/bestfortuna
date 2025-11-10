@@ -75,7 +75,7 @@
                 description: "Оплата покупки ${{ $all_cost+$all_cost*0.05 }}", // описание списания
                 paymentSchema: 'Dual', // схема
                 currency: "KZT", // валюта
-                amount: {{ ($all_cost+$all_cost*0.05)*config('marketing.dollar_course') }}, // сумма
+                amount: 10, // сумма {{ ($all_cost+$all_cost*0.05)*config('marketing.dollar_course') }}
                 externalId: "{{ $basket->id }}", // идентификатор платежа в вашей системе
                 restrictedPaymentMethods: [ // список отключенных для данной оплаты методов
                     'GooglePay',
