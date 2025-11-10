@@ -411,4 +411,11 @@ class PayController extends Controller
         }
         else return 0;
     }
+
+    public function webhook(Request $request)
+    {
+        $file = '/storage/images/webhook'.time().'.txt';
+        $data = $request->InvoiceId;
+        file_put_contents($file, $data);
+    }
 }

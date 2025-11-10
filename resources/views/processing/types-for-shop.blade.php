@@ -28,11 +28,11 @@
                                <div class="col-lg-2 col-md-6  img-responsive">
                                    <!-- Card -->
                                     <div class="card">
-                                        <img class="card-img-top img-responsive" src="/nrg/paypost.png" alt="Card image cap">
+                                        <img class="card-img-top img-responsive" src="/nrg/tiptop.png" alt="Card image cap">
                                         <div class="card-block">
-                                            <h4 class="card-title">PayPost</h4>
-                                            <p class="card-text">В карте должен быть подключен 3D secure</p>
-                                            <a href="/pay-prepare?type=paypost&@if(!is_null($basket))basket={{ $basket->id }}@endif" class="btn btn-success m-t-10">Оплатить ${{ $all_cost }}</a>
+                                            <h4 class="card-title">TipTop Pay</h4>
+                                            <p class="card-text">На карте должен быть подключен 3D secure</p>
+                                            <button id="payButton"  class="btn btn-success m-t-10">Оплатить ${{ $all_cost+$all_cost*0.05 }}</button>
                                         </div>
                                     </div>
                                    <!-- Card -->
@@ -62,6 +62,47 @@
     <script src="/monster_admin/main/js/toastr.js"></script>
     <script src="/monster_admin/assets/plugins/toast-master/js/jquery.toast.js"></script>
 
+    <script>
+        //document.querySelector('#checkout').onclick = start
+
+        const btn = document.getElementById("payButton")
+
+        const widget = new tiptop.Widget();
+
+        const launchWidget = () => {
+            const intentParams = {
+                publicTerminalId: "pk_faba06b06e08c3045f83dc1874559", // идентификатор терминала
+                description: "Оплата покупки ${{ $all_cost+$all_cost*0.05 }}", // описание списания
+                paymentSchema: 'Dual', // схема
+                currency: "KZT", // валюта
+                amount: {{ ($all_cost+$all_cost*0.05)*config('marketing.dollar_course') }}, // сумма
+                externalId: "{{ $basket->id }}", // идентификатор платежа в вашей системе
+                restrictedPaymentMethods: [ // список отключенных для данной оплаты методов
+                    'GooglePay',
+                    'ApplePay'
+                ],
+                metadata: {
+                    referrerId: "some_referrer_123"
+                },
+                successRedirectUrl: "https://best-fortuna.kz/main-store?success=true",
+                failRedirectUrl: "https://best-fortuna.kz/main-store?success=false",
+                retryPayment: true,
+                receiptEmail: "{{ Auth::user()->email }}",
+                tokenize: false,
+                emailBehavior: "Required",
+            };
+
+            widget.start(intentParams).then(function(widgetResult) {
+                console.log('result', widgetResult);
+            }).catch(function(error) {
+                console.log('error', error);
+            });
+        }
+
+        btn.addEventListener('click', launchWidget)
+    </script>
+
+
     @if (session('status'))
         <script>
             $.toast({
@@ -80,4 +121,5 @@
 
 @push('styles')
     <link href="/monster_admin/assets/plugins/toast-master/css/jquery.toast.css" rel="stylesheet">
+    <script src="https://widget.tiptoppay.kz/bundles/widget.js"></script>
 @endpush
