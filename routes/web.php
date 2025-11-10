@@ -108,7 +108,7 @@ Route::get('pay-types', 'PayController@payTypes')->middleware("auth");
 Route::get('pay-prepare', 'PayController@payPrepare')->middleware("auth");
 Route::any('pay-processing/{id}', 'PayController@payProcessing');
 Route::get('payeer', 'PayController@payeer')->name('payeer');
-Route::get('webhook', 'PayController@webhook')->name('webhook');
+Route::post('webhook', 'PayController@webhook')->name('webhook');
 
 
 /*
