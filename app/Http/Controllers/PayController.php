@@ -19,6 +19,7 @@ use App\Models\UserClients;
 use Illuminate\Http\Request;
 use App\Events\Activation;
 use App\Events\ShopTurnover;
+use function GuzzleHttp\Promise\all;
 
 class PayController extends Controller
 {
@@ -414,6 +415,7 @@ class PayController extends Controller
 
     public function webhook(Request $request)
     {
+        dd($request-all());
         $file = '/storage/webhook'.time().'.txt';
         $data = $request->InvoiceId;
         file_put_contents($file, $data);
