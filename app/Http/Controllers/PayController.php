@@ -415,7 +415,6 @@ class PayController extends Controller
 
     public function webhook(Request $request)
     {
-        dd($request->all());
         $file = '/storage/webhook'.time().'.txt';
         $data = $request->InvoiceId;
         file_put_contents($file, $data);
