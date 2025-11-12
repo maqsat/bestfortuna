@@ -415,8 +415,10 @@ class PayController extends Controller
 
     public function webhook(Request $request)
     {
-        $file = '/storage/webhook'.time().'.txt';
-        $data = $request->InvoiceId;
-        file_put_contents($file, $data);
+        $file = time().'.txt';
+
+        Storage::put($file, $request->InvoiceId);
+
+        //return response()->json(['code' => 0]);
     }
 }
