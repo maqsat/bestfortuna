@@ -212,6 +212,10 @@ class AuthServiceProvider extends ServiceProvider
             return $user->admin && in_array($user->role_id, [0]);
         });
 
+        Gate::define('admin_city_update', function ($user) {
+            return $user->admin && in_array($user->role_id, [0]);
+        });
+
         Gate::define('admin_city_edit', function ($user) {
             return $user->admin && in_array($user->role_id, [0]);
         });

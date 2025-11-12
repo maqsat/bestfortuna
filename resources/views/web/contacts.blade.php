@@ -15,11 +15,11 @@
             <div class="page-body">
                 <div class="contacts-block business-block">
                     <span class="contacts-mintext section2-block-mintext">Адрес в г. Астана: </span>
-                    <p class="contacts-text">КУБРИНА 20/1.ВП6</p>
+                    <p class="contacts-text">ул. Степана Кубрина 20/1, ВП6</p>
                     <span class="contacts-mintext section2-block-mintext">Номер телефона :  </span>
-                    <p class="contacts-text">+ 7 701 530 98 71</p>
+                    <p class="contacts-text">+7 702 951 0998</p>
                     <span class="contacts-mintext section2-block-mintext">Электронная почта:  </span>
-                    <p class="contacts-text">gbfi.net2021@gmail.com</p>
+                    <p class="contacts-text">bestfortunakz@gmail.com</p>
                 </div>
                 <div class="contacts-block business-block">
                     <ul class="business-list">

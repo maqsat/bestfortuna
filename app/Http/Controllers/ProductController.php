@@ -213,13 +213,17 @@ class ProductController extends Controller
      * @param  \App\Models\Product  $product
      * @return \Illuminate\Http\Response
      */
-    public function destroy(Product $product)
+    public function destroy(Product $product, $id)
     {
         if(!Gate::allows('admin_product_destroy')) {
             abort('401');
         }
 
-        //
+        Product::find($id)->delete();
+        //$product->delete();
+
+        return redirect()->back()->with('status', 'Успешно удалено');
+
     }
     public function orders(Request $request){
         if(!Gate::allows('admin_orders_access')) {
