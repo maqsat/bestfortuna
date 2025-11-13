@@ -419,6 +419,6 @@ class PayController extends Controller
 
         Storage::put($file, $request->InvoiceId);
 
-        //return response()->json(['code' => 0]);
+        return response()->json(['code' => 0]);
     }
 }
