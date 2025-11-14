@@ -6,6 +6,7 @@ use App\Events\Upgrade;
 use App\Exceptions\PayPostExceptionGenerateUrl;
 use App\Facades\Balance;
 use App\Facades\Hierarchy;
+use App\Models\Notification;
 use App\Models\UserProgram;
 use DB;
 use Auth;
@@ -42,6 +43,7 @@ class PayController extends Controller
                 ->join('products','basket_good.good_id','=','products.id')
                 ->where(['basket_id' => $basket->id])
                 ->sum(DB::raw('basket_good.quantity*products.partner_cost'));//['products.*','basket_good.quantity']
+
 
             return view('processing.types-for-shop',compact('basket','all_cost','balance'));
         }
@@ -123,6 +125,9 @@ class PayController extends Controller
 
         if($request->type == "manual"){
             return view('processing.manual', compact('order', 'cost'));
+        }
+        if($request->type == "tiptoppay"){
+            return view('processing.tiptoppay', compact('order', 'cost'));
         }
         if($request->type == "paypost"){
             $payment_webhook = env('APP_URL', false) . "/pay-processing/$order_id/";
@@ -415,9 +420,60 @@ class PayController extends Controller
 
     public function webhook(Request $request)
     {
-        $file = 'webhook/'.time().'.txt';
 
-        Storage::put($file, $request->InvoiceId);
+        //$file = 'webhook/'.time().'.txt';
+
+        //Storage::put($file, $request->InvoiceId);
+
+        Order::where( 'type','shop')
+            ->where('id',$request->InvoiceId)
+            ->where('status' ,0)
+            ->update(
+                [
+                    'status' => 4,
+                ]
+            );
+
+        $order = Order::where( 'type','shop')
+            ->where('id',$request->InvoiceId)
+            ->first();
+
+        Basket::whereId($order->basket_id)->update(['status' => 1]);
+
+        $basket  = Basket::find($order->basket_id);
+
+        $order_pv = Order::join('baskets','baskets.id','=','orders.basket_id')
+            ->join('basket_good','basket_good.basket_id','=','baskets.id')
+            ->join('products','basket_good.good_id','=','products.id')
+            ->where('orders.type','shop')
+            ->where('orders.basket_id',$basket->id)
+            ->where('orders.not_original',null)
+            ->groupBy('basket_good.good_id')
+            ->select([DB::raw('basket_good.quantity * products.pv as sum')])
+            ->get();
+
+        $sum_pv = 0;
+        foreach ($order_pv as $pv){
+            $sum_pv +=$pv->sum;
+        }
+
+        //Balance::changeBalance($basket->user_id,$order->uuid*0.2,'cashback',$basket->user_id,1,$user_program->package_id,$user_program->status_id,$sum_pv);
+
+        if($order->uuid > 0) {
+            $data = [];
+            $data['user_id'] = $basket->user_id;
+            $data['sum'] = $order->uuid;
+
+            event(new ShopTurnover($data = $data));
+
+            $user = User::find($basket->user_id);
+
+            Notification::create([
+                'user_id'   => $user->id,
+                'type'      => 'admin_buy_user',
+                'message'   => 'Подтверждение покупки пользователя ' . $user->name . ' ( ' . $user->id . ' ) ',
+            ]);
+        }
 
         return response()->json(['code' => 0]);
     }

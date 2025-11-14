@@ -35,8 +35,16 @@ class TestController extends Controller
 
     public function tester()
     {
+        $order = Order::where( 'type','shop')
+            ->where('id',2)
+            ->where('status' ,11)
+            ->update(
+                [
+                    'status' => 4,
+                ]
+            );
 
-
+        dd($order);
     }
 
 
