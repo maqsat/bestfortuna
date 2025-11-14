@@ -7,50 +7,50 @@
         <div class="swiper mainSwiper">
             <div class="swiper-wrapper">
                 <div class="slide slide1 swiper-slide">
-                    <img class="slide-img" src="/landing/banner/banner1.jpeg" alt="">
+                    <img class="slide-img" src="/landing/img/new_slider1.png" alt="">
                     <div class="container">
                         <div class="main-block">
                             <div class="main-titles">
-                                <h1 class="main-title" style="color: white">Уникальная запатентованная формула</h1>
+                                <h1 class="main-title" style="color: white"></h1>
                                 <h2 class="main-subtitle subtitle2"  style="color: white"></h2>
                             </div>
-                            <a href="/landing/banner/aion.pdf" class="main-btn btn1" target="_blank">Узнать подробнее</a>
+<!--                            <a href="/web-product/17" class="main-btn btn1" target="_blank">Узнать подробнее</a>-->
                         </div>
                     </div>
                 </div>
                 <div class="slide slide1 swiper-slide">
-                    <img class="slide-img" src="/landing/img/1 экран.png" alt="">
+                    <img class="slide-img" src="/landing/img/new_slider2.png" alt="">
                     <div class="container">
                         <div class="main-block">
                             <div class="main-titles">
-                                <h1 class="main-title">препарат для восполнения кальция в организме</h1>
-                                <h2 class="main-subtitle subtitle2">Кальций играет основную роль в формировании скелета ребенка, а также минимизирует риск возникновения остеопороза.</h2>
+                                <h1 class="main-title"></h1>
+                                <h2 class="main-subtitle subtitle2"></h2>
                             </div>
-                            <a href="/web-product/17" class="main-btn btn1">Узнать подробнее</a>
+<!--                            <a href="/web-product/17" class="main-btn btn1">Узнать подробнее</a>-->
                         </div>
                     </div>
                 </div>
                 <div class="slide slide2 swiper-slide">
-                    <img class="slide-img" src="/landing/img/Второй слайдер.png" alt="">
+                    <img class="slide-img" src="/landing/img/new_slider3.png" alt="">
                     <div class="container">
                         <div class="main-block">
                             <div class="main-titles">
-                                <h1 class="main-title">Флора баланс</h1>
-                                <p class="main-subtitle subtitle2">Биологическое питание для матки, который запускает механизм самоочистки матки!</p>
+                                <h1 class="main-title"></h1>
+                                <p class="main-subtitle subtitle2"></p>
                             </div>
-                            <a href="/web-product/4" class="main-btn btn1">Узнать подробнее</a>
+<!--                            <a href="/web-product/4" class="main-btn btn1">Узнать подробнее</a>-->
                         </div>
                     </div>
                 </div>
                 <div class="slide slide3 swiper-slide">
-                    <img class="slide-img" src="/landing/img/экран3.png" alt="">
+                    <img class="slide-img" src="/landing/img/new_slider4.png" alt="">
                     <div class="container">
                         <div class="main-block">
                             <div class="main-titles">
-                                <h1 class="main-title">Венера</h1>
-                                <p class="main-subtitle subtitle2">Один тюбик легкое решения Ваших гинекологических проблем!</p>
+                                <h1 class="main-title"></h1>
+                                <p class="main-subtitle subtitle2"></p>
                             </div>
-                            <a href="/web-product/3" class="main-btn btn1">Узнать подробнее</a>
+<!--                            <a href="/web-product/3" class="main-btn btn1">Узнать подробнее</a>-->
                         </div>
                     </div>
                 </div>
@@ -71,25 +71,25 @@
             <a href="/products?tag_id=1">
                 <div class="section0-body-item text-medium1">
                     <p>Серия китайской медицины</p>
-                    <img src="/landing/img/Froduct1.png" alt="">
+                    <img src="/landing/img/cat1.png" alt="">
                 </div>
             </a>
             <a href="/products?tag_id=2">
                 <div class="section0-body-item text-medium1">
                     <p>Серия для женщин и мужчин</p>
-                    <img src="/landing/img/Froduct2.png" alt="">
+                    <img src="/landing/img/cat2.png" alt="">
                 </div>
             </a>
             <a href="/products?tag_id=3">
                 <div class="section0-body-item text-medium1">
                     <p>Продукция нанотехнологий</p>
-                    <img src="/landing/img/Froduct3.png" alt="">
+                    <img src="/landing/img/cat3.png" alt="">
                 </div>
             </a>
             <a href="/products?tag_id=4">
                 <div class="section0-body-item text-medium1">
                     <p>Наборы продукций</p>
-                    <img src="/landing/img/Froduct4.png" alt="">
+                    <img src="/landing/img/cat4.png" alt="">
                 </div>
             </a>
         </div>
