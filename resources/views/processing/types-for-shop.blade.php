@@ -25,8 +25,8 @@
                                     </div>
                                     <!-- Card -->
                                 </div>
-                               <div class="col-lg-2 col-md-6  img-responsive">
-                                   <!-- Card -->
+<!--                               <div class="col-lg-2 col-md-6  img-responsive">
+
                                     <div class="card">
                                         <img class="card-img-top img-responsive" src="/nrg/tiptop.png" alt="Card image cap">
                                         <div class="card-block">
@@ -35,8 +35,8 @@
                                             <a href="/pay-prepare?type=tiptoppay&@if(!is_null($basket))basket={{ $basket->id }} @endif" class="btn btn-success m-t-10">Оплатить ${{  $all_cost+$all_cost*0.05 }}</a>
                                         </div>
                                     </div>
-                                   <!-- Card -->
-                                </div>
+
+                                </div>-->
 
 
                             </div>
